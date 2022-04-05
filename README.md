@@ -386,7 +386,7 @@ The router is created in `src/lib/router.js` and is exported as an object with t
 
 ```js
 {
-  start: (routes: Route[], routerOutlet: HTMLElement, state?: object) => void,
+  start: (routes: Route[], pageRoot: HTMLElement, state?: object) => void,
   navigateTo:  (pageName: string, ...params: string[]) => void;
   updateState: (updates: object) => void;
   getState: () => object;
@@ -398,14 +398,14 @@ The router is created in `src/lib/router.js` and is exported as an object with t
 This method starts the router.
 
 ```js
-router.start(routes: Route[], routerOutlet: HTMLElement, state?: object) => void
+router.start(routes: Route[], pageRoot: HTMLElement, state?: object) => void
 ```
 
 <!-- prettier-ignore -->
 | Parameter | Description |
 |-----------|-------------|
 | `routes` | An array of route definitions.|
-| `routerOutlet` | The DOM element into which pages should be loaded. |
+| `pageRoot` | The DOM element into which pages should be loaded. |
 | `state` |  The initial application state. Optional. Defaults to an empty object. |
 
 Here is an examples `routes` array of route objects as used in this starter project:
@@ -458,8 +458,8 @@ const createRouter = () => {
     // Call the Page function to create the page.
     const { root } = route.page(state, ...params);
     // Mount the page in the DOM, removing any previous page.
-    clearElement(routerOutlet);
-    routerOutlet.appendChild(root);
+    clearElement(pageRoot);
+    pageRoot.appendChild(root);
   });
   //...
 };

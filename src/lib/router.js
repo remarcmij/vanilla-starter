@@ -29,7 +29,7 @@ const getRouteParts = () => {
  */
 function createRouter() {
   let _routes = null;
-  let _routerOutlet = null;
+  let _pageRoot = null;
   const _obsState = createObservableState();
 
   /** @type {object | null} */
@@ -82,8 +82,8 @@ function createRouter() {
 
     // Clear the content router outlet container and append the page
     // root element as its new child.
-    _routerOutlet.innerHTML = '';
-    _routerOutlet.appendChild(_currentPage.root);
+    _pageRoot.innerHTML = '';
+    _pageRoot.appendChild(_currentPage.root);
   }); // end of event handler
 
   /** @typedef {(state: object) => void} UpdateCallback*/
@@ -94,12 +94,12 @@ function createRouter() {
   /**
    * Start the router.
    * @param {Route[]} routes A router table array.
-   * @param {HTMLElement} routerOutlet The DOM element where pages should be loaded.
+   * @param {HTMLElement} pageRoot The DOM element where pages should be loaded.
    * @param {object} state The initial global app state.
    */
-  const start = (routes, routerOutlet, state = {}) => {
+  const start = (routes, pageRoot, state = {}) => {
     _routes = routes;
-    _routerOutlet = routerOutlet;
+    _pageRoot = pageRoot;
     _obsState.updateState(state);
 
     if (log.isMinLevel('debug')) {
