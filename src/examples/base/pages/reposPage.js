@@ -3,16 +3,11 @@ import log from '../../../lib/logger.js';
 import fetchRepos from '../fetchers/reposFetcher.js';
 import createErrorPage from '../views/errorView.js';
 import createReposView from '../views/reposView.js';
-import createHomePage from './homePage.js';
 import createRepoDetailPage from './repoDetailPage.js';
 import state from './state.js';
 
 function createReposPage() {
   // Event handlers
-  const onHomeClick = () => {
-    loadPage(createHomePage);
-  };
-
   const onItemClick = (repo) => {
     loadPage(createRepoDetailPage, repo.owner.login, repo.name);
   };
@@ -33,7 +28,6 @@ function createReposPage() {
   };
 
   const props = {
-    onHomeClick,
     onItemClick,
     onFilterInput,
     onClearFilter,

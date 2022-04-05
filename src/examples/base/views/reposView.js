@@ -9,15 +9,10 @@ function createReposView(props) {
   root.innerHTML = String.raw`
     <header class="header">
       <div class="header-content">
-        <button type="button" id="btn-home" class="toolbar-button">
-          <i class="fa-solid fa-house"></i>
-        </button>
         <div>HYF Repositories</div>
       </div>
     </header>
   `;
-
-  root.querySelector('#btn-home').addEventListener('click', props.onHomeClick);
 
   const toolbarView = createToolbarView(props);
   root.appendChild(toolbarView.root);

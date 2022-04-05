@@ -1,6 +1,6 @@
 import loadPage from '../../../lib/loadPage.js';
 import createErrorView from '../views/errorView.js';
-import createHomePage from './homePage.js';
+import createReposPage from './reposPage.js';
 import state from './state.js';
 
 function createErrorPage() {
@@ -8,7 +8,7 @@ function createErrorPage() {
 
   const onClick = () => {
     state.error = null;
-    loadPage(createHomePage);
+    loadPage(createReposPage);
   };
 
   const props = { error, onClick };
