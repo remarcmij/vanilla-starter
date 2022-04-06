@@ -1,8 +1,19 @@
 import log from './logger.js';
 import createObservableState from './observableState.js';
 
+const observableState = createObservableState();
+
+function updateState(updates) {
+  const newState = observableState.updateState(updates);
+  log.debug('state', newState);
+  return newState;
+}
+
+function getState() {
+  return observableState.getState();
+}
+
 function pageLoader() {
-  const obsState = createObservableState();
   let currentPage = null;
   let _pageRoot = null;
 
@@ -11,7 +22,7 @@ function pageLoader() {
 
     if (typeof currentPage?.update === 'function') {
       // Unsubscribe the current page from the state observable.
-      obsState.unsubscribe(currentPage.update);
+      observableState.unsubscribe(currentPage.update);
     }
 
     // Create the new page
@@ -19,7 +30,7 @@ function pageLoader() {
 
     if (typeof currentPage.update === 'function') {
       // Subscribe the new page to the state observable.
-      obsState.subscribe(currentPage.update);
+      observableState.subscribe(currentPage.update);
     }
 
     // Mount the new page into the DOM, replacing any existing page
@@ -27,13 +38,10 @@ function pageLoader() {
     _pageRoot.appendChild(currentPage.root);
   };
 
-  const initialize = (pageRoot, state = {}) => {
+  const initialize = (pageRoot, initialState = {}) => {
     _pageRoot = pageRoot;
-    const newState = obsState.updateState(state);
-    log.debug('state', newState);
+    observableState.updateState(initialState);
   };
-
-  const { updateState, getState } = obsState;
 
   return { load, initialize, updateState, getState };
 }

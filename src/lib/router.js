@@ -11,6 +11,7 @@ const observableState = createObservableState();
 function updateState(updates) {
   const newState = observableState.updateState(updates);
   log.debug('state', newState);
+  return newState;
 }
 
 function getState() {
