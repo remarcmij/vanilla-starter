@@ -1,12 +1,11 @@
-//@ts-check
-import log from './logger.js';
-
-const HTTP_STATUS_NO_CONTENT = 204;
-
 /**
  * This file is provided ready-made for use in your application by HackYourFuture.
  * There should be no reason to make any changes to this file.
  */
+
+import log from './logger.js';
+
+const HTTP_STATUS_NO_CONTENT = 204;
 const cache = new Map();
 
 /**
