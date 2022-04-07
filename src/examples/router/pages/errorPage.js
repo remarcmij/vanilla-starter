@@ -1,16 +1,12 @@
-import router from '../../../lib/router.js';
-import createErrorView from '../views/errorView.js';
-
 function createErrorPage() {
-  const { error } = router.getState();
-  const props = {
-    error,
-    onClick: () => {
-      router.updateState({ error: null });
-      router.navigateTo('repos');
-    },
-  };
-  return createErrorView(props);
+  const root = document.createElement('div');
+  root.className = 'dialog-container whiteframe';
+  root.innerHTML = String.raw`
+    <h4>Oops... Something went wrong</h4>
+    <a href="#repos">Home</button>
+  `;
+
+  return { root };
 }
 
 export default createErrorPage;

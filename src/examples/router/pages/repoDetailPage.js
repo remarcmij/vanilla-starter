@@ -1,31 +1,34 @@
 import router from '../../../lib/router.js';
-import log from '../../../lib/logger.js';
 import fetchRepo from '../fetchers/repoFetcher.js';
 import createRepoDetailView from '../views/repoDetailView.js';
 
-function createRepoDetailPage(owner, repoName) {
-  const repoView = createRepoDetailView();
+function createRepoDetailPage(pageProps) {
+  let state = {};
+  const [organization, repoName] = pageProps.params;
+  const repoView = createRepoDetailView({ organization });
 
   const getData = async () => {
-    router.updateState({
+    state = {
+      ...state,
       error: null,
       loading: true,
       repo: null,
       contributors: null,
-    });
+    };
+    repoView.update(state);
 
     let repo, contributors;
 
     try {
-      ({ repo, contributors } = await fetchRepo(owner, repoName));
+      ({ repo, contributors } = await fetchRepo(organization, repoName));
+      state = { ...state, repo, contributors, loading: false };
+      repoView.update(state);
     } catch (error) {
-      log.error('createRepoDetailPage', error.message);
-      router.updateState({ error, loading: false });
+      state = { ...state, error, loading: false };
+      repoView.update(state);
       router.navigateTo('error');
       return;
     }
-
-    router.updateState({ repo, contributors, loading: false });
   };
 
   getData();

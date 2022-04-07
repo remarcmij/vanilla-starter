@@ -1,10 +1,14 @@
 import fetchData from '../../../lib/fetchData.js';
+import loadPage from '../../../lib/loadPage.js';
 import createPokemonsView from '../views/pokemonsView.js';
+import createHomePage from './homePage.js';
 
 const API_URL = 'https://pokeapi.co/api/v2/pokemon/';
 
-function createPokemonsPage() {
+function createPokemonsPage(pageProps) {
   let state = {};
+
+  const { title } = pageProps;
 
   const getPokemons = async () => {
     state = { ...state, loading: true, error: null };
@@ -37,10 +41,11 @@ function createPokemonsPage() {
   };
 
   const onGetClick = () => getPokemons();
+  const onHomeClick = () => loadPage(createHomePage);
   const onChange = (e) => fetchImage(e);
 
-  const props = { onGetClick, onChange };
-  const pokemonsView = createPokemonsView(props);
+  const viewProps = { title, onGetClick, onChange, onHomeClick };
+  const pokemonsView = createPokemonsView(viewProps);
 
   return pokemonsView;
 }

@@ -1,4 +1,3 @@
-import state from './examples/router/pages/state.js';
 // import routes from './pages/routes.js';
 import routes from './examples/router/pages/routes.js';
 import router from './lib/router.js';
@@ -18,7 +17,7 @@ function loadApp() {
   appRoot.appendChild(pageRoot);
 
   // Start the router
-  router.start(routes, pageRoot, state);
+  router.start(routes, pageRoot);
 }
 
 export default loadApp;

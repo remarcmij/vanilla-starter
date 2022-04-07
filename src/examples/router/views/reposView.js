@@ -1,3 +1,4 @@
+import log from '../../../lib/logger.js';
 import createLoadingIndicator from './loadingIndicator.js';
 import createRepoListItemView from './repoListItemView.js';
 import createToolbarView from './toolbarView.js';
@@ -26,6 +27,7 @@ function createReposView(props) {
   container.appendChild(loadingIndicator.root);
 
   const update = (state) => {
+    log.debug('state', state);
     toolbarView.update(state);
 
     if (state.loading) {

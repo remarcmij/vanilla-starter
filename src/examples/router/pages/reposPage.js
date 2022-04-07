@@ -3,46 +3,53 @@ import log from '../../../lib/logger.js';
 import fetchRepos from '../fetchers/reposFetcher.js';
 import createReposView from '../views/reposView.js';
 
-function createReposPage() {
-  const onItemClick = (repo) =>
-    router.navigateTo('repo', repo.owner.login, repo.name);
+function createReposPage(pageProps) {
+  const organization = pageProps.params[0] || 'HackYourFuture';
+  let state = { organization };
+
+  const onItemClick = (repo) => {
+    router.navigateTo('repo', organization, repo.name);
+  };
+
   const onFilterInput = (e) => {
-    router.updateState({ filter: e.target.value.trim().toLowerCase() });
+    const filter = e.target.value.trim().toLowerCase();
+    state = { ...state, filter };
+    reposView.update(state);
   };
 
   const onClearFilter = () => {
-    router.updateState({ filter: '' });
+    state = { ...state, filter: '' };
+    reposView.update(state);
   };
 
   const onOrganizationChange = (e) => {
-    router.updateState({ organization: e.target.value });
-    getData();
+    router.navigateTo('repos', e.target.value);
   };
 
-  const props = {
+  const viewProps = {
     onItemClick,
     onFilterInput,
     onClearFilter,
     onOrganizationChange,
   };
 
-  const reposView = createReposView(props);
+  const reposView = createReposView(viewProps);
 
   const getData = async () => {
-    router.updateState({ error: null, loading: true, repos: null });
+    state = { ...state, error: null, loading: true, repos: null };
+    reposView.update(state);
 
     let repos;
 
     try {
-      repos = await fetchRepos(router.getState().organization);
+      repos = await fetchRepos(state.organization);
+      state = { ...state, repos, loading: false };
+      reposView.update(state);
     } catch (error) {
-      log.error('createReposPage', error.message);
-      router.updateState({ error, loading: false });
+      log.error('fetchRepos', error.message);
       router.navigateTo('error');
       return;
     }
-
-    router.updateState({ repos, loading: false });
   };
 
   getData();

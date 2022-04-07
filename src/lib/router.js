@@ -4,19 +4,6 @@
  */
 
 import log from './logger.js';
-import createObservableState from './observableState.js';
-
-const observableState = createObservableState();
-
-function updateState(updates) {
-  const newState = observableState.updateState(updates);
-  log.debug('state', newState);
-  return newState;
-}
-
-function getState() {
-  return observableState.getState();
-}
 
 function navigateTo(path, ...params) {
   log.silly('navigateTo', 'path:', path, 'params:', [...params]);
@@ -57,22 +44,14 @@ function onHashChange(routerState) {
   }
 
   // Call optional willUnmount lifecycle method.
-  currentPage.onWillUnmount?.();
-
-  if (typeof currentPage.update === 'function') {
-    // Unsubscribe the current page from the state observable.
-    observableState.unsubscribe(currentPage.update);
+  if (currentPage.pageWillUnmount) {
+    log.debug('router', 'calling pageWillUnmount()');
+    currentPage.pageWillUnmount();
   }
 
   // Create the page corresponding to the route.
-  const newPage = route.page(...params);
-
   log.debug('router', `loading page: ${pathname}, params: ${[...params]}`);
-
-  if (typeof newPage.update === 'function') {
-    // Subscribe the new page to the state observable.
-    observableState.subscribe(newPage.update);
-  }
+  const newPage = route.page({ params });
 
   // Clear the content of the pageRoot container and append the page
   // root element as its new child.
@@ -80,7 +59,10 @@ function onHashChange(routerState) {
   pageRoot.appendChild(newPage.root);
 
   // Call optional didMount lifecycle method.
-  newPage.onDidMount?.();
+  if (newPage.pageDidMount) {
+    log.debug('router', 'calling pageDidMount()');
+    newPage.pageDidMount();
+  }
 
   routerState.currentPage = newPage;
 }
@@ -100,19 +82,22 @@ function logRoutesTable(routes) {
 function createRouter() {
   let routerState;
 
-  const start = (routes, pageRoot, initialState = {}) => {
+  const start = (routes, pageRoot) => {
     logRoutesTable(routes);
 
-    routerState = { routes, pageRoot, currentPage: {} };
+    routerState = {
+      routes,
+      pageRoot,
+      currentPage: {},
+    };
 
     window.addEventListener('hashchange', () => onHashChange(routerState));
 
     // Kick-start the router
-    observableState.updateState(initialState);
     onHashChange(routerState);
   };
 
-  return { start, navigateTo, updateState, getState };
+  return { start, navigateTo };
 }
 
 export default createRouter();

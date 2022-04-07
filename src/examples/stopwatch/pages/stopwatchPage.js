@@ -1,13 +1,15 @@
 import log from '../../../lib/logger.js';
-import router from '../../../lib/router.js';
 import createStopwatchView from '../views/stopwatchView.js';
+import createObservableState from '../../../lib/observableState.js';
+
+const state = createObservableState({ time: 0 });
 
 function createStopwatchPage() {
   let intervalId = null;
 
   const onStartClick = () => {
     intervalId = setInterval(() => {
-      router.updateState({ time: router.getState().time + 1 });
+      state.update({ time: state.get().time + 1 });
     }, 1000);
     log.debug('stopwatch', 'started');
   };
@@ -18,11 +20,8 @@ function createStopwatchPage() {
 
   const onResetClick = () => {
     clearTimer();
-    router.updateState({ time: 0 });
-  };
-
-  const onWillUnmount = () => {
-    clearTimer();
+    state.update({ time: 0 });
+    stopwatchView.update(state);
   };
 
   const clearTimer = () => {
@@ -35,9 +34,17 @@ function createStopwatchPage() {
 
   const props = { onStartClick, onStopClick, onResetClick };
   const stopwatchView = createStopwatchView(props);
-  router.updateState({ time: 0 });
 
-  return { ...stopwatchView, onWillUnmount };
+  const pageDidMount = () => {
+    state.subscribe(stopwatchView.update);
+  };
+
+  const pageWillUnmount = () => {
+    clearTimer();
+    state.unsubscribe(stopwatchView.update);
+  };
+
+  return { ...stopwatchView, pageDidMount, pageWillUnmount };
 }
 
 export default createStopwatchPage;

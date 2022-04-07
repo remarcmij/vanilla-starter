@@ -1,12 +1,13 @@
+import log from '../../../lib/logger.js';
 import createContributorListView from './contributorListView.js';
 import createLoadingIndicator from './loadingIndicator.js';
 
-function createRepoDetailView() {
+function createRepoDetailView(props) {
   const root = document.createElement('div');
   root.innerHTML = String.raw`
   <header class="header">
     <div class="header-content">
-      <a href="#repos" class="toolbar-button">
+      <a href="#repos/${props.organization}" class="toolbar-button">
         <i class="fa-solid fa-chevron-left"></i>
       </a>
       <div>Repository Details</div>
@@ -22,6 +23,8 @@ function createRepoDetailView() {
   container.appendChild(loadingIndicator.root);
 
   const update = (state) => {
+    log.debug('state', state);
+
     if (state.loading) {
       loadingIndicator.root.hidden = false;
       return;

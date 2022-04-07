@@ -1,3 +1,5 @@
+import log from './logger.js';
+
 function createObservableState(state = {}) {
   let _state = state;
 
@@ -11,18 +13,19 @@ function createObservableState(state = {}) {
     _subscribers.delete(subscriber);
   };
 
-  const updateState = (data) => {
+  const update = (data) => {
     const newState = { ..._state, ...data };
     _subscribers.forEach((subscriber) => subscriber(newState, _state));
     _state = newState;
+    log.debug('state', _state);
     return _state;
   };
 
-  const getState = () => {
+  const get = () => {
     return _state;
   };
 
-  return { subscribe, unsubscribe, updateState, getState };
+  return { subscribe, unsubscribe, update, get };
 }
 
 export default createObservableState;

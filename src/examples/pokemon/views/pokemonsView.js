@@ -4,7 +4,10 @@ function createPokemonsView(props) {
   root.innerHTML = String.raw`
     <header class="header">
       <div class="header-content">
-        <div>Pokemons</div>
+        <button type="button" id="btn-home" class="toolbar-button">
+          <i class="fa-solid fa-house"></i>
+        </button>
+        <div>${props.title}</div>
       </div>
     </header>
     <button type="button" id="btn-get">Get Pokemons</button>
@@ -17,6 +20,8 @@ function createPokemonsView(props) {
 
   const btnGet = root.querySelector('#btn-get');
   btnGet.addEventListener('click', props.onGetClick);
+
+  root.querySelector('#btn-home').addEventListener('click', props.onHomeClick);
 
   const pokemonsSelect = root.querySelector('#pokemons-select');
   pokemonsSelect.addEventListener('change', props.onChange);
