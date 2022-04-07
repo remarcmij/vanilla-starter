@@ -43,7 +43,7 @@ function findRouteByPathname(routes, pathname) {
 }
 
 function onHashChange(routerState) {
-  const { routes, pageRoot } = routerState;
+  const { routes, pageRoot, currentPage } = routerState;
 
   const [pathname, ...params] = getRouteParts();
 
@@ -58,23 +58,31 @@ function onHashChange(routerState) {
 
   log.debug('router', `loading page: ${pathname}, params: ${[...params]}`);
 
-  if (typeof routerState.currentPage?.update === 'function') {
+  // Call optional willUnmount lifecycle method.
+  currentPage.willUnmount?.();
+
+  if (typeof currentPage.update === 'function') {
     // Unsubscribe the current page from the state observable.
-    observableState.unsubscribe(routerState.currentPage.update);
+    observableState.unsubscribe(currentPage.update);
   }
 
   // Create the page corresponding to the route.
-  routerState.currentPage = route.page(...params);
+  const newPage = route.page(...params);
 
-  if (typeof routerState.currentPage?.update === 'function') {
+  if (typeof newPage.update === 'function') {
     // Subscribe the new page to the state observable.
-    observableState.subscribe(routerState.currentPage.update);
+    observableState.subscribe(newPage.update);
   }
 
   // Clear the content of the pageRoot container and append the page
   // root element as its new child.
   pageRoot.innerHTML = '';
-  pageRoot.appendChild(routerState.currentPage.root);
+  pageRoot.appendChild(newPage.root);
+
+  // Call optional didMount lifecycle method.
+  newPage.didMount?.();
+
+  routerState.currentPage = newPage;
 }
 
 function logRoutesTable(routes) {
