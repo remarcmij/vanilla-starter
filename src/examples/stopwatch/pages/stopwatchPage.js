@@ -1,8 +1,6 @@
 import log from '../../../lib/logger.js';
 import createStopwatchView from '../views/stopwatchView.js';
-import createObservableState from '../../../lib/observableState.js';
-
-const state = createObservableState({ time: 0 });
+import state from './observableState.js';
 
 function createStopwatchPage() {
   let intervalId = null;
