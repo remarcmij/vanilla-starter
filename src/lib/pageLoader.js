@@ -14,13 +14,13 @@ function getState() {
 }
 
 function pageLoader() {
-  let currentPage = null;
+  let currentPage = {};
   let _pageRoot = null;
 
   const load = (createPageFn, ...args) => {
     log.debug('loading page', `${createPageFn.name}, params: ${[...args]}`);
 
-    if (typeof currentPage?.update === 'function') {
+    if (typeof currentPage.update === 'function') {
       // Unsubscribe the current page from the state observable.
       observableState.unsubscribe(currentPage.update);
     }

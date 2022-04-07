@@ -95,8 +95,7 @@ function createRouter() {
   const start = (routes, pageRoot, initialState = {}) => {
     logRoutesTable(routes);
 
-    const currentPage = null;
-    routerState = { routes, pageRoot, currentPage };
+    routerState = { routes, pageRoot, currentPage: {} };
 
     window.addEventListener('hashchange', () => onHashChange(routerState));
 
