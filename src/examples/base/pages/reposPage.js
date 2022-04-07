@@ -4,26 +4,28 @@ import fetchRepos from '../fetchers/reposFetcher.js';
 import createErrorPage from '../views/errorView.js';
 import createReposView from '../views/reposView.js';
 import createRepoDetailPage from './repoDetailPage.js';
-import state from './state.js';
 
-function createReposPage() {
+function createReposPage(state) {
   // Event handlers
   const onItemClick = (repo) => {
-    loadPage(createRepoDetailPage, repo.owner.login, repo.name);
+    state = { ...state, repo };
+    loadPage(createRepoDetailPage, state);
   };
 
   const onFilterInput = (e) => {
-    state.filter = e.target.value.trim().toLowerCase();
+    const filter = e.target.value.trim().toLowerCase();
+    state = { ...state, filter };
     reposView.update(state);
   };
 
   const onClearFilter = () => {
-    state.filter = '';
+    state = { ...state, filter: '' };
     reposView.update(state);
   };
 
   const onOrganizationChange = (e) => {
-    state.organization = e.target.value;
+    const organization = e.target.value;
+    state = { ...state, organization };
     getData();
   };
 
@@ -36,24 +38,20 @@ function createReposPage() {
   const reposView = createReposView(props);
 
   const getData = async () => {
-    state.error = null;
-    state.loading = true;
-    state.repos = null;
+    state = { ...state, loading: true, error: null, repos: null };
     reposView.update(state);
 
     try {
-      state.repos = await fetchRepos(state.organization);
+      const repos = await fetchRepos(state.organization);
+      state = { ...state, repos, loading: false };
+      reposView.update(state);
     } catch (error) {
       log.error('createReposPage', error.message);
-      state.error = error;
-      state.loading = false;
+      state = { ...state, error, loading: false };
       reposView.update(state);
       loadPage(createErrorPage, state);
       return;
     }
-
-    state.loading = false;
-    reposView.update(state);
   };
 
   getData();

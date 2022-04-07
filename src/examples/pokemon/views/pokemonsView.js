@@ -2,13 +2,11 @@ function createPokemonsView(props) {
   const root = document.createElement('div');
   root.className = 'pokemons-container';
   root.innerHTML = String.raw`
-    <div id="message-container"></div>
     <button type="button" id="btn-get">Get Pokemons</button>
     <select id="pokemons-select"></select>
     <img id="pokemon-img" hidden>
+    <div id="message-container"></div>
   `;
-
-  const messageContainer = root.querySelector('#message-container');
 
   const btnGet = root.querySelector('#btn-get');
   btnGet.addEventListener('click', props.onGetClick);
@@ -17,6 +15,8 @@ function createPokemonsView(props) {
   pokemonsSelect.addEventListener('change', props.onChange);
 
   const pokemonImg = root.querySelector('#pokemon-img');
+
+  const messageContainer = root.querySelector('#message-container');
 
   let pokemonsPopulated = false;
 

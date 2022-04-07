@@ -3,9 +3,9 @@ import createPokemonsView from '../views/pokemonsView.js';
 
 const API_URL = 'https://pokeapi.co/api/v2/pokemon/';
 
-const state = {};
-
 function createPokemonsPage() {
+  let state = {};
+
   const onGetClick = () => getPokemons();
   const onChange = (e) => fetchImage(e);
 
@@ -13,17 +13,14 @@ function createPokemonsPage() {
   const pokemonsView = createPokemonsView(props);
 
   const getPokemons = async () => {
-    state.loading = true;
-    state.error = null;
+    state = { ...state, loading: true, error: null };
     pokemonsView.update(state);
 
     try {
       const data = await fetchData(API_URL);
-      state.pokemons = data.results;
-      state.loading = false;
+      state = { ...state, pokemons: data.results, loading: false };
     } catch (error) {
-      state.error = error;
-      state.loading = false;
+      state = { ...state.error, loading: false };
     }
 
     pokemonsView.update(state);
@@ -32,16 +29,14 @@ function createPokemonsPage() {
   const fetchImage = async (e) => {
     const url = e.target.value;
 
-    state.loading = true;
-    state.error = null;
+    state = { ...state, loading: true, error: null };
     pokemonsView.update(state);
 
     try {
-      state.pokemon = await fetchData(url);
-      state.loading = false;
+      const pokemon = await fetchData(url);
+      state = { ...state, pokemon, loading: false };
     } catch (error) {
-      state.error = error;
-      state.loading = false;
+      state = { ...state.error, loading: false };
     }
 
     pokemonsView.update(state);
