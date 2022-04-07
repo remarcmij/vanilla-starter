@@ -59,7 +59,7 @@ function onHashChange(routerState) {
   log.debug('router', `loading page: ${pathname}, params: ${[...params]}`);
 
   // Call optional willUnmount lifecycle method.
-  currentPage.willUnmount?.();
+  currentPage.onWillUnmount?.();
 
   if (typeof currentPage.update === 'function') {
     // Unsubscribe the current page from the state observable.
@@ -80,7 +80,7 @@ function onHashChange(routerState) {
   pageRoot.appendChild(newPage.root);
 
   // Call optional didMount lifecycle method.
-  newPage.didMount?.();
+  newPage.onDidMount?.();
 
   routerState.currentPage = newPage;
 }
