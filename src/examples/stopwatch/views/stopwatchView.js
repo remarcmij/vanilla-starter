@@ -3,17 +3,26 @@ const SECS_PER_MIN = 60;
 
 function createStopwatchView(props) {
   const root = document.createElement('div');
-  root.className = 'stopwatch-container';
   root.innerHTML = String.raw`
-    <div class="stopwatch-time">
-        00:00:00
-    </div>
+    <header class="header">
+      <div class="header-content">
+        <a href="#home" class="toolbar-button">
+          <i class="fa-solid fa-house"></i>
+        </a>
+        <div>Stopwatch</div>
+      </div>
+    </header>
+    <div className="stopwatch-container">
+      <div class="stopwatch-time">
+          00:00:00
+      </div>
 
-    <ul class="stopwatch-buttons">
-        <li><button id="btn-start" class="stopwatch-button">Start</button></li>
-        <li><button id="btn-stop"  class="stopwatch-button">Stop</button></li>
-        <li><button id="btn-reset"  class="stopwatch-button">Reset</button></li>
-    </ul>
+      <ul class="stopwatch-buttons">
+          <li><button id="btn-start" class="stopwatch-button">Start</button></li>
+          <li><button id="btn-stop"  class="stopwatch-button">Stop</button></li>
+          <li><button id="btn-reset"  class="stopwatch-button">Reset</button></li>
+      </ul>
+    </div>
   `;
 
   const stopwatch = root.querySelector('.stopwatch-time');

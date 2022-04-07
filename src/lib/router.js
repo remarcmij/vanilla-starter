@@ -56,8 +56,6 @@ function onHashChange(routerState) {
     return;
   }
 
-  log.debug('router', `loading page: ${pathname}, params: ${[...params]}`);
-
   // Call optional willUnmount lifecycle method.
   currentPage.onWillUnmount?.();
 
@@ -68,6 +66,8 @@ function onHashChange(routerState) {
 
   // Create the page corresponding to the route.
   const newPage = route.page(...params);
+
+  log.debug('router', `loading page: ${pathname}, params: ${[...params]}`);
 
   if (typeof newPage.update === 'function') {
     // Subscribe the new page to the state observable.

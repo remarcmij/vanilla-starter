@@ -1,7 +1,7 @@
+import createHomePage from './examples/base/pages/homePage.js';
 import state from './examples/base/pages/state.js';
 import loadPage from './lib/loadPage.js';
 import log from './lib/logger.js';
-import createReposPage from './examples/base/pages/reposPage.js';
 
 function loadApp() {
   // Set the desired log level
@@ -16,7 +16,7 @@ function loadApp() {
   pageRoot.id = 'page-root';
   appRoot.appendChild(pageRoot);
 
-  loadPage(createReposPage, state);
+  loadPage(createHomePage, state);
 }
 
 export default loadApp;

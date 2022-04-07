@@ -6,12 +6,6 @@ const API_URL = 'https://pokeapi.co/api/v2/pokemon/';
 function createPokemonsPage() {
   let state = {};
 
-  const onGetClick = () => getPokemons();
-  const onChange = (e) => fetchImage(e);
-
-  const props = { onGetClick, onChange };
-  const pokemonsView = createPokemonsView(props);
-
   const getPokemons = async () => {
     state = { ...state, loading: true, error: null };
     pokemonsView.update(state);
@@ -41,6 +35,12 @@ function createPokemonsPage() {
 
     pokemonsView.update(state);
   };
+
+  const onGetClick = () => getPokemons();
+  const onChange = (e) => fetchImage(e);
+
+  const props = { onGetClick, onChange };
+  const pokemonsView = createPokemonsView(props);
 
   return pokemonsView;
 }

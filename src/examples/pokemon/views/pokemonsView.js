@@ -1,9 +1,16 @@
 function createPokemonsView(props) {
   const root = document.createElement('div');
-  root.className = 'pokemons-container';
+  root.className = 'flex-column';
   root.innerHTML = String.raw`
+    <header class="header">
+      <div class="header-content">
+        <div>Pokemons</div>
+      </div>
+    </header>
     <button type="button" id="btn-get">Get Pokemons</button>
-    <select id="pokemons-select"></select>
+    <select id="pokemons-select">
+      <option value="">No pokemons yet</option>
+    </select>
     <img id="pokemon-img" hidden>
     <div id="message-container"></div>
   `;
@@ -34,6 +41,7 @@ function createPokemonsView(props) {
     messageContainer.textContent = '';
 
     if (state.pokemons && !pokemonsPopulated) {
+      pokemonsSelect.innerHTML = '';
       state.pokemons.forEach((pokemon) => {
         const option = document.createElement('option');
         option.textContent = pokemon.name;

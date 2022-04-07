@@ -8,6 +8,9 @@ function createReposView(props) {
   root.innerHTML = String.raw`
     <header class="header">
       <div class="header-content">
+        <a href="#home" class="toolbar-button">
+          <i class="fa-solid fa-house"></i>
+        </a>
         <div>HYF Repositories</div>
       </div>
     </header>

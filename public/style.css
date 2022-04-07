@@ -7,13 +7,13 @@ body {
   overflow-y: scroll;
 }
 
-.pokemons-container {
+.flex-column {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.pokemons-container * {
+.flex-column * {
   margin: 4px;
 }
 
@@ -77,6 +77,7 @@ select {
   display: flex;
   flex-direction: row;
   align-items: center;
+  width: 100%;
 }
 
 .header a {
@@ -265,7 +266,7 @@ From: https://code-boxx.com/rotate-spin-image-html-css/#sec-animate
 .stopwatch-button {
   width: 100px;
   height: 30px;
-  border: 3px soldi white;
+  border: 3px solid white;
   border-radius: 50px;
   background: #202020;
   color: white;
