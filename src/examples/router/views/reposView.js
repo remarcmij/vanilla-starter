@@ -22,7 +22,20 @@ function createReposView(props) {
   const loadingIndicator = createLoadingIndicator();
   container.appendChild(loadingIndicator.root);
 
-  const render = (state) => {
+  const update = (state) => {
+    toolbarView.update(state);
+
+    if (state.loading) {
+      loadingIndicator.root.hidden = false;
+      return;
+    }
+
+    loadingIndicator.root.hidden = true;
+
+    // Do not render if there is an error or if there is no data yet.
+    if (state.error || !state.repos) {
+      return;
+    }
     // clear loading indicator
     container.innerHTML = '';
 
@@ -44,24 +57,6 @@ function createReposView(props) {
       });
       repoList.appendChild(listItemView.root);
     });
-  };
-
-  const update = (state) => {
-    toolbarView.update(state);
-
-    if (state.loading) {
-      loadingIndicator.root.hidden = false;
-      return;
-    }
-
-    loadingIndicator.root.hidden = true;
-
-    // Do not render if there is an error or if there is no data yet.
-    if (state.error || !state.repos) {
-      return;
-    }
-
-    render(state);
   };
 
   return { root, update };
