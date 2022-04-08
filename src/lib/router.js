@@ -6,12 +6,16 @@
 import log from './logger.js';
 
 function navigateTo(path, ...params) {
+  // Example:
+  // navigateTo('repos', 'HackYourFuture', 'my-repo') => '#repos/HackYourFuture/my-repo'
   log.silly('navigateTo', 'path:', path, 'params:', [...params]);
   const encodedHash = encodeURI('#' + [path, ...params].join('/'));
   window.location.assign(encodedHash);
 }
 
 function getRouteParts() {
+  // Example:
+  // '#repos/HackYourFuture/my-repo' => ['repos', 'HackYourFuture', 'my-repo']
   const [hash, ...rest] = decodeURI(window.location.hash).split('/');
   const path = hash.replace('#', '');
   return [path, ...rest];
