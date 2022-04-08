@@ -1,25 +1,25 @@
-function createObservableState(state = {}) {
-  let _state = state;
+function createObservableState(initialState = {}) {
+  let currentState = { ...initialState };
 
-  const _subscribers = new Set();
+  const subscribers = new Set();
 
   const subscribe = (subscriber) => {
-    _subscribers.add(subscriber);
+    subscribers.add(subscriber);
   };
 
   const unsubscribe = (subscriber) => {
-    _subscribers.delete(subscriber);
+    subscribers.delete(subscriber);
   };
 
-  const update = (data) => {
-    const newState = { ..._state, ...data };
-    _subscribers.forEach((subscriber) => subscriber(newState, _state));
-    _state = newState;
-    return _state;
+  const update = (updates) => {
+    const newState = { ...currentState, ...updates };
+    subscribers.forEach((subscriber) => subscriber(newState, currentState));
+    currentState = newState;
+    return currentState;
   };
 
   const get = () => {
-    return _state;
+    return currentState;
   };
 
   return { subscribe, unsubscribe, update, get };
