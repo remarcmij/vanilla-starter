@@ -37,7 +37,7 @@ function createStopwatchPage() {
   };
 
   const pageWillUnmount = () => {
-    clearTimer();
+    onResetClick();
     state.unsubscribe(stopwatchView.update);
   };
 
