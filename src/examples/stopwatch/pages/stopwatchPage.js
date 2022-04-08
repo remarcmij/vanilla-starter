@@ -1,6 +1,6 @@
 import log from '../../../lib/logger.js';
 import createStopwatchView from '../views/stopwatchView.js';
-import state from './observableState.js';
+import state from '../observableState.js';
 
 function createStopwatchPage() {
   let intervalId = null;
@@ -19,7 +19,6 @@ function createStopwatchPage() {
   const onResetClick = () => {
     clearTimer();
     state.update({ time: 0 });
-    stopwatchView.update(state);
   };
 
   const clearTimer = () => {
