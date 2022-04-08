@@ -29,8 +29,8 @@ function createStopwatchPage() {
     }
   };
 
-  const props = { onStartClick, onStopClick, onResetClick };
-  const stopwatchView = createStopwatchView(props);
+  const viewProps = { onStartClick, onStopClick, onResetClick };
+  const stopwatchView = createStopwatchView(viewProps);
 
   const pageDidMount = () => {
     state.subscribe(stopwatchView.update);
