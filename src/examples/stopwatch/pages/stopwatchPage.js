@@ -1,9 +1,10 @@
 import log from '../../../lib/logger.js';
+import state from '../../../lib/observableState.js';
 import createStopwatchView from '../views/stopwatchView.js';
-import state from '../observableState.js';
 
 function createStopwatchPage() {
   let intervalId = null;
+  state.update({ time: 0 });
 
   const onStartClick = () => {
     intervalId = setInterval(() => {

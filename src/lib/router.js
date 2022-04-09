@@ -49,7 +49,7 @@ function onHashChange(routerState) {
 
   // Call optional willUnmount lifecycle method.
   if (currentPage.pageWillUnmount) {
-    log.debug('router', 'calling pageWillUnmount()');
+    log.silly('router', 'calling pageWillUnmount()');
     currentPage.pageWillUnmount();
   }
 
@@ -64,7 +64,7 @@ function onHashChange(routerState) {
 
   // Call optional didMount lifecycle method.
   if (newPage.pageDidMount) {
-    log.debug('router', 'calling pageDidMount()');
+    log.silly('router', 'calling pageDidMount()');
     newPage.pageDidMount();
   }
 

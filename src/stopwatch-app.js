@@ -1,4 +1,4 @@
-import observableState from './examples/stopwatch/observableState.js';
+import observableState from './lib/observableState.js';
 import routes from './examples/stopwatch/pages/routes.js';
 import log from './lib/logger.js';
 import router from './lib/router.js';

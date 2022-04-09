@@ -1,4 +1,3 @@
-import log from '../../../lib/logger.js';
 import createContributorListView from './contributorListView.js';
 import createLoadingIndicator from './loadingIndicator.js';
 
@@ -23,8 +22,6 @@ function createRepoDetailView(props) {
   container.appendChild(loadingIndicator.root);
 
   const update = (state) => {
-    log.debug('state', state);
-
     if (state.loading) {
       loadingIndicator.root.hidden = false;
       return;

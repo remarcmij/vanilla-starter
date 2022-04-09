@@ -1,7 +1,8 @@
 // import routes from './pages/routes.js';
 import routes from './examples/router/pages/routes.js';
-import router from './lib/router.js';
 import log from './lib/logger.js';
+import observableState from './lib/observableState.js';
+import router from './lib/router.js';
 
 function loadApp() {
   // Set the desired log level
@@ -15,6 +16,10 @@ function loadApp() {
   const pageRoot = document.createElement('div');
   pageRoot.id = 'page-root';
   appRoot.appendChild(pageRoot);
+
+  observableState.subscribe((state) => {
+    log.debug('state', state);
+  });
 
   // Start the router
   router.start(routes, pageRoot);

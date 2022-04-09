@@ -1,11 +1,11 @@
+import state from '../../../lib/observableState.js';
 import router from '../../../lib/router.js';
-import log from '../../../lib/logger.js';
 import fetchRepos from '../fetchers/reposFetcher.js';
 import createReposView from '../views/reposView.js';
 
 function createReposPage(pageProps) {
   const organization = pageProps.params[0] || 'HackYourFuture';
-  let state = { organization };
+  state.update({ organization });
 
   const onItemClick = (repo) => {
     router.navigateTo('repo', organization, repo.name);
@@ -13,13 +13,11 @@ function createReposPage(pageProps) {
 
   const onFilterInput = (e) => {
     const filter = e.target.value.trim().toLowerCase();
-    state = { ...state, filter };
-    reposView.update(state);
+    state.update({ filter });
   };
 
   const onClearFilter = () => {
-    state = { ...state, filter: '' };
-    reposView.update(state);
+    state.update({ filter: '' });
   };
 
   const onOrganizationChange = (e) => {
@@ -36,17 +34,15 @@ function createReposPage(pageProps) {
   const reposView = createReposView(viewProps);
 
   const getData = async () => {
-    state = { ...state, error: null, loading: true, repos: null };
-    reposView.update(state);
+    state.update({ error: null, loading: true, repos: null });
 
     let repos;
 
     try {
-      repos = await fetchRepos(state.organization);
-      state = { ...state, repos, loading: false };
-      reposView.update(state);
+      repos = await fetchRepos(organization);
+      state.update({ repos, loading: false });
     } catch (error) {
-      log.error('fetchRepos', error.message);
+      state.update({ error, loading: false });
       router.navigateTo('error');
       return;
     }
@@ -54,7 +50,15 @@ function createReposPage(pageProps) {
 
   getData();
 
-  return reposView;
+  const pageDidMount = () => {
+    state.subscribe(reposView.update);
+  };
+
+  const pageWillUnmount = () => {
+    state.unsubscribe(reposView.update);
+  };
+
+  return { ...reposView, pageDidMount, pageWillUnmount };
 }
 
 export default createReposPage;
