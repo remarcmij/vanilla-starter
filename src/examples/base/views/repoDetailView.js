@@ -9,7 +9,7 @@ function createRepoDetailView(props) {
       <button type="button" id="btn-back" class="toolbar-button">
         <i class="fa-solid fa-chevron-left"></i>
       </button>
-      <div>Repository Details</div>
+      <h3>Repository Details</h3>
     </div>
   </header>
   `;

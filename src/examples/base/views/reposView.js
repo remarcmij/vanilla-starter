@@ -9,7 +9,7 @@ function createReposView(props) {
   root.innerHTML = String.raw`
     <header class="header">
       <div class="header-content">
-        <div>HYF Repositories</div>
+        <h3>HYF Repositories</h3>
       </div>
     </header>
   `;

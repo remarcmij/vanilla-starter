@@ -1,12 +1,11 @@
-import createHomePage from './examples/base/pages/homePage.js';
-import state from './examples/base/pages/state.js';
-import loadPage from './lib/loadPage.js';
-import log from './lib/logger.js';
+import createHomePage from './pages/homePage.js';
+import state from './pages/state.js';
+import loadPage from '../../lib/loadPage.js';
+import log from '../../lib/logger.js';
 
 function loadApp() {
   // Set the desired log level
   log.setLevel('debug');
-  log.info('application', 'started');
 
   const appRoot = document.getElementById('app-root');
 
