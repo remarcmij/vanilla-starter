@@ -1,0 +1,6 @@
+
+### Get Nobel prize winners
+GET https://api.nobelprize.org/2.1/nobelPrizes?limit=10
+
+### Get Nobel prize winner by id
+GET https://api.nobelprize.org/2.1/laureate/160

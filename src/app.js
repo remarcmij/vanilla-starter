@@ -1,7 +1,23 @@
-// import loadApp from './pokemons-app.js';
-// import loadApp from './stopwatch-app.js';
-// import loadApp from './base-app.js';
-import loadApp from './router-app.js';
-// import loadApp from './my-app.js';
+import log from './lib/logger.js';
+import router from './lib/router.js';
+import routes from './pages/routes.js';
+import state from './pages/state.js';
 
-window.addEventListener('load', loadApp);
+function loadApp() {
+  // Set the desired log level
+  log.setLevel('debug');
+  log.info('application', 'started');
+
+  const appRoot = document.getElementById('app-root');
+
+  // Create a DOM element that will serve as the mount point
+  // used by the router for loading paging.
+  const pageRoot = document.createElement('div');
+  pageRoot.id = 'page-root';
+  appRoot.appendChild(pageRoot);
+
+  // Start the router
+  router.start(routes, pageRoot, state);
+}
+
+export default loadApp;

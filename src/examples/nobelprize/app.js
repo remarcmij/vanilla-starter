@@ -1,12 +1,11 @@
-import log from './lib/logger.js';
-import router from './lib/router.js';
 import routes from './pages/routes.js';
-import state from './pages/state.js';
+import log from '../../lib/logger.js';
+import observableState from '../../lib/observableState.js';
+import router from '../../lib/router.js';
 
 function loadApp() {
   // Set the desired log level
   log.setLevel('debug');
-  log.info('application', 'started');
 
   const appRoot = document.getElementById('app-root');
 
@@ -16,8 +15,13 @@ function loadApp() {
   pageRoot.id = 'page-root';
   appRoot.appendChild(pageRoot);
 
+  // Subscribe to state changes and log them
+  observableState.subscribe((state) => {
+    log.debug('state', state);
+  });
+
   // Start the router
-  router.start(routes, pageRoot, state);
+  router.start(routes, pageRoot);
 }
 
 export default loadApp;

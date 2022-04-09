@@ -55,12 +55,19 @@ function onHashChange(routerState) {
 
   // Create the page corresponding to the route.
   log.debug('router', `loading page: ${pathname}, params: ${[...params]}`);
-  const newPage = route.page({ params });
+
+  const newPage = route.page(...params);
+  if (typeof newPage !== 'object' || !newPage.root) {
+    throw new Error(`Page "${pathname}" did not return a valid page object`);
+  }
 
   // Clear the content of the pageRoot container and append the page
   // root element as its new child.
   pageRoot.innerHTML = '';
   pageRoot.appendChild(newPage.root);
+
+  // Reset scroll position to top of page
+  window.scrollTo(0, 0);
 
   // Call optional didMount lifecycle method.
   if (newPage.pageDidMount) {
