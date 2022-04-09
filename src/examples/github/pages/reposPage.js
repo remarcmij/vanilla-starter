@@ -3,8 +3,7 @@ import router from '../../../lib/router.js';
 import fetchRepos from '../fetchers/reposFetcher.js';
 import createReposView from '../views/reposView.js';
 
-function createReposPage(pageProps) {
-  const organization = pageProps.params[0] || 'HackYourFuture';
+function createReposPage(organization = 'HackYourFuture') {
   state.update({ organization });
 
   const onItemClick = (repo) => {

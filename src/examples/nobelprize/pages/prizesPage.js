@@ -16,7 +16,8 @@ export const categories = {
 };
 
 function createPrizesPage(category = 'all', year = 'all', page = '1') {
-  state$.update({ category, year, page: parseInt(page) });
+  page = parseInt(page, 10);
+  state$.update({ category, year, page });
 
   const getData = async () => {
     state$.update({
@@ -56,22 +57,32 @@ function createPrizesPage(category = 'all', year = 'all', page = '1') {
     router.navigateTo('prizes', category, year, 1);
   };
 
-  const onNextPageClick = () => {
-    const { category, year, page } = state$.get();
-    router.navigateTo('prizes', category, year, page + 1);
+  const onFirstPageClick = () => {
+    router.navigateTo('prizes', category, year, 1);
   };
 
   const onPrevPageClick = () => {
-    const { category, year, page } = state$.get();
     router.navigateTo('prizes', category, year, page - 1);
+  };
+
+  const onNextPageClick = () => {
+    router.navigateTo('prizes', category, year, page + 1);
+  };
+
+  const onLastPageClick = () => {
+    const { meta } = state$.get().prizes;
+    const page = Math.max(1, Math.floor(meta.count / meta.limit) + 1);
+    router.navigateTo('prizes', category, year, page);
   };
 
   const viewProps = {
     onFindClick,
     onCategoryChange,
     onYearChange,
-    onNextPageClick,
+    onFirstPageClick,
     onPrevPageClick,
+    onNextPageClick,
+    onLastPageClick,
     categories,
     firstYear: FIRST_YEAR,
     category,

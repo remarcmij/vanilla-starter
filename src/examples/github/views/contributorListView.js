@@ -6,10 +6,10 @@ function createContributorListView(props) {
 
   root.innerHTML = String.raw`
     <div class="contributor-header">Contributions</div>
-    <ul class="contributor-list"></ul>
+    <ul class="list-no-bullets"></ul>
   `;
 
-  const ul = root.querySelector('.contributor-list');
+  const ul = root.querySelector('.list-no-bullets');
 
   props.contributors.forEach((contributor) => {
     const listItemView = createContributorListItemView({ contributor });

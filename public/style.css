@@ -74,19 +74,25 @@ select {
   color: white;
   background-color: #3f51b5;
   padding: 8px 16px;
+}
+
+.header-content {
   display: flex;
   flex-direction: row;
   align-items: center;
 }
 
-.header a {
+.header-content a {
   color: white;
-  margin-right: 16px;
 }
 
-.repo-select {
-  height: 32px;
-  margin: 0 16px;
+.header-content h3 {
+  margin: 0 8px;
+}
+
+.header-content button,
+select {
+  margin: 0 8px;
 }
 
 .repo-container,
@@ -106,7 +112,7 @@ select {
   padding: 16px;
 }
 
-.contributor-list {
+.list-no-bullets {
   list-style-type: none;
   padding: 0;
   margin: 0;
@@ -162,6 +168,7 @@ th {
   width: 100px;
   min-width: 100px;
   max-width: 100px;
+  text-align: left;
 }
 
 .list-item {
@@ -183,15 +190,6 @@ p {
   list-style-type: none;
   padding: 0;
   margin: 0;
-}
-
-.header-content {
-  display: flex;
-  flex-direction: row;
-}
-
-.header-content button {
-  margin: 0 16px 0 0;
 }
 
 .whiteframe {
@@ -261,34 +259,37 @@ From: https://code-boxx.com/rotate-spin-image-html-css/#sec-animate
   animation-timing-function: linear;
 }
 
-/* Stopwatch */
-.stopwatch-button {
-  width: 100px;
-  height: 30px;
-  border: 3px solid white;
-  border-radius: 50px;
-  background: #202020;
-  color: white;
-  cursor: pointer;
-  outline: none;
+.hide {
+  display: none;
 }
 
-.stopwatch-time {
-  font-size: 100px;
-  position: absolute;
-  top: 45%;
+.spinner {
+  position: fixed;
+  z-index: 1000;
+  top: 20%;
   left: 50%;
-  transform: translate(-50%, -55%);
+  transform: translate(-50%, -50%);
 }
 
-.stopwatch-buttons {
-  position: absolute;
-  top: 55%;
-  left: 48.4%;
-  transform: translate(-51.6%, -45%);
+/*
+From: https://code-boxx.com/rotate-spin-image-html-css/#sec-animate 
+*/
+@keyframes spinning {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+.spin {
+  animation-name: spinning;
+  animation-duration: 3s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
 }
 
-.stopwatch-buttons li {
-  display: inline;
-  padding-left: 10px;
+.content-container {
+  margin: 4px 0;
+  padding: 16px;
 }

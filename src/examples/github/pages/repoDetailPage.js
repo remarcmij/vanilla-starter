@@ -3,8 +3,7 @@ import router from '../../../lib/router.js';
 import fetchRepo from '../fetchers/repoFetcher.js';
 import createRepoDetailView from '../views/repoDetailView.js';
 
-function createRepoDetailPage(pageProps) {
-  const [organization, repoName] = pageProps.params;
+function createRepoDetailPage(organization, repoName) {
   const repoView = createRepoDetailView({ organization });
 
   const getData = async () => {

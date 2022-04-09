@@ -9,7 +9,7 @@ function createPrizesView(props) {
       <div class="header-content">
         <h3>Nobel Prizes</h3>
         <select id="categorySelect">
-          <option value="all">Any Categories</option>
+          <option value="all">All Categories</option>
         </select>
         <select id="yearSelect">
           <option value="all">Any Year</option>
@@ -21,8 +21,10 @@ function createPrizesView(props) {
       <ul id="prizeList" class="item-list"></ul>
     </div>
     <div hidden class="pagination-button-container" id="paginationButtonContainer">
-      <button type="button" id="prevBtn">Previous Page</button>
-      <button type="button" id="nextBtn">Next Page</button>
+      <button type="button" id="firstBtn">First Page</button>
+      <button type="button" id="prevBtn">Previous</button>
+      <button type="button" id="nextBtn">Next</button>
+      <button type="button" id="lastBtn">Last Page</button>
     </div>
   `;
 
@@ -35,12 +37,16 @@ function createPrizesView(props) {
     messageContainer,
     prizeList,
     paginationButtonContainer,
-    nextBtn,
+    firstBtn,
     prevBtn,
+    nextBtn,
+    lastBtn,
   } = getElementRefs(root);
 
-  nextBtn.addEventListener('click', props.onNextPageClick);
+  firstBtn.addEventListener('click', props.onFirstPageClick);
   prevBtn.addEventListener('click', props.onPrevPageClick);
+  nextBtn.addEventListener('click', props.onNextPageClick);
+  lastBtn.addEventListener('click', props.onLastPageClick);
 
   Object.entries(props.categories).forEach(([key, title]) => {
     const option = document.createElement('option');
@@ -107,15 +113,19 @@ function createPrizesView(props) {
     }
 
     if (meta.offset === 0) {
+      firstBtn.setAttribute('disabled', 'disabled');
       prevBtn.setAttribute('disabled', 'disabled');
     } else {
+      firstBtn.removeAttribute('disabled');
       prevBtn.removeAttribute('disabled');
     }
 
     if (meta.offset + meta.limit >= meta.count) {
       nextBtn.setAttribute('disabled', 'disabled');
+      lastBtn.setAttribute('disabled', 'disabled');
     } else {
       nextBtn.removeAttribute('disabled');
+      lastBtn.removeAttribute('disabled');
     }
   };
 

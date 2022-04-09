@@ -37,35 +37,35 @@ function createLaureateView(props) {
         <table>
           <tbody>
             <tr>
-              <th>Name:</th>
+              <th>Name</th>
               <td id="name"></td>
             </tr>
             <tr>
-              <th>Born:</th>
+              <th>Born</th>
               <td id="born">N/A</td>
             </tr>
-            <tr>
-              <th>Died:</th>
+            <tr id="diedRow">
+              <th>Died</th>
               <td id="died">N/A</td>
             </tr>
             <tr>
-              <th>Category:</th>
+              <th>Category</th>
               <td id="category">N/A</td>
             </tr>          
             <tr>
-              <th>Award Year:</th>
+              <th>Award Year</th>
               <td id="awardYear">N/A</td>
             </tr>
             <tr>
-              <th>Motivation:</th>
+              <th>Motivation</th>
               <td id="motivation"></td>
             </tr>
             <tr>
-              <th>Other Prizes:</th>
+              <th>Other Prizes</th>
               <td id="otherPrizes">None</td>
             </tr>
             <tr>
-              <th>Wikipedia:</th>
+              <th>Wikipedia</th>
               <td id="wikipedia">Not available</td>
             </tr>
 
@@ -86,6 +86,8 @@ function createLaureateView(props) {
 
     if (laureate.death) {
       dom.died.textContent = `${laureate.death.date}, ${laureate.death.place.locationString.en}`;
+    } else {
+      dom.diedRow.classList.add('hide');
     }
 
     const nobelPrize = laureate.nobelPrizes.find(

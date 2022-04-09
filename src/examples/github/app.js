@@ -1,12 +1,11 @@
-import observableState from './lib/observableState.js';
-import routes from './examples/stopwatch/pages/routes.js';
-import log from './lib/logger.js';
-import router from './lib/router.js';
+import log from '../../lib/logger.js';
+import observableState from '../../lib/observableState.js';
+import router from '../../lib/router.js';
+import routes from './pages/routes.js';
 
 function loadApp() {
   // Set the desired log level
   log.setLevel('debug');
-  log.info('application', 'started');
 
   const appRoot = document.getElementById('app-root');
 
