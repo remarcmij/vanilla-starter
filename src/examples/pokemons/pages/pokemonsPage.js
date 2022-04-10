@@ -14,8 +14,9 @@ function createPokemonsPage() {
   let state = {};
 
   const updateState = (updates) => {
-    state = { ...state, ...updates };
-    pokemonsView.update(state);
+    const newState = { ...state, ...updates };
+    pokemonsView.update(newState, state);
+    state = newState;
   };
 
   const getPokemons = async () => {

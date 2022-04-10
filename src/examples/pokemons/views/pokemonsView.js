@@ -33,9 +33,7 @@ function createPokemonsView(props) {
   dom.pokemonsSelect.addEventListener('change', props.onChange);
   dom.pokemonsSelect.classList.add('hide');
 
-  let pokemonsPopulated = false;
-
-  const update = (state) => {
+  const update = (state, prevState) => {
     if (state.loading) {
       spinnerView.root.classList.remove('hide');
     } else {
@@ -49,7 +47,7 @@ function createPokemonsView(props) {
     }
 
     // Populate select element once only
-    if (state.pokemons && !pokemonsPopulated) {
+    if (state.pokemons && state.pokemons != prevState.pokemons) {
       dom.pokemonsSelect.classList.remove('hide');
       state.pokemons.forEach((pokemon) => {
         const option = document.createElement('option');
@@ -59,7 +57,6 @@ function createPokemonsView(props) {
       });
       dom.getButton.classList.add('hide');
       dom.messageContainer.textContent = 'No Pokemon selected yet.';
-      pokemonsPopulated = true;
     }
 
     if (state.pokemon) {
