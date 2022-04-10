@@ -38,7 +38,7 @@ function createPrizeListItemView(props) {
       link.textContent = laureate.orgName
         ? laureate.orgName.en
         : laureate.knownName.en;
-      link.href = `#laureate/${laureate.id}/${prize.awardYear}`;
+      link.href = `#nb-laureate/${laureate.id}/${prize.awardYear}`;
       laureatesContainer.appendChild(link);
     });
   }

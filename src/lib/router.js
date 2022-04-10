@@ -48,9 +48,9 @@ function onHashChange(routerState) {
   }
 
   // Call optional willUnmount lifecycle method.
-  if (currentPage.pageWillUnmount) {
-    log.silly('router', 'calling pageWillUnmount()');
-    currentPage.pageWillUnmount();
+  if (currentPage.pageWillUnload) {
+    log.silly('router', 'calling pageWillUnload()');
+    currentPage.pageWillUnload();
   }
 
   // Create the page corresponding to the route.
@@ -70,9 +70,9 @@ function onHashChange(routerState) {
   window.scrollTo(0, 0);
 
   // Call optional didMount lifecycle method.
-  if (newPage.pageDidMount) {
-    log.silly('router', 'calling pageDidMount()');
-    newPage.pageDidMount();
+  if (newPage.pageDidLoad) {
+    log.silly('router', 'calling pageDidLoad()');
+    newPage.pageDidLoad();
   }
 
   routerState.currentPage = newPage;

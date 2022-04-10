@@ -1,6 +1,6 @@
-import state$ from '../../../lib/observableState.js';
 import router from '../../../lib/router.js';
 import fetchLaureate from '../fetchers/laureateFetcher.js';
+import state$ from '../state.js';
 import createLaureateView from '../views/laureateView.js';
 
 function createLaureatePage(id, awardYear) {
@@ -28,15 +28,15 @@ function createLaureatePage(id, awardYear) {
   const viewProps = { category, year, page, awardYear };
   const laureateView = createLaureateView(viewProps);
 
-  const pageDidMount = () => {
+  const pageDidLoad = () => {
     state$.subscribe(laureateView.update);
   };
 
-  const pageWillUnmount = () => {
+  const pageWillUnload = () => {
     state$.unsubscribe(laureateView.update);
   };
 
-  return { ...laureateView, pageDidMount, pageWillUnmount };
+  return { ...laureateView, pageDidLoad, pageWillUnload };
 }
 
 export default createLaureatePage;

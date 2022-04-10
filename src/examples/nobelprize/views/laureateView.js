@@ -7,7 +7,7 @@ function createLaureateView(props) {
   root.innerHTML = String.raw`
     <header class="header">
       <div class="header-content">
-        <a href="#prizes/${category}/${year}/${page}" class="toolbar-button">
+        <a href="#nb-prizes/${category}/${year}/${page}" class="toolbar-button">
           <i class="fa-solid fa-chevron-left"></i>
         </a>        
         <h3>Nobel Laureate</h3>

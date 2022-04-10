@@ -1,13 +1,13 @@
-import state from '../../../lib/observableState.js';
 import router from '../../../lib/router.js';
 import fetchRepo from '../fetchers/repoFetcher.js';
+import state$ from '../state.js';
 import createRepoDetailView from '../views/repoDetailView.js';
 
 function createRepoDetailPage(organization, repoName) {
   const repoView = createRepoDetailView({ organization });
 
   const getData = async () => {
-    state.update({
+    state$.update({
       error: null,
       loading: true,
       repo: null,
@@ -18,9 +18,9 @@ function createRepoDetailPage(organization, repoName) {
 
     try {
       ({ repo, contributors } = await fetchRepo(organization, repoName));
-      state.update({ repo, contributors, loading: false });
+      state$.update({ repo, contributors, loading: false });
     } catch (error) {
-      state.update({ error, loading: false });
+      state$.update({ error, loading: false });
       router.navigateTo('error');
       return;
     }
@@ -28,15 +28,15 @@ function createRepoDetailPage(organization, repoName) {
 
   getData();
 
-  const pageDidMount = () => {
-    state.subscribe(repoView.update);
+  const pageDidLoad = () => {
+    state$.subscribe(repoView.update);
   };
 
-  const pageWillUnmount = () => {
-    state.unsubscribe(repoView.update);
+  const pageWillUnload = () => {
+    state$.unsubscribe(repoView.update);
   };
 
-  return { ...repoView, pageDidMount, pageWillUnmount };
+  return { ...repoView, pageDidLoad, pageWillUnload };
 }
 
 export default createRepoDetailPage;

@@ -1,4 +1,5 @@
 import getElementRefs from '../../../lib/getElementRefs.js';
+import log from '../../../lib/logger.js';
 
 const SECS_PER_HOUR = 3600;
 const SECS_PER_MIN = 60;
@@ -29,32 +30,13 @@ function createStopwatchView(props) {
 
   const dom = getElementRefs(root);
 
-  dom.startBtn.addEventListener('click', () => {
-    dom.startBtn.disabled = true;
-    dom.stopBtn.disabled = false;
-    dom.resetBtn.disabled = false;
-    props.onStartClick();
-  });
-
-  dom.stopBtn.addEventListener('click', () => {
-    dom.startBtn.disabled = false;
-    dom.stopBtn.disabled = true;
-    dom.resetBtn.disabled = false;
-    props.onStopClick();
-  });
-
-  dom.resetBtn.addEventListener('click', () => {
-    dom.startBtn.disabled = false;
-    dom.stopBtn.disabled = true;
-    dom.resetBtn.disabled = true;
-    props.onResetClick();
-  });
+  dom.startBtn.addEventListener('click', props.onStartClick);
+  dom.stopBtn.addEventListener('click', props.onStopClick);
+  dom.resetBtn.addEventListener('click', props.onResetClick);
 
   const format = (number) => number.toString().padStart(2, '0');
 
-  const update = (state) => {
-    let { time } = state;
-
+  const updateTime = ({ time }) => {
     const hour = Math.floor(time / SECS_PER_HOUR);
     time = time % SECS_PER_HOUR;
 
@@ -64,6 +46,34 @@ function createStopwatchView(props) {
     const sec = time;
 
     dom.time.textContent = `${format(hour)}:${format(min)}:${format(sec)}`;
+  };
+
+  const updateButtons = ({ runState }) => {
+    switch (runState) {
+      case 'running':
+        dom.startBtn.disabled = true;
+        dom.stopBtn.disabled = false;
+        dom.resetBtn.disabled = false;
+
+        break;
+      case 'stopped':
+        dom.startBtn.disabled = false;
+        dom.stopBtn.disabled = true;
+        dom.resetBtn.disabled = false;
+        break;
+
+      case 'reset':
+        dom.startBtn.disabled = false;
+        dom.stopBtn.disabled = true;
+        dom.resetBtn.disabled = true;
+        break;
+    }
+  };
+
+  const update = (state) => {
+    log.debug('state', state);
+    updateTime(state);
+    updateButtons(state);
   };
 
   return { root, update };

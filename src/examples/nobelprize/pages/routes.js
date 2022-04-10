@@ -1,11 +1,11 @@
-import createErrorPage from './errorPage.js';
 import createLaureatePage from './laureatePage.js';
 import createPrizesPage from './prizesPage.js';
+import createHomePage from './homePage.js';
 
 const routes = [
-  { path: 'prizes', page: createPrizesPage, default: true },
-  { path: 'laureate', page: createLaureatePage },
-  { path: 'error', page: createErrorPage },
+  { path: 'nb-home', page: createHomePage },
+  { path: 'nb-prizes', page: createPrizesPage },
+  { path: 'nb-laureate', page: createLaureatePage },
 ];
 
 export default routes;

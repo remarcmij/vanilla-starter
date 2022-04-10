@@ -11,10 +11,12 @@ function createContributorListView(props) {
 
   const ul = root.querySelector('.list-no-bullets');
 
-  props.contributors.forEach((contributor) => {
-    const listItemView = createContributorListItemView({ contributor });
-    ul.appendChild(listItemView.root);
-  });
+  if (props.contributors) {
+    props.contributors.forEach((contributor) => {
+      const listItemView = createContributorListItemView({ contributor });
+      ul.appendChild(listItemView.root);
+    });
+  }
 
   return { root };
 }

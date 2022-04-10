@@ -1,6 +1,5 @@
-import routes from './pages/routes.js';
+import routes from '../shared/pages/routes.js';
 import log from '../../lib/logger.js';
-import observableState from '../../lib/observableState.js';
 import router from '../../lib/router.js';
 
 function loadApp() {
@@ -14,11 +13,6 @@ function loadApp() {
   const pageRoot = document.createElement('div');
   pageRoot.id = 'page-root';
   appRoot.appendChild(pageRoot);
-
-  // Subscribe to state changes and log them
-  observableState.subscribe((state) => {
-    log.debug('state', state);
-  });
 
   // Start the router
   router.start(routes, pageRoot);

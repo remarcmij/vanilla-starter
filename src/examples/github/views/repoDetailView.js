@@ -6,7 +6,7 @@ function createRepoDetailView(props) {
   root.innerHTML = String.raw`
   <header class="header">
     <div class="header-content">
-      <a href="#repos/${props.organization}" class="toolbar-button">
+      <a href="#gh-repos/${props.organization}" class="toolbar-button">
         <i class="fa-solid fa-chevron-left"></i>
       </a>
       <div>Repository Details</div>

@@ -8,7 +8,7 @@ function createHomePage() {
   root.innerHTML = String.raw`
     <h1>Stopwatch Example</h1>
     <p>This example illustrate observable state and router lifecycle methods.</p>
-    <a href="#stopwatch">Go to Example</a>
+    <a href="#st-stopwatch">Go to Example</a>
   `;
   return { root };
 }

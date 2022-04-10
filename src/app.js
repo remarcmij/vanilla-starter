@@ -1,12 +1,10 @@
 import log from './lib/logger.js';
 import router from './lib/router.js';
 import routes from './pages/routes.js';
-import state from './pages/state.js';
 
 function loadApp() {
   // Set the desired log level
   log.setLevel('debug');
-  log.info('application', 'started');
 
   const appRoot = document.getElementById('app-root');
 
@@ -17,7 +15,7 @@ function loadApp() {
   appRoot.appendChild(pageRoot);
 
   // Start the router
-  router.start(routes, pageRoot, state);
+  router.start(routes, pageRoot);
 }
 
 export default loadApp;

@@ -1,6 +1,6 @@
-import state$ from '../../../lib/observableState.js';
 import router from '../../../lib/router.js';
 import fetchPrizes from '../fetchers/prizesFetcher.js';
+import state$ from '../state.js';
 import createPrizesView from '../views/prizesView.js';
 
 const FIRST_YEAR = 1901;
@@ -49,30 +49,30 @@ function createPrizesPage(category = 'all', year = 'all', page = '1') {
 
   const onCategoryChange = (e) => {
     const category = e.target.value;
-    router.navigateTo('prizes', category, year, 1);
+    router.navigateTo('nb-prizes', category, year, 1);
   };
 
   const onYearChange = (e) => {
     const year = e.target.value;
-    router.navigateTo('prizes', category, year, 1);
+    router.navigateTo('nb-prizes', category, year, 1);
   };
 
   const onFirstPageClick = () => {
-    router.navigateTo('prizes', category, year, 1);
+    router.navigateTo('nb-prizes', category, year, 1);
   };
 
   const onPrevPageClick = () => {
-    router.navigateTo('prizes', category, year, page - 1);
+    router.navigateTo('nb-prizes', category, year, page - 1);
   };
 
   const onNextPageClick = () => {
-    router.navigateTo('prizes', category, year, page + 1);
+    router.navigateTo('nb-prizes', category, year, page + 1);
   };
 
   const onLastPageClick = () => {
     const { meta } = state$.get().prizes;
     const page = Math.max(1, Math.floor(meta.count / meta.limit) + 1);
-    router.navigateTo('prizes', category, year, page);
+    router.navigateTo('nb-prizes', category, year, page);
   };
 
   const viewProps = {
@@ -90,16 +90,16 @@ function createPrizesPage(category = 'all', year = 'all', page = '1') {
   };
   const prizesView = createPrizesView(viewProps);
 
-  const pageDidMount = () => {
+  const pageDidLoad = () => {
     state$.subscribe(prizesView.update);
     getData();
   };
 
-  const pageWillUnmount = () => {
+  const pageWillUnload = () => {
     state$.unsubscribe(prizesView.update);
   };
 
-  return { ...prizesView, pageDidMount, pageWillUnmount };
+  return { ...prizesView, pageDidLoad, pageWillUnload };
 }
 
 export default createPrizesPage;

@@ -1,21 +1,21 @@
 import fetchData from '../../../lib/fetchData.js';
-import state from '../../../lib/observableState.js';
 import router from '../../../lib/router.js';
 import fetchPokemons from '../fetchers/pokemonsFetcher.js';
+import state$ from '../state.js';
 import createPokemonsView from '../views/pokemonsView.js';
 
 function createPokemonsPage() {
-  state.update({ pokemons: null, pokemon: null });
+  state$.update({ pokemons: null, pokemon: null });
 
   const getPokemons = async () => {
-    state.update({ loading: true, error: null });
+    state$.update({ loading: true, error: null });
 
     try {
       const data = await fetchPokemons();
       data.results.sort((a, b) => a.name.localeCompare(b.name));
-      state.update({ pokemons: data.results, loading: false });
+      state$.update({ pokemons: data.results, loading: false });
     } catch (error) {
-      state.update({ error, loading: false });
+      state$.update({ error, loading: false });
       router.navigateTo('error');
     }
   };
@@ -26,13 +26,13 @@ function createPokemonsPage() {
       return;
     }
 
-    state.update({ loading: true, error: null });
+    state$.update({ loading: true, error: null });
 
     try {
       const pokemon = await fetchData(url, { cache: true });
-      state.update({ pokemon, loading: false });
+      state$.update({ pokemon, loading: false });
     } catch (error) {
-      state.update({ error, loading: false });
+      state$.update({ error, loading: false });
       router.navigateTo('error');
     }
   };
@@ -43,15 +43,15 @@ function createPokemonsPage() {
   const viewProps = { onGetClick, onChange };
   const pokemonsView = createPokemonsView(viewProps);
 
-  const pageDidMount = () => {
-    state.subscribe(pokemonsView.update);
+  const pageDidLoad = () => {
+    state$.subscribe(pokemonsView.update);
   };
 
-  const pageWillUnmount = () => {
-    state.unsubscribe(pokemonsView.update);
+  const pageWillUnload = () => {
+    state$.unsubscribe(pokemonsView.update);
   };
 
-  return { ...pokemonsView, pageDidMount, pageWillUnmount };
+  return { ...pokemonsView, pageDidLoad, pageWillUnload };
 }
 
 export default createPokemonsPage;

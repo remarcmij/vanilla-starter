@@ -7,10 +7,10 @@ function createToolbarView(props) {
         <option value="HackYourFuture">HackYourFuture</option>
         <option value="HackYourHomework">HackYourHomework</option>
       </select>
-    <div class="flex-row">
-      <input type="text" class="filter-input" placeholder="Filter"/>
-      <button type="button" id="btn-clear" disabled>Clear</button>
-    </div>
+      <div class="flex-row">
+        <input type="text" class="filter-input" placeholder="Filter"/>
+        <button type="button" id="btn-clear" disabled>Clear</button>
+      </div>
     </div>
   `;
 

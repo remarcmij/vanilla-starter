@@ -11,12 +11,16 @@ function createPokemonsView(props) {
         </a>
         <h3>Pokemons</h3>
         <button type="button" id="getButton">Get Pokemons</button>
-        <select id="pokemonsSelect">
+        <select id="pokemonsSelect" class="hide">
           <option selected value="" disabled>Select Pokemon</option>
         </select>
       </div>
     </header>
-    <div id="imgContainer"></div>`;
+    <div class="content-container flex-column whiteframe">
+      <div id="imgContainer" class="pk-image-container">
+        <p id="placeholder">Press button to get Pokemons.</p>
+      </div>
+    </div>`;
 
   const spinnerView = createSpinnerView();
   root.appendChild(spinnerView.root);
@@ -48,16 +52,15 @@ function createPokemonsView(props) {
         dom.pokemonsSelect.appendChild(option);
       });
       dom.getButton.classList.add('hide');
+      dom.placeholder.textContent = 'No Pokemon selected yet.';
     }
 
     if (state.pokemon) {
       dom.imgContainer.innerHTML = String.raw`
-        <div class="content-container flex-column whiteframe">
-          <img id="pokemon-img"
-            height="320"
-            src="${state.pokemon.sprites.other.home.front_default}" 
-            alt="${state.pokemon.name}">
-        </div>`;
+        <img id="pokemon-img"
+          height="320"
+          src="${state.pokemon.sprites.other.home.front_default}" 
+          alt="${state.pokemon.name}">`;
     }
   };
 

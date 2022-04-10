@@ -5,7 +5,7 @@ function createHomePage() {
     <h1>Router Example</h1>
     <p>This example illustrate the client-side router.</p>
     <p>It renders information fetched from the GitHub API.</p>
-    <a href="#repos">Go to Example</a>
+    <a href="#gh-repos">Go to Example</a>
   `;
   return { root };
 }

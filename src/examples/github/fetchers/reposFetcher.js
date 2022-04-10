@@ -1,4 +1,4 @@
-import { API_BASE_URL } from '../../../constants.js';
+import { API_BASE_URL } from '../constants.js';
 import fetchData from '../../../lib/fetchData.js';
 
 async function fetchRepos(organization) {
