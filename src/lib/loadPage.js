@@ -1,11 +1,11 @@
 import log from './logger.js';
 
-function loadPage(createPageFn, props = {}) {
+function loadPage(createPageFn, ...params) {
   log.debug('loadPage', createPageFn.name);
-  const page = createPageFn(props);
-  const pageRoot = document.getElementById('page-root');
-  pageRoot.innerHTML = '';
-  pageRoot.appendChild(page.root);
+  const page = createPageFn(...params);
+  const appRoot = document.getElementById('app-root');
+  appRoot.innerHTML = '';
+  appRoot.appendChild(page.root);
 }
 
 export default loadPage;

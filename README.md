@@ -1,10 +1,10 @@
-# Router Starter Project (vanilla JS)
+# Vanilla Starter Project
 
 Live demo: <https://remarcmij.github.io/vanilla-starter/>
 
 > **TO BE UPDATED**
 
-This repo is an example of Single Page Application that uses a hash-based router, all written in vanilla JavaScript (no libraries used). It can also serve as a starter project for building your own application based on the same principles.
+This repo is an example of Single Page Application that uses a hash-based router, all written in vanilla JavaScript (no libraries used). It can also serve as a starter project for building your own application based on the principles outlined in this README.
 
 For the "why" of this starter repo, see: [Motivation](./MOTIVATION.md).
 
@@ -25,26 +25,27 @@ In this starter project we present a recommended folder structure and recommenda
 ```text
 public
 src
-└── example
+└── examples
 └── fetchers
 └── lib
 └── pages
 └── views
 └── app.js
 └── constants.js
-└── data.js
-└── .secrets.js
+└── index.js
+└── state.js
+└── .credentials.js
 index.html
 ```
 
-> Note: Students at HackYourFuture may recognize this folder structure as similar to the recommended one for the Group Project in the Browsers module.
+> Note: Students at HackYourFuture may recognize this folder structure as similar to the one introduced in the Group Project of the Browsers module.
 
 <!-- prettier-ignore -->
 | Folder | Description |
 |--------|-------------|
 | `public` | This folder contains the static files that can be used by the `index.html` file. |
 | `src` | This folder contains all of the JavaScript code. |
-| `src/example` | Contains a fully worked-out example app that displays information about the repositories of the HackYourFuture organization. If no longer needed, this folder and its contents can be deleted. |
+| `src/examples` | This folder contains a couple of fully worked-out examples that adhere to the principles outlined in this document. If no longer needed, this folder and its contents can be deleted. |
 | `src/fetchers` | This folder contain functions that deal with fetching application data from specific urls for use by Page functions. |
 | `src/lib` | This folder provides some ready-made utility functions that you can use in your application. (See later.) |
 | `src/pages` | This folder contains functions that create pages to be loaded in the UI, for instance a Home page, an About page etc. Page functions return a subtree of DOM elements and contain logic to handle user interactions and, optionally, logic for fetching data from Web APIs.<br>The actual creation and update of DOM elements is preferable delegated a companion View function<sup>1</sup>.<br>A Page function is called by the router when a specific page needs to be loaded into the DOM. |
@@ -130,12 +131,17 @@ For this start repo we will outline patterns for standard Page and View function
 
 A Page function represents an application page. It is called by the router to create the page when the user navigates to it. After the page is created, the router loads its DOM subtree into the DOM.
 
-A Page function is responsible for handling all user interactions for the page and for fetching any required data from Web APIs. It is not (should not be) responsibly for the creation and updating of the actual DOM elements. This should (preferably) be delegated to a companion View function.
+A Page function is responsible for handling all user interactions for the page and for fetching any required data from Web APIs. The creation and updating of DOM elements is normally delegated to a companion View function. For very simples pages user interactions and DOM manipulation can be combined into a single Page function without the need for a separate View function.
 
 The function signature for a Page function is as follows:
 
 ```js
-createXXXPage(...params: any) => { root: HTMLElement, update?: Function }
+createXXXPage(...params: any) => {
+  root: HTMLElement,
+  update?: Function,
+  pageDidLoad?: Function,
+  pageWillUnload?: Function
+}
 ```
 
 <!-- prettier-ignore -->
@@ -143,7 +149,15 @@ createXXXPage(...params: any) => { root: HTMLElement, update?: Function }
 |-----------|-------------|
 | `...params` | Any parameters encoded in the browser's location url will be passed to the Page function. |
 
-A Page function should return an object with, at minimum, a `root` property holding a reference to the root element of its DOM subtree, and optionally an `update` property holding a reference to callback function that is called whenever the application state is updated (see below). This requirement is met if the Page function simply returns the object returned by its View function.
+A Page function should return an object with, with the following properties:
+
+<!-- prettier-ignore -->
+| Property | Required? | Description |
+|----------|:---------:|----------|
+| **`root`** | Yes | Holds a reference to the `root` element of the DOM subtree created by the Page function (or created for the Page function by a corresponding View function). |
+| **`update`** | No | If provided, it should be a function that updates the DOM subtree with the latest application state information. This function is normally implemented in a View function and passed back to the corresponding Page function.  |
+| **`pageDidLoad`** | No | If provided, it will be called by the router just after the page is loaded. |
+| **`pageWillUnload`** | No | If provided, it will be called by the router just before the page is unloaded. |
 
 The name of a Page function should follow the naming convention **create**_XXX_**Page**, where _XXX_ is the name of the View. Example: `createAboutPage`.
 

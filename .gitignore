@@ -130,4 +130,4 @@ dist
 .pnp.*
 
 # Ignore secrets such as API keys
-.secrets.js
+.creadentials.js
