@@ -13,18 +13,20 @@ async function fetchData(url) {
 function createPokemonsPage() {
   let state = {};
 
-  const getPokemons = async () => {
-    state = { ...state, loading: true, error: null };
+  const updateState = (updates) => {
+    state = { ...state, ...updates };
     pokemonsView.update(state);
+  };
+
+  const getPokemons = async () => {
+    updateState({ loading: true, error: null });
 
     try {
       const data = await fetchData(`${BASE_URL}?limit=151`);
       data.results.sort((a, b) => a.name.localeCompare(b.name));
-      state = { ...state, pokemons: data.results, loading: false };
-      pokemonsView.update(state);
+      updateState({ pokemons: data.results, loading: false });
     } catch (error) {
-      state = { ...state, error, loading: false };
-      pokemonsView.update(state);
+      updateState({ error, loading: false });
     }
   };
 
@@ -34,16 +36,13 @@ function createPokemonsPage() {
       return;
     }
 
-    state = { ...state, loading: true, error: null };
-    pokemonsView.update(state);
+    updateState({ loading: true, error: null });
 
     try {
       const pokemon = await fetchData(url, { cache: true });
-      state = { ...state, pokemon, loading: false };
-      pokemonsView.update(state);
+      updateState({ pokemon, loading: false });
     } catch (error) {
-      state = { ...state, error, loading: false };
-      pokemonsView.update(state);
+      updateState({ error, loading: false });
     }
   };
 
