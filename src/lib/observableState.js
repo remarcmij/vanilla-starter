@@ -1,5 +1,3 @@
-import log from './logger.js';
-
 function createObservableState() {
   let currentState = {};
 
@@ -17,7 +15,6 @@ function createObservableState() {
     const newState = { ...currentState, ...updates };
     subscribers.forEach((subscriber) => subscriber(newState, currentState));
     currentState = newState;
-    log.debug('state', currentState);
     return currentState;
   };
 

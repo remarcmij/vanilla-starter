@@ -9,8 +9,10 @@ function createIntroPage() {
     <h1>Stopwatch Example</h1>
     <p>This example illustrates the following:</p>
     <ul>
-      <li>Managing state using a local <code>state</code> object.</li>
-      <li>Perform cleanup: clearing a timer on page unload.</li>
+      <li>Navigate between pages using the client-side router.</li>
+      <li>Managing state with a local state object.</li>
+      <li>State changes are logged to the console through the logger.</li>
+      <li>Perform cleanup on page unload: clearing a timer.</li>
     </ul>
     <a href="#st-stopwatch">Go to Example</a>
     <a href="#home">Back to Home Page</a>

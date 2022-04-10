@@ -1,4 +1,4 @@
-import githubRoutes from '../../github/pages/routes.js';
+import githubRoutes from '../../github-2/pages/routes.js';
 import nobelprizeRoutes from '../../nobelprize/pages/routes.js';
 import pokemonsRoutes from '../../pokemons/pages/routes.js';
 import stopwatchRoutes from '../../stopwatch/pages/routes.js';
