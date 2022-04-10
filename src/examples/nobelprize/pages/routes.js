@@ -1,9 +1,9 @@
 import createLaureatePage from './laureatePage.js';
 import createPrizesPage from './prizesPage.js';
-import createHomePage from './homePage.js';
+import createIntroPage from './introPage.js';
 
 const routes = [
-  { path: 'nb-home', page: createHomePage },
+  { path: 'nb-intro', page: createIntroPage },
   { path: 'nb-prizes', page: createPrizesPage },
   { path: 'nb-laureate', page: createLaureatePage },
 ];

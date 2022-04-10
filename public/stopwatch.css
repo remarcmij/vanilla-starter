@@ -1,10 +1,10 @@
-.stopwatch-buttons {
+.st__stopwatch-buttons {
   display: flex;
   flex-direction: row;
   justify-content: center;
 }
 
-.stopwatch-button {
+.st__stopwatch-button {
   width: 100px;
   height: 30px;
   border: 3px solid white;
@@ -16,18 +16,12 @@
   margin: 4px;
 }
 
-.stopwatch-button[disabled] {
+.st__stopwatch-button[disabled] {
   background: #808080;
   color: #ccc;
   cursor: default;
 }
 
-.stopwatch-time {
+.st__stopwatch-time {
   font-size: 100px;
-}
-
-.stopwatch-buttons li {
-  display: inline;
-  padding: 0;
-  /* padding: 10px; */
 }

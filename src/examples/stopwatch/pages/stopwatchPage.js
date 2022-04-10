@@ -30,7 +30,7 @@ function createStopwatchPage() {
     if (intervalId) {
       clearInterval(intervalId);
       intervalId = null;
-      log.debug('cleared timer');
+      log.debug('stopwatch', 'cleared timer');
     }
   };
 

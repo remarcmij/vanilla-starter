@@ -1,8 +1,8 @@
 import createStopwatchPage from './stopwatchPage.js';
-import createHomePage from './homePage.js';
+import createIntroPage from './introPage.js';
 
 const routes = [
-  { path: 'st-home', page: createHomePage },
+  { path: 'st-intro', page: createIntroPage },
   { path: 'st-stopwatch', page: createStopwatchPage },
 ];
 

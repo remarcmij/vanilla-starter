@@ -1,4 +1,4 @@
-import createHomePage from './pages/homePage.js';
+import createIntroPage from './pages/introPage.js';
 import state from './pages/state.js';
 import loadPage from '../../lib/loadPage.js';
 import log from '../../lib/logger.js';
@@ -15,7 +15,7 @@ function loadApp() {
   pageRoot.id = 'page-root';
   appRoot.appendChild(pageRoot);
 
-  loadPage(createHomePage, state);
+  loadPage(createIntroPage, state);
 }
 
 export default loadApp;

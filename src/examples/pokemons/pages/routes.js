@@ -1,8 +1,8 @@
-import createHomePage from './homePage.js';
+import createIntroPage from './introPage.js';
 import createPokemonsPage from './pokemonsPage.js';
 
 const routes = [
-  { path: 'po-home', page: createHomePage },
+  { path: 'po-intro', page: createIntroPage },
   { path: 'po-pokemons', page: createPokemonsPage },
 ];
 

@@ -9,16 +9,16 @@ function createHomePage() {
     <div class="content-container whiteframe">
       <ul class="list-no-bullets">
         <li>
-          <a href="#gh-home">GitHub Repositories App</a>
+          <a href="#gh-intro">GitHub Repositories App</a>
         </li>
         <li>
-          <a href="#nb-home">Nobel Prize App</a>
+          <a href="#nb-intro">Nobel Prize App</a>
         </li>
         <li>
-          <a href="#st-home">Stopwatch App</a>
+          <a href="#st-intro">Stopwatch App</a>
         </li>
         <li>
-          <a href="#po-home">Pokemons App</a>
+          <a href="#po-intro">Pokemons App</a>
         </li>    
       <ul>
     </div>`;

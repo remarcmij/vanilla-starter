@@ -17,7 +17,7 @@ function createPokemonsView(props) {
       </div>
     </header>
     <div class="content-container flex-column whiteframe">
-      <div id="imgContainer" class="pk-image-container">
+      <div id="imgContainer" class="po__image-container">
         <p id="placeholder">Press button to get Pokemons.</p>
       </div>
     </div>`;

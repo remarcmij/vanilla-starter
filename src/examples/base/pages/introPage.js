@@ -1,7 +1,7 @@
 import loadPage from '../../../lib/loadPage.js';
 import createReposPage from './reposPage.js';
 
-function createHomePage(state) {
+function createIntroPage(state) {
   const root = document.createElement('div');
   root.className = 'flex-column';
   root.innerHTML = String.raw`
@@ -19,4 +19,4 @@ function createHomePage(state) {
   return { root };
 }
 
-export default createHomePage;
+export default createIntroPage;

@@ -16,14 +16,14 @@ function createStopwatchView(props) {
       </div>
     </header>
     <div class="content-container whiteframe flex-column">
-      <div class="stopwatch-time" id="time">
+      <div class="st__stopwatch-time" id="time">
           00:00:00
       </div>
 
-      <ul class="stopwatch-buttons list-no-bullets">
-          <li><button id="startBtn" class="stopwatch-button">Start</button></li>
-          <li><button id="stopBtn"  class="stopwatch-button" disabled>Stop</button></li>
-          <li><button id="resetBtn"  class="stopwatch-button" disabled>Reset</button></li>
+      <ul class="st__stopwatch-buttons list-no-bullets">
+          <li><button id="startBtn" class="st__stopwatch-button">Start</button></li>
+          <li><button id="stopBtn"  class="st__stopwatch-button" disabled>Stop</button></li>
+          <li><button id="resetBtn"  class="st__stopwatch-button" disabled>Reset</button></li>
       </ul>
     </div>
   `;
