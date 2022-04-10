@@ -1,4 +1,3 @@
-import getElementRefs from '../../../lib/getElementRefs.js';
 import createSpinnerView from './spinnerView.js';
 
 function createPokemonsView(props) {
@@ -17,21 +16,26 @@ function createPokemonsView(props) {
       </div>
     </header>
     <div class="content-container flex-column whiteframe">
-      <div id="imgContainer" class="po__image-container">
-        <p id="placeholder">Press button to get Pokemons.</p>
-      </div>
+      <p id="messageContainer">Press button to get Pokemons.</p>
+      <div id="imgContainer" class="po__image-container"></div>
     </div>`;
 
   const spinnerView = createSpinnerView();
   root.appendChild(spinnerView.root);
 
-  const dom = getElementRefs(root);
+  const dom = {};
+  dom.getButton = root.querySelector('#getButton');
+  dom.pokemonsSelect = root.querySelector('#pokemonsSelect');
+  dom.imgContainer = root.querySelector('#imgContainer');
+  dom.messageContainer = root.querySelector('#messageContainer');
 
   dom.getButton.addEventListener('click', props.onGetClick);
   dom.pokemonsSelect.addEventListener('change', props.onChange);
   dom.pokemonsSelect.classList.add('hide');
 
-  const update = (state, prevState) => {
+  let pokemonsPopulated = false;
+
+  const update = (state) => {
     if (state.loading) {
       spinnerView.root.classList.remove('hide');
     } else {
@@ -39,11 +43,13 @@ function createPokemonsView(props) {
     }
 
     if (state.error) {
+      dom.messageContainer.classList.remove('hide');
+      dom.messageContainer.textContent = state.error.message;
       return;
     }
 
     // Populate select element once only
-    if (state.pokemons && !prevState.pokemons) {
+    if (state.pokemons && !pokemonsPopulated) {
       dom.pokemonsSelect.classList.remove('hide');
       state.pokemons.forEach((pokemon) => {
         const option = document.createElement('option');
@@ -52,10 +58,12 @@ function createPokemonsView(props) {
         dom.pokemonsSelect.appendChild(option);
       });
       dom.getButton.classList.add('hide');
-      dom.placeholder.textContent = 'No Pokemon selected yet.';
+      dom.messageContainer.textContent = 'No Pokemon selected yet.';
+      pokemonsPopulated = true;
     }
 
     if (state.pokemon) {
+      dom.messageContainer.classList.add('hide');
       dom.imgContainer.innerHTML = String.raw`
         <img id="pokemon-img"
           height="320"

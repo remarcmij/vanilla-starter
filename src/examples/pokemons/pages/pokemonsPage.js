@@ -1,22 +1,30 @@
-import fetchData from '../../../lib/fetchData.js';
-import router from '../../../lib/router.js';
-import fetchPokemons from '../fetchers/pokemonsFetcher.js';
-import state$ from '../state.js';
 import createPokemonsView from '../views/pokemonsView.js';
 
+const BASE_URL = 'https://pokeapi.co/api/v2/pokemon/';
+
+async function fetchData(url) {
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw new Error(`HTTP ${response.status} ${response.statusText}`);
+  }
+  return response.json();
+}
+
 function createPokemonsPage() {
-  state$.update({ pokemons: null, pokemon: null });
+  let state = {};
 
   const getPokemons = async () => {
-    state$.update({ loading: true, error: null });
+    state = { ...state, loading: true, error: null };
+    pokemonsView.update(state);
 
     try {
-      const data = await fetchPokemons();
+      const data = await fetchData(`${BASE_URL}?limit=151`);
       data.results.sort((a, b) => a.name.localeCompare(b.name));
-      state$.update({ pokemons: data.results, loading: false });
+      state = { ...state, pokemons: data.results, loading: false };
+      pokemonsView.update(state);
     } catch (error) {
-      state$.update({ error, loading: false });
-      router.navigateTo('error');
+      state = { ...state, error, loading: false };
+      pokemonsView.update(state);
     }
   };
 
@@ -26,14 +34,16 @@ function createPokemonsPage() {
       return;
     }
 
-    state$.update({ loading: true, error: null });
+    state = { ...state, loading: true, error: null };
+    pokemonsView.update(state);
 
     try {
       const pokemon = await fetchData(url, { cache: true });
-      state$.update({ pokemon, loading: false });
+      state = { ...state, pokemon, loading: false };
+      pokemonsView.update(state);
     } catch (error) {
-      state$.update({ error, loading: false });
-      router.navigateTo('error');
+      state = { ...state, error, loading: false };
+      pokemonsView.update(state);
     }
   };
 
@@ -43,15 +53,7 @@ function createPokemonsPage() {
   const viewProps = { onGetClick, onChange };
   const pokemonsView = createPokemonsView(viewProps);
 
-  const pageDidLoad = () => {
-    state$.subscribe(pokemonsView.update);
-  };
-
-  const pageWillUnload = () => {
-    state$.unsubscribe(pokemonsView.update);
-  };
-
-  return { ...pokemonsView, pageDidLoad, pageWillUnload };
+  return pokemonsView;
 }
 
 export default createPokemonsPage;

@@ -1,3 +1,5 @@
+import loadPokemonApp from '../../pokemons/app.js';
+
 function createHomePage() {
   const root = document.createElement('div');
   root.innerHTML = String.raw`
@@ -18,10 +20,18 @@ function createHomePage() {
           <a href="#st-intro">Stopwatch App</a>
         </li>
         <li>
-          <a href="#po-intro">Pokemons App</a>
+          <a href="#po-intro">Pokemons App (with router)</a>
+        </li>    
+        <li>
+          <a href="#" id="pokemonLink">Pokemons App (no router)</a>
         </li>    
       <ul>
     </div>`;
+
+  root.querySelector('#pokemonLink').addEventListener('click', (e) => {
+    e.preventDefault();
+    loadPokemonApp();
+  });
 
   return { root };
 }
