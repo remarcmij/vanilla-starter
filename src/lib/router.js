@@ -33,7 +33,7 @@ function findRouteByPathname(routes, pathname) {
   return routes.find((route) => route.path === pathname);
 }
 
-function onHashChange(routerState) {
+async function onHashChange(routerState) {
   const { routes, pageRoot, currentPage } = routerState;
 
   const [pathname, ...params] = getRouteParts();
@@ -56,8 +56,20 @@ function onHashChange(routerState) {
   log.debug('router', `loading page: ${pathname}, params: ${[...params]}`);
 
   // Create the page corresponding to the route.
-  const newPage = route.page(...params);
-  if (typeof newPage !== 'object' || !newPage.root) {
+  let newPage = route.page(...params);
+  if (typeof newPage !== 'object') {
+    throw new Error(`Page ${pathname} did not return an object`);
+  }
+
+  // If the page is a promise (i.e. and object with a `.then` property),
+  // await it (dynamic import).
+  if (newPage.then) {
+    const module = await newPage;
+    const pageFn = module.default;
+    newPage = pageFn(...params);
+  }
+
+  if (!newPage.root) {
     throw new Error(`Page "${pathname}" did not return a valid page object`);
   }
 

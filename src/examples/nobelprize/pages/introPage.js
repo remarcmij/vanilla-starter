@@ -12,6 +12,7 @@ function createIntroPage() {
       <li>Subscribe to observable state using the router's lifecycle methods.</li>
       <li>State changes are logged to the console through the logger.</li>
       <li>Keep navigation state in the browser URL.</li>
+      <li>Routes that use dynamics imports (advanced feature).</li>
     </ul>
     <a href="#nb-prizes">Go to Example</a>
     <a href="#home">Back to Home Page</a>

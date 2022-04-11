@@ -1,11 +1,11 @@
 import createSampleView from '../views/sampleView.js';
 
 function createSamplePage() {
-  const props = {
+  const viewProps = {
     // Add properties to be passed to the View function
   };
 
-  return createSampleView(props);
+  return createSampleView(viewProps);
 }
 
 export default createSamplePage;
