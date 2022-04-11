@@ -17,7 +17,7 @@ function createLaureatePage(id, awardYear) {
     } catch (error) {
       console.error(error.stack); // TODO: remove from production
       state$.update({ error, loading: false });
-      router.navigateTo('error');
+      router.navigateTo('nb-error');
       return;
     }
   };

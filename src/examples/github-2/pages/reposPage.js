@@ -42,7 +42,7 @@ function createReposPage(organization = 'HackYourFuture') {
       state$.update({ repos, loading: false });
     } catch (error) {
       state$.update({ error, loading: false });
-      router.navigateTo('error');
+      router.navigateTo('gh-error');
       return;
     }
   };

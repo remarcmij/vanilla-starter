@@ -38,7 +38,7 @@ function createPrizesPage(category = 'all', year = 'all', page = '1') {
     } catch (error) {
       console.error(error.stack); // TODO: remove from production
       state$.update({ error, loading: false });
-      router.navigateTo('error');
+      router.navigateTo('nb-error');
       return;
     }
   };

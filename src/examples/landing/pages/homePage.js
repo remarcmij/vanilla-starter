@@ -20,9 +20,14 @@ function createHomePage() {
         </thead>
         <tbody>
           <tr>
-            <td>Pokemon App*</td>
+            <td>Pokemon App 1*</td>
             <td>no router, local state, no logger</td>
-            <td><a href="#" id="pokemonLink">Start Pokemon App</a></td>
+            <td><a href="#" id="pokemonLink">Start Pokemon App 1</a></td>
+          </tr>
+          <tr>
+            <td>Pokemon App 2</td>
+            <td>router, local state, no logger</td>
+            <td><a href="#po-intro">Start Pokemon App 2</a></td>
           </tr>
           <tr>
             <td>Stopwatch App</td>

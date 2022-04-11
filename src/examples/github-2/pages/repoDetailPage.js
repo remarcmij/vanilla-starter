@@ -21,7 +21,7 @@ function createRepoDetailPage(organization, repoName) {
       state$.update({ repo, contributors, loading: false });
     } catch (error) {
       state$.update({ error, loading: false });
-      router.navigateTo('error');
+      router.navigateTo('gh-error');
       return;
     }
   };

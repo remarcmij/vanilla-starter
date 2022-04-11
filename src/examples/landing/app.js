@@ -1,6 +1,6 @@
-import routes from '../shared/pages/routes.js';
 import log from '../../lib/logger.js';
 import router from '../../lib/router.js';
+import routes from './pages/routes.js';
 
 function loadApp() {
   // Set the desired log level
