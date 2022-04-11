@@ -1,4 +1,4 @@
-function getElementRefs(root) {
+function findElementsWithIds(root) {
   const elements = root.querySelectorAll('[id]');
   return Array.from(elements).reduce((obj, element) => {
     obj[element.id] = element;
@@ -6,4 +6,4 @@ function getElementRefs(root) {
   }, {});
 }
 
-export default getElementRefs;
+export default findElementsWithIds;

@@ -1,4 +1,4 @@
-import getElementRefs from '../../../lib/getElementRefs.js';
+import findElementsWithIds from '../../../lib/findElementsWithIds.js';
 import log from '../../../lib/logger.js';
 
 const SECS_PER_HOUR = 3600;
@@ -16,7 +16,7 @@ function createStopwatchView(props) {
       </div>
     </header>
     <div class="content-container whiteframe flex-column">
-      <div class="st__stopwatch-time" id="time">
+      <div class="st__stopwatch-time" id="timeDiv">
           00:00:00
       </div>
 
@@ -28,11 +28,11 @@ function createStopwatchView(props) {
     </div>
   `;
 
-  const dom = getElementRefs(root);
+  const { startBtn, stopBtn, resetBtn, timeDiv } = findElementsWithIds(root);
 
-  dom.startBtn.addEventListener('click', props.onStartClick);
-  dom.stopBtn.addEventListener('click', props.onStopClick);
-  dom.resetBtn.addEventListener('click', props.onResetClick);
+  startBtn.addEventListener('click', props.onStartClick);
+  stopBtn.addEventListener('click', props.onStopClick);
+  resetBtn.addEventListener('click', props.onResetClick);
 
   const format = (number) => number.toString().padStart(2, '0');
 
@@ -45,27 +45,27 @@ function createStopwatchView(props) {
 
     const sec = time;
 
-    dom.time.textContent = `${format(hour)}:${format(min)}:${format(sec)}`;
+    timeDiv.textContent = `${format(hour)}:${format(min)}:${format(sec)}`;
   };
 
   const updateButtons = ({ runState }) => {
     switch (runState) {
       case 'running':
-        dom.startBtn.disabled = true;
-        dom.stopBtn.disabled = false;
-        dom.resetBtn.disabled = false;
+        startBtn.disabled = true;
+        stopBtn.disabled = false;
+        resetBtn.disabled = false;
 
         break;
       case 'stopped':
-        dom.startBtn.disabled = false;
-        dom.stopBtn.disabled = true;
-        dom.resetBtn.disabled = false;
+        startBtn.disabled = false;
+        stopBtn.disabled = true;
+        resetBtn.disabled = false;
         break;
 
       case 'reset':
-        dom.startBtn.disabled = false;
-        dom.stopBtn.disabled = true;
-        dom.resetBtn.disabled = true;
+        startBtn.disabled = false;
+        stopBtn.disabled = true;
+        resetBtn.disabled = true;
         break;
     }
   };

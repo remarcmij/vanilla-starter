@@ -5,4 +5,4 @@
  * The file `.credential.js` is ignored by git (through file `.gitignore`)
  */
 
-const API_KEY = null;
+const API_KEY = 'my-secret-api-key';

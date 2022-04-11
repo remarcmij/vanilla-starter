@@ -33,18 +33,18 @@ function createPokemonsView(props) {
   dom.pokemonsSelect.addEventListener('change', props.onChange);
   dom.pokemonsSelect.classList.add('hide');
 
-  const update = (state, prevState) => {
-    if (state.loading) {
-      spinnerView.root.classList.remove('hide');
-    } else {
-      spinnerView.root.classList.add('hide');
-    }
+const update = (state, prevState) => {
+  if (state.loading) {
+    spinnerView.root.classList.remove('hide');
+  } else {
+    spinnerView.root.classList.add('hide');
+  }
 
-    if (state.error) {
-      dom.messageContainer.classList.remove('hide');
-      dom.messageContainer.textContent = state.error.message;
-      return;
-    }
+  if (state.error) {
+    dom.messageContainer.classList.remove('hide');
+    dom.messageContainer.textContent = state.error.message;
+    return;
+  }
 
     // Populate select element once only
     if (state.pokemons && state.pokemons != prevState.pokemons) {

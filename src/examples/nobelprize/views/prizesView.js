@@ -1,4 +1,4 @@
-import getElementRefs from '../../../lib/getElementRefs.js';
+import findElementsWithIds from '../../../lib/findElementsWithIds.js';
 import createPrizeListItemView from './prizeListItemView.js';
 import createSpinnerView from './spinnerView.js';
 
@@ -44,7 +44,7 @@ function createPrizesView(props) {
     prevBtn,
     nextBtn,
     lastBtn,
-  } = getElementRefs(root);
+  } = findElementsWithIds(root);
 
   firstBtn.addEventListener('click', props.onFirstPageClick);
   prevBtn.addEventListener('click', props.onPrevPageClick);

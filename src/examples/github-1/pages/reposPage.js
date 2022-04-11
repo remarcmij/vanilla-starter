@@ -8,9 +8,8 @@ import createRepoDetailPage from './repoDetailPage.js';
 function createReposPage(state) {
   const updateState = (updates) => {
     log.debug('state', state);
-    const newState = { ...state, ...updates };
-    reposView.update(newState, state);
-    state = newState;
+    state = { ...state, ...updates };
+    reposView.update(state);
   };
 
   // Event handlers

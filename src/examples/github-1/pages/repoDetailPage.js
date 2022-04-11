@@ -8,9 +8,8 @@ import createReposPage from './reposPage.js';
 function createRepoDetailPage(state) {
   const updateState = (updates) => {
     log.debug('state', state);
-    const newState = { ...state, ...updates };
-    repoView.update(newState, state);
-    state = newState;
+    state = { ...state, ...updates };
+    repoView.update(state);
   };
 
   const onBackClick = () => loadPage(createReposPage, state);

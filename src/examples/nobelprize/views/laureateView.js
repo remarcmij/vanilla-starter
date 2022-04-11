@@ -1,4 +1,4 @@
-import getElementRefs from '../../../lib/getElementRefs.js';
+import findElementsWithIds from '../../../lib/findElementsWithIds.js';
 import spinnerView from './spinnerView.js';
 
 function createLaureateView(props) {
@@ -73,7 +73,7 @@ function createLaureateView(props) {
         </table>
       </div>`;
 
-    const dom = getElementRefs(laureateContainer);
+    const dom = findElementsWithIds(laureateContainer);
 
     const { laureate } = state;
     dom.name.textContent = laureate.orgName

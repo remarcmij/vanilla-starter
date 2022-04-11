@@ -35,10 +35,8 @@ function createReposPage(organization = 'HackYourFuture') {
   const getData = async () => {
     state$.update({ error: null, loading: true, repos: null });
 
-    let repos;
-
     try {
-      repos = await fetchRepos(organization);
+      const repos = await fetchRepos(organization);
       state$.update({ repos, loading: false });
     } catch (error) {
       state$.update({ error, loading: false });
