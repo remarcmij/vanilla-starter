@@ -1,6 +1,6 @@
 import createIntroPage from './pages/introPage.js';
 import state from './pages/state.js';
-import loadPage from '../../lib/loadPage.js';
+import loadPage from '../../lib/pageLoader.js';
 import log from '../../lib/logger.js';
 
 function loadApp() {

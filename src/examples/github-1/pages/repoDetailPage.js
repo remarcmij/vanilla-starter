@@ -1,4 +1,4 @@
-import loadPage from '../../../lib/loadPage.js';
+import loadPage from '../../../lib/pageLoader.js';
 import log from '../../../lib/logger.js';
 import fetchContributors from '../fetchers/contributorsFetcher.js';
 import createRepoDetailView from '../views/repoDetailView.js';
@@ -6,24 +6,26 @@ import createErrorPage from './errorPage.js';
 import createReposPage from './reposPage.js';
 
 function createRepoDetailPage(state) {
+  const updateState = (updates) => {
+    log.debug('state', state);
+    const newState = { ...state, ...updates };
+    repoView.update(newState, state);
+    state = newState;
+  };
+
   const onBackClick = () => loadPage(createReposPage, state);
 
   const repoView = createRepoDetailView({ onBackClick });
 
   const getData = async () => {
-    state = { ...state, loading: true, error: null, contributors: null };
-    repoView.update(state);
+    updateState({ loading: true, error: null, contributors: null });
 
     try {
-      const { repo } = state;
-      const contributors = await fetchContributors(repo);
-      state = { ...state, contributors, loading: false };
-      repoView.update(state);
+      const contributors = await fetchContributors(state.repo);
+      updateState({ contributors, loading: false });
     } catch (error) {
-      log.error('createRepoDetailPage', error.message);
-      state = { ...state, error, loading: false };
-      repoView.update(state);
-      loadPage(createErrorPage);
+      updateState({ error, loading: false });
+      loadPage(createErrorPage, state);
       return;
     }
   };

@@ -36,7 +36,7 @@ function createHomePage() {
           </tr>
           <tr>
             <td>GitHub App 1*</td>
-            <td>no router, local state, logger</td>
+            <td>no router, global state, logger</td>
             <td><a href="#" id="githubLink">Start GitHub App 1</a></td>
           </tr>
           <tr>

@@ -1,4 +1,4 @@
-import loadPage from '../../../lib/loadPage.js';
+import loadPage from '../../../lib/pageLoader.js';
 import log from '../../../lib/logger.js';
 import fetchRepos from '../fetchers/reposFetcher.js';
 import createErrorPage from '../views/errorView.js';
@@ -6,27 +6,31 @@ import createReposView from '../views/reposView.js';
 import createRepoDetailPage from './repoDetailPage.js';
 
 function createReposPage(state) {
+  const updateState = (updates) => {
+    log.debug('state', state);
+    const newState = { ...state, ...updates };
+    reposView.update(newState, state);
+    state = newState;
+  };
+
   // Event handlers
   const onItemClick = (repo) => {
-    state = { ...state, repo };
+    updateState({ repo });
     loadPage(createRepoDetailPage, state);
   };
 
   const onFilterInput = (e) => {
     const filter = e.target.value.trim().toLowerCase();
-    state = { ...state, filter };
-    reposView.update(state);
+    updateState({ filter });
   };
 
   const onClearFilter = () => {
-    state = { ...state, filter: '' };
-    reposView.update(state);
+    updateState({ filter: '' });
   };
 
   const onOrganizationChange = (e) => {
     const organization = e.target.value;
-    state = { ...state, organization };
-    getData();
+    updateState({ organization });
   };
 
   const props = {
@@ -38,17 +42,13 @@ function createReposPage(state) {
   const reposView = createReposView(props);
 
   const getData = async () => {
-    state = { ...state, loading: true, error: null, repos: null };
-    reposView.update(state);
+    updateState({ loading: true, error: null, repos: null });
 
     try {
       const repos = await fetchRepos(state.organization);
-      state = { ...state, repos, loading: false };
-      reposView.update(state);
+      updateState({ repos, loading: false });
     } catch (error) {
-      log.error('createReposPage', error.message);
-      state = { ...state, error, loading: false };
-      reposView.update(state);
+      updateState({ error, loading: false });
       loadPage(createErrorPage, state);
       return;
     }

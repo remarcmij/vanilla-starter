@@ -53,9 +53,9 @@ function onHashChange(routerState) {
     currentPage.pageWillUnload();
   }
 
-  // Create the page corresponding to the route.
   log.debug('router', `loading page: ${pathname}, params: ${[...params]}`);
 
+  // Create the page corresponding to the route.
   const newPage = route.page(...params);
   if (typeof newPage !== 'object' || !newPage.root) {
     throw new Error(`Page "${pathname}" did not return a valid page object`);

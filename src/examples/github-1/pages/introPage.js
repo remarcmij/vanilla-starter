@@ -1,4 +1,4 @@
-import loadPage from '../../../lib/loadPage.js';
+import loadPage from '../../../lib/pageLoader.js';
 import createReposPage from './reposPage.js';
 
 function createIntroPage(state) {
