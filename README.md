@@ -2,6 +2,8 @@
 
 Live demo: <https://remarcmij.github.io/vanilla-starter/>
 
+**TL;DR** To find out how use this repo for your own project, go **[here](#using-this-starter-for-your-own-project)**.
+
 This repo is an example of Single Page Application that uses a hash-based router, all written in vanilla JavaScript (no libraries used). It can also be used as a template for generating a starter repo for your own application based on the principles outlined in this README.
 
 ## Installing Dependencies
@@ -29,7 +31,6 @@ src
 └── app.js
 └── constants.js
 └── index.js
-└── state.js
 └── .credentials.js
 index.html
 ```
@@ -48,7 +49,6 @@ index.html
 | `src/views` | This folder contains functions called upon by Page functions to create a subtree of DOM elements and update the subtree as the application state changes. To enable user interactions, Page functions can also pass event handler functions to View functions to be added as event listeners to the View's DOM elements. |
 | `app.js` |  This file contains the start-up code for the app. When using the router, this is where it is created and attached to the DOM. |
 | `constants.js` | This file contains constants for use throughout your application. |
-| `state.js` | This file defines a constant holding the initial application state (if needed). |
 | `.credentials.js` | This file can be used to define constants for secret API keys, etc. It is listed in `.gitignore` and will therefore not be added to your repo, which is particularly important if you publish your repo on GitHub. This file is not included in the repo (exactly because it is git-ignored), but an example is provided as `.credentials.example.js` |
 | `index.html` | The one and only HTML file for the application. It includes a `<div>` element that serves as the root element for our application. It also loads the `app.js` file using a `<script>` tag with a `type="module"` attribute so that you can use ES6 `import` and `export` keywords to load additional modules.
 
@@ -333,6 +333,8 @@ Full implementation: [src/examples/pokemons/views/pokemonsView.js](src/examples/
 
 ## Router
 
+File: [src/lib/router.js](src/lib/router.js)
+
 The purpose of a (client-side) router in a Single Page Application is to let the client programmatically load different application 'pages' into the DOM by manipulating the browser's location url. In a hash-based router, as used in this repo, the specific page to load is determined by the `hash` fragment of the url. In a url, a hash fragment is the part that starts with a `#` mark. Everything following the `#` mark is considered part of the hash.
 
 We can use the hash to specify the name of the page to load and can optionally embed parameters to pass to the Page function. It can be said that the url when used in such a way becomes part of the application state.
@@ -351,7 +353,7 @@ This hash identifies a page named `repo` and two string parameters to be passed 
 createRepoDetailPage(state, 'HackYourFuture', 'UsingAPIs');
 ```
 
-## Pros and cons of a hash-based router
+### Pros and cons of a hash-based router
 
 The hash fragment in a url is not considered part of the web address. The browser only uses the url parts preceding the hash when making an HTTP request to load an HTML page. In a Single Page Application that uses a hash-based router you can therefore do the following without the need for backend support:
 
@@ -362,16 +364,50 @@ The hash fragment in a url is not considered part of the web address. The browse
 
 The downside of a hash-based router is that the url looks 'funny' because of presence of a hash. It also possible to use a client-side router with regular urls (no hash), however that requires backend support to ensure that always the same `index.html` file loaded, regardless of the presence of additional parameter fragments in the url in addition to the base url.
 
-### Implementation
+### Using the Router
+
+The router resided in the `lib` folder and requires a table (actually, an array) with route definitions. This table is normally located in the `pages` folder.
+
+```js
+import router from './lib/router.js';
+import routes from './pages/routes.js';
+
+function loadApp() {
+  // code omitted for brevity
+
+  router.start(routes, pageRoot);
+}
+```
+
+Here is an example of a basic routes table:
+
+```js
+import createHomePage from './homePage.js';
+import createAboutPage from './aboutPage.js';
+
+const routes = [
+  { path: 'home', page: createHomePage, default: true },
+  { path: 'about', page: createAboutPage },
+];
+
+export default routes;
+```
+
+<!-- prettier-ignore -->
+| Property | Description |
+|----------|-------------|
+| `path` | The name of the page to load. |
+| `page` | The Page that should be called to create that page. |
+| `default` | If `true`, this route will be used if there is no hash present in the browser's url or if the hash does not represent a known path. The router will use the first route it find marked as default. |
+
+### Router Methods
 
 The router is created in `src/lib/router.js` and is exported as an object with the following methods:
 
 ```js
 {
-  start: (routes: Route[], pageRoot: HTMLElement, state?: object) => void,
-  navigateTo:  (pageName: string, ...params: string[]) => void;
-  updateState: (updates: object) => void;
-  getState: () => object;
+  start: (routes: Route[], pageRoot: HTMLElement) => void,
+  navigateTo:  (path: string, ...params: any) => void;
 }
 ```
 
@@ -388,36 +424,19 @@ router.start(routes: Route[], pageRoot: HTMLElement, state?: object) => void
 |-----------|-------------|
 | `routes` | An array of route definitions.|
 | `pageRoot` | The DOM element into which pages should be loaded. |
-| `state` |  The initial application state. Optional. Defaults to an empty object. |
-
-Here is an examples `routes` array of route objects as used in this starter project:
-
-```js
-// file src/example/pages/routes.js
-const routes = [
-  { path: 'home', page: createHomePage, default: true },
-  { path: 'about', page: createAboutPage },
-  { path: 'repos', page: createReposPage },
-  { path: 'repo', page: createRepoDetailPage },
-  { path: 'error', page: createErrorPage },
-];
-```
-
-A route object contains the following properties:
-
-<!-- prettier-ignore -->
-| Property | Description |
-|----------|-------------|
-| `path` | The name of the page to load. |
-| `page` | The Page that should be called to create that page. |
-| `default` | If `true`, this route will be used if there is no hash present in the browser's url or if the hash does not represent a known path. The router will use the first route it find marked as default. |
 
 #### Method: `router.navigateTo()`
 
-To navigate to a specific page, we can use the `navigateTo()` method.
+To navigate dynamically to a specific page, we can use the `navigateTo()` method.
 
-```ts
-router.navigateTo(path: string, ...args: any) => void
+> You can also enable navigation to another page by include a static link in DOM subtree of a View, e.g.:
+>
+> `<a href="#about">Go to About Page</a>`
+>
+> This is a common pattern in Single Page Application.
+
+```js
+router.navigateTo(path: string, ...params: any) => void
 ```
 
 <!-- prettier-ignore -->
@@ -428,47 +447,25 @@ router.navigateTo(path: string, ...args: any) => void
 
 The `navigateTo()` method encodes the path and optional arguments into a string and assigns it to the browser's location hash. This will trigger hash change event that the router will pick up.
 
-The main code of the router is inside the function `createRouter()`. Below is a (simplified) part of the code that illustrates how the router works.
-
-```js
-// file: src/lib/router.js
-const createRouter = () => {
-  //...
-  window.addEventListener('hashchange', () => {
-    // Search the routes table for the route corresponding to the path name.
-    const route = findRouteByPathname(pathname);
-    // Call the Page function to create the page.
-    const { root } = route.page(state, ...params);
-    // Mount the page in the DOM, removing any previous page.
-    clearElement(pageRoot);
-    pageRoot.appendChild(root);
-  });
-  //...
-};
-```
-
 > Tip: You can follow what happens in the application when you navigate through the app by opening the developer console and examining the debug messages. (_Always open the developer console when you are developing!_)
 >
 > If you are no longer interested in these messages (e.g. when deploying your app) change the minimum log level in `./src/constants.js` to `'fatal'`.
->
-> You may need to change the default level of the browser console to **Verbose** to see all messages:
->
-> ![logging](./readme-assets/logging.png)
+
+### Dynamic Imports (Advanced Feature)
+
+The router support the dynamic loading of pages at runtime. This means that the files containing the Page functions and all its dependencies is loaded when navigating to a page for the first time. If a page is never visited its files are never loaded by the browser. For larger applications this can considerably improve the load time of the application.
+
+For an example where is this used see the file: [src/examples/nobelprize/pages/routes.js](src/examples/nobelprize/pages/routes.js).
 
 ## Other Utility Functions
 
-A couple of ready-made utility functions are provided in the `src/lib` folder that you can use in your own application.
-
-These functions are all standard JavaScript. We encourage you to go over the code of each of them and try and figure out how they work. The most complex one is the router function, used to load pages into the DOM, which may take more time to wrap your head around than the other utility functions.
-
-_Don't be discouraged if you think that you could never come up with the ideas to write functions like this yourself. It is not a problem, it is just a matter of time._
-
-Let's look at the individual utility functions now.
+A couple of other ready-made utility functions are provided in the `src/lib` folder that you may want to consider to use in your own application.
 
 ### Function: `fetchData()`
 
-```ts
-// src/lib/fetchData.js
+File: [src/lib/fetchData.js](src/lib/fetchData.js)
+
+```js
 fetchData(url: string, options?: object) => Promise<any>
 ```
 
@@ -486,19 +483,21 @@ Example usage: [./src/examples/github-2/fetchers/reposFetcher.js](src/examples/g
 
 ### Function: `findElementsWithIds()`
 
+File: [src/lib/findElementsWithIds.js](src/lib/findElementsWithIds.js)
+
 ```ts
-// src/lib/findElementsWithIds.js
 findElementsWithIds(root: HTMLElement) => object
 ```
 
 This function can be used in View functions to quickly find all DOM elements in the View's subtree that have an `id` attribute. It takes a singe parameter, the root of the subtree to search (normally `root`). It returns an object of DOM elements with the `id` as the key and the DOM element as the value. To enable dot notation to access properties of the object it is recommended to use _camelCase_ for the `id` attributes of the DOM elements instead of the usual _kebab-case_.
 
-Example usage: [./src/examples/github-2/views/toolbarView.js](./src/examples/github-2/views/toolbarView.js)
+Example usage: [src/examples/github-2/views/toolbarView.js](src/examples/github-2/views/toolbarView.js)
 
 ### Function: `log.XXX()`
 
+File: [src/lib/logger.js](src/lib/logger.js)
+
 ```ts
-// src/lib/logger.js
 log.XXX(label: any, ...args: any) => void
 ```
 
@@ -523,21 +522,133 @@ You can use the following actual log methods (in order of increasing severity):
 
 You can use this family of log methods to log information to the developer console. Log messages with a level below the `minLevel` will not show up.
 
-Example usage: [./src/examples/stopwatch/pages/stopwatchPage.js](./src/examples/stopwatch/pages/stopwatchPage.js)
+Example usage: [src/examples/stopwatch/pages/stopwatchPage.js](src/examples/stopwatch/pages/stopwatchPage.js)
+
+### Function: `createObservableState()` (Advanced Feature)
+
+File: [src/lib/observableState.js](src/lib/observableState.js)
+
+```ts
+createObservableState() => {
+  subscribe: (subscriber: Function) => void,
+  unsubscribe: (subscriber: Function) => void,
+  update: (updates: object) => object,
+  get: () => object
+}
+```
+
+This function creates an "observable state" and returns an object containing four methods to use that state. It is best used in combination with the router to simplify sending state updates to View functions.
+
+Here is how it is typically used:
+
+File: [src/examples/github-2/state.js](src/examples/github-2/state.js)
+
+```js
+import log from '../../lib/logger.js';
+import createObservableState from '../../lib/observableState.js';
+
+const state$ = createObservableState();
+
+// Subscribe to log state changes to the console
+state$.subscribe((state) => {
+  log.debug('state', state);
+});
+
+export default state$;
+```
+
+Here, an observable state object is created that can be imported by other modules. The state object is then used to update the state of the application. Note the use of the use of a `$` sign to indicate (by convention) that the variable is an observable state.
+
+During development, it is helpful to be able see state changes in the console as the application is running. This is done here by subscribing to the observable state and logging the state changes using the `log.debug()` method.
+
+Here is an example of how the observable state is used in a Page function:
+
+```js
+import router from '../../../lib/router.js';
+import fetchRepos from '../fetchers/reposFetcher.js';
+import state$ from '../state.js';
+import createReposView from '../views/reposView.js';
+
+function createReposPage(organization = 'HackYourFuture') {
+  state$.update({ organization });
+
+  // code omitted for brevity
+
+  const reposView = createReposView(viewProps);
+
+  const getData = async () => {
+    state$.update({ error: null, loading: true, repos: null });
+
+    try {
+      const repos = await fetchRepos(organization);
+      state$.update({ repos, loading: false });
+    } catch (error) {
+      state$.update({ error, loading: false });
+      router.navigateTo('gh-error');
+      return;
+    }
+  };
+
+  getData();
+
+  const pageDidLoad = () => {
+    state$.subscribe(reposView.update);
+  };
+
+  const pageWillUnload = () => {
+    state$.unsubscribe(reposView.update);
+  };
+
+  return { ...reposView, pageDidLoad, pageWillUnload };
+}
+```
+
+As you can see, the Page subscribes to the observable state when the page is loaded and unsubscribes just before the page is unloaded. The `pageDidLoad` and `pageWillUnload` "lifecycle" functions are called by the router at the appropriate times.
+
+To make these functions available to the router they must be added to the object that is returned by the Page function. Here, ES7 object spread syntax is used for that.
+
+### Function: `loadPage()`
+
+This function can be used as an alternative to the router to dynamically load different Page. It takes a two parameters, the name of the Page function to call and a state object that is passed to that function.
+
+The advantage of the function is that its implementation is very simply, in fact simple enough to fully list here:
+
+```js
+function loadPage(createPageFn, state) {
+  const page = createPageFn(state);
+
+  const appRoot = document.getElementById('app-root');
+  appRoot.innerHTML = '';
+  appRoot.appendChild(page.root);
+
+  // Reset scroll position to top of page
+  window.scrollTo(0, 0);
+}
+```
+
+The `github-1` example uses this `loadPage` utility function.
+
+The router however provides many benefits over this sample page loader and is therefore preferred.
 
 ## Using this starter for your own project
 
-1. Fork this repo and clone it on your computer.
-2. In `src/app.js`, change the `import` statement to load the `routes` table from `./pages/routes.js` instead of `./example/pages/routes.js`.
+1. In GitHub, click on the **Use this template** button to generate a repository on your own GitHub account using the files of this repo.
+
+2. Clone the generated repo from your own GitHub account to your local computer.
+
+3. In `src/index.js`, uncomment the import of `./app` and comment out the import of `./examples/...`. (When you no longer need the examples, you can remove this line and remove the `examples` folder altogether.)
 
    ```js
-   import routes from './pages/routes.js';
+   // import loadApp from './examples/landing/app.js';
+   import loadApp from './app.js';
    ```
 
-3. Load the application in your browser. You should now see the message from the Home Page: **It works!**.
+4. Load the application in your browser. You should now see the message from the Home Page: **Hello world!**.
 
-4. Change the Home Page and View functions in the `src/pages` and `src/views` folders as required for your app.
+5. Navigate back and forth between the Home Page and the About Page and observe how the address bar in the browser changes.
 
-5. Add further Page, View and helpers function as needed. Update the routes table in `src/page/routes.js` to add routes for the new pages.
+6. Change the Page and View functions in the `src/pages` and `src/views` folders as required for your app.
 
-6. If in doubt how to achieve some specific functionality, examine the `example` folder for possible approaches.
+7. Add further Page, View function as needed. Update the routes table in `src/page/routes.js` to add routes for the new pages.
+
+8. If in doubt how to achieve some specific functionality, examine the `examples` folder for possible approaches.
