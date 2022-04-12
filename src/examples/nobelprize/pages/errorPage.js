@@ -1,7 +1,7 @@
-import state from '../../../lib/observableState.js';
+import state$ from '../state.js';
 
 function createErrorPage() {
-  const { error } = state.get();
+  const { error } = state$.get();
   const message = error ? error.message : 'Unknown error';
 
   const root = document.createElement('div');

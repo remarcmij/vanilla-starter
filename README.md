@@ -49,6 +49,7 @@ index.html
 | `src/views` | This folder contains functions called upon by Page functions to create a subtree of DOM elements and update the subtree as the application state changes. To enable user interactions, Page functions can also pass event handler functions to View functions to be added as event listeners to the View's DOM elements. |
 | `app.js` |  This file contains the start-up code for the app. When using the router, this is where it is created and attached to the DOM. |
 | `constants.js` | This file contains constants for use throughout your application. |
+| `index.js` | This file contains the main entry point for your application. |
 | `.credentials.js` | This file can be used to define constants for secret API keys, etc. It is listed in `.gitignore` and will therefore not be added to your repo, which is particularly important if you publish your repo on GitHub. This file is not included in the repo (exactly because it is git-ignored), but an example is provided as `.credentials.example.js` |
 | `index.html` | The one and only HTML file for the application. It includes a `<div>` element that serves as the root element for our application. It also loads the `app.js` file using a `<script>` tag with a `type="module"` attribute so that you can use ES6 `import` and `export` keywords to load additional modules.
 
@@ -643,12 +644,14 @@ The router however provides many benefits over this sample page loader and is th
    import loadApp from './app.js';
    ```
 
-4. Load the application in your browser. You should now see the message from the Home Page: **Hello world!**.
+4. In `src/index.html`, modify the contents of the `<head>` as you see fit, taking out no longer needed style sheets and adding in your own.
 
-5. Navigate back and forth between the Home Page and the About Page and observe how the address bar in the browser changes.
+5. Load the application in your browser. You should now see the message from the Home Page: **Hello world!**.
 
-6. Change the Page and View functions in the `src/pages` and `src/views` folders as required for your app.
+6. Navigate back and forth between the Home Page and the About Page and observe how the address bar in the browser changes.
 
-7. Add further Page, View function as needed. Update the routes table in `src/page/routes.js` to add routes for the new pages.
+7. Change the Page and View functions in the `src/pages` and `src/views` folders as required for your app.
 
-8. If in doubt how to achieve some specific functionality, examine the `examples` folder for possible approaches.
+8. Add further Page, View function as needed. Update the routes table in `src/page/routes.js` to add routes for the new pages.
+
+9. If in doubt how to achieve some specific functionality, examine the `examples` folder for possible approaches.

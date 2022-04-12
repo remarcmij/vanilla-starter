@@ -69,7 +69,7 @@ async function onHashChange(routerState) {
     newPage = pageFn(...params);
   }
 
-  if (!newPage.root) {
+  if (typeof newPage !== 'object' || !newPage.root) {
     throw new Error(`Page "${pathname}" did not return a valid page object`);
   }
 
