@@ -1,5 +1,5 @@
-function createObservableState() {
-  let currentState = {};
+function createObservableState(initialState = {}) {
+  let currentState = { ...initialState };
 
   const subscribers = new Set();
 
@@ -22,7 +22,11 @@ function createObservableState() {
     return currentState;
   };
 
-  return { subscribe, unsubscribe, update, get };
+  const set = (state) => {
+    currentState = { ...state };
+  };
+
+  return { subscribe, unsubscribe, update, get, set };
 }
 
 export default createObservableState;

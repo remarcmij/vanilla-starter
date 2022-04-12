@@ -35,6 +35,11 @@ function createHomePage() {
             <td><a href="#st-intro">Start Stopwatch App</a></td>
           </tr>
           <tr>
+            <td>Currency Convert App</td>
+            <td>router, observable state, logger</td>
+            <td><a href="#ex-home">Start Currency Converter App</a></td>
+          </tr>
+          <tr>
             <td>GitHub App 1*</td>
             <td>no router, global state, logger</td>
             <td><a href="#" id="githubLink">Start GitHub App 1</a></td>

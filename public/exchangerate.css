@@ -1,0 +1,62 @@
+.ex__symbol-select {
+  width: 64px;
+}
+
+.ex__amount-input {
+  width: 64px;
+  text-align: right;
+}
+
+.ex__result-container {
+  height: 240px;
+}
+
+.ex__white-frame {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  margin: 4px 0;
+  padding: 16px;
+  border: none;
+  border-radius: 2px;
+  background-color: #fff;
+  box-shadow: 0 1px 8px 0 rgba(0, 0, 0, 0.2), 0 3px 4px 0 rgba(0, 0, 0, 0.14),
+    0 3px 3px -2px rgba(0, 0, 0, 0.12);
+}
+
+.ex__flex-row {
+  flex-direction: row;
+}
+
+.ex__flex-column {
+  flex-direction: column;
+}
+
+.ex__header-content {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-content: center;
+}
+
+.ex__header-content a {
+  color: white;
+}
+
+.ex__header-content h3 {
+  margin: 0 8px;
+}
+
+.ex__header-content button,
+select {
+  margin: 0 8px;
+}
+
+a {
+  text-decoration: none;
+}
+
+.ex__spanner {
+  flex: 1;
+}

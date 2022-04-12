@@ -1,0 +1,8 @@
+### Latest rates using EUR as base currency
+GET https://api.exchangerate.host/latest?base=EUR
+
+### Fetch currency symbols
+GET https://api.exchangerate.host/symbols
+
+### Convert currency
+GET https://api.exchangerate.host/convert?from=USD&to=EUR&amount=10
