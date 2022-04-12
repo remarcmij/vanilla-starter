@@ -1,6 +1,6 @@
 function createResultView(props) {
-  const amount = parseInt(props.query.amount, 10).toFixed(2);
-  const result = parseInt(props.result, 10).toFixed(2);
+  const amount = props.query.amount.toFixed(2);
+  const result = props.result.toFixed(2);
 
   const root = document.createElement('div');
   root.innerHTML = String.raw`
