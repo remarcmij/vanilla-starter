@@ -29,11 +29,12 @@ function createMainView(props) {
   toSelect.addEventListener('change', props.onToSelectChange);
 
   const update = (state, prevState) => {
-    resultContainer.innerHTML = '';
-
     if (state.loading) {
-      resultContainer.innerHTML = 'Working...';
+      resultContainer.innerHTML = 'Loading...';
+      return;
     }
+
+    resultContainer.innerHTML = '';
 
     if (state.error) {
       resultContainer.innerHTML = 'Oops, something went wrong!';

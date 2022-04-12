@@ -52,10 +52,9 @@ function createMainPage() {
     }
   };
 
-  getSymbols();
-
   const pageDidLoad = () => {
     state$.subscribe(mainView.update);
+    getSymbols();
   };
 
   const pageWillUnload = () => {
