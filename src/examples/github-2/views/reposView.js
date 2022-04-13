@@ -29,11 +29,11 @@ function createReposView(props) {
     toolbarView.update(state);
 
     if (state.loading) {
-      loadingIndicator.root.hidden = false;
+      loadingIndicator.root.classList.remove('hide');
       return;
     }
 
-    loadingIndicator.root.hidden = true;
+    loadingIndicator.root.classList.add('hide');
 
     // Do not render if there is an error or if there is no data yet.
     if (state.error || !state.repos) {

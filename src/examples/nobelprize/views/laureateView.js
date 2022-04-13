@@ -24,9 +24,10 @@ function createLaureateView(props) {
   const update = (state) => {
     if (state.loading) {
       loadingIndicator.root.classList.remove('hide');
-    } else {
-      loadingIndicator.root.classList.add('hide');
+      return;
     }
+
+    loadingIndicator.root.classList.add('hide');
 
     if (state.error) {
       return;

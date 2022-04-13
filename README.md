@@ -309,12 +309,14 @@ In the corresponding View function (simplified) the `update()` callback function
 //...
 
 const update = (state) => {
-  // Show or hide the loading indicator
+  // Show the loading indicator when the data is being fetched
   if (state.loading) {
     spinnerView.root.classList.remove('hide');
-  } else {
-    spinnerView.root.classList.add('hide');
+    return;
   }
+
+  // Hide the loading indicator in any other case
+  spinnerView.root.classList.add('hide');
 
   // In case of an error, render it and return early.
   if (state.error) {

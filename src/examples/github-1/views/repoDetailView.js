@@ -25,11 +25,11 @@ function createRepoDetailView(props) {
 
   const update = (state) => {
     if (state.loading) {
-      loadingIndicator.root.hidden = false;
+      loadingIndicator.root.classList.remove('hide');
       return;
     }
 
-    loadingIndicator.root.hidden = true;
+    loadingIndicator.root.classList.add('hide');
 
     if (state.error || !state.repo) {
       return;
