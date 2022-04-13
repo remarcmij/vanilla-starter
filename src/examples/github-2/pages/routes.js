@@ -4,10 +4,10 @@ import createRepoDetailPage from './repoDetailPage.js';
 import createReposPage from './reposPage.js';
 
 const routes = [
-  { path: 'gh-intro', page: createIntroPage },
-  { path: 'gh-repos', page: createReposPage },
+  { path: 'gh-repos', page: createReposPage, default: true },
   { path: 'gh-repo', page: createRepoDetailPage },
   { path: 'gh-error', page: createErrorPage },
+  { path: 'gh-intro', page: createIntroPage },
 ];
 
 export default routes;

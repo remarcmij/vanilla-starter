@@ -1,5 +1,5 @@
 function createObservableState(initialState = {}) {
-  let currentState = { ...initialState };
+  let state = { ...initialState };
 
   const subscribers = new Set();
 
@@ -12,18 +12,18 @@ function createObservableState(initialState = {}) {
   };
 
   const update = (updates) => {
-    const newState = { ...currentState, ...updates };
-    subscribers.forEach((subscriber) => subscriber(newState, currentState));
-    currentState = newState;
-    return currentState;
+    const prevState = state;
+    state = { ...prevState, ...updates };
+    subscribers.forEach((subscriber) => subscriber(state, prevState));
+    return state;
   };
 
   const get = () => {
-    return currentState;
+    return state;
   };
 
-  const set = (state) => {
-    currentState = { ...state };
+  const set = (nextState) => {
+    state = { ...nextState };
   };
 
   return { subscribe, unsubscribe, update, get, set };

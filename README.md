@@ -640,7 +640,7 @@ The router however provides many benefits over this sample page loader and is th
 3. In `src/index.js`, uncomment the import of `./app` and comment out the import of `./examples/...`. (When you no longer need the examples, you can remove this line and remove the `examples` folder altogether.)
 
    ```js
-   // import loadApp from './examples/landing/app.js';
+   // import loadApp from './examples/all/app.js';
    import loadApp from './app.js';
    ```
 
