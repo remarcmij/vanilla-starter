@@ -1,5 +1,5 @@
 // Log levels in increasing severity
-const LEVELS = ['silly', 'debug', 'info', 'warning', 'error', 'fatal', 'none'];
+const LEVELS = ['silly', 'debug', 'info', 'warn', 'error', 'fatal', 'none'];
 
 /**
  * Create a logger object.
@@ -59,8 +59,8 @@ function logger() {
     info(label, ...args) {
       log('info', label, ...args);
     },
-    warning(label, ...args) {
-      log('warning', label, ...args);
+    warn(label, ...args) {
+      log('warn', label, ...args);
     },
     error(label, ...args) {
       log('error', label, ...args);
@@ -71,5 +71,4 @@ function logger() {
   };
 }
 
-const log = logger();
-export default log;
+export default logger();

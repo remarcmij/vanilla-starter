@@ -3,7 +3,7 @@
  * There should be no reason to make any changes to this file.
  */
 
-import log from './logger.js';
+import logger from './logger.js';
 
 const HTTP_STATUS_NO_CONTENT = 204;
 const cache = new Map();
@@ -18,10 +18,10 @@ async function fetchData(url, options = {}) {
   if (options.cache) {
     data = cache.get(url);
     if (data) {
-      log.silly('fetchData', 'cache hit:', url);
+      logger.silly('fetchData', 'cache hit:', url);
       return data;
     }
-    log.silly('fetchData', 'cache miss:', url);
+    logger.silly('fetchData', 'cache miss:', url);
   }
 
   const res = await fetch(url);

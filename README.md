@@ -496,12 +496,12 @@ This function can be used in View functions to quickly find all DOM elements in 
 
 Example usage: [src/examples/github-2/views/toolbarView.js](src/examples/github-2/views/toolbarView.js)
 
-### Function: `log.XXX()`
+### Function: `logger.XXX()`
 
 File: [src/lib/logger.js](src/lib/logger.js)
 
 ```ts
-log.XXX(label: any, ...args: any) => void
+logger.XXX(label: any, ...args: any) => void
 ```
 
 <!-- prettier-ignore -->
@@ -515,13 +515,13 @@ You can use the following actual log methods (in order of increasing severity):
 <!-- prettier-ignore -->
 | Method | Description |
 |--------|-------------|
-| `log.silly()` | The lowest level. For messages that you only want to show up when drilling deep down into your code. |
-| `log.debug()` | For logging debug type messages. |
-| `log.info()` | For logging informational messages. |
-| `log.warning()` | For logging application warnings. |
-| `log.error()` | For logging application errors. |
-| `log.fatal()` |For logging fatal errors that prevent your app from continuing normally. |
-| `log.setLevel(minLevel)` | Sets the minimum level for the logger. The `minLevel` value must be one of `'silly'`, `'debug'`, `'info'`, `'warning'`, `'error'`, `'fatal'` or `'none'`. To suppress all log messages, use the value `'none'` (default). |
+| `logger.silly()` | The lowest level. For messages that you only want to show up when drilling deep down into your code. |
+| `logger.debug()` | For logging debug type messages. |
+| `logger.info()` | For logging informational messages. |
+| `logger.warning()` | For logging application warnings. |
+| `logger.error()` | For logging application errors. |
+| `logger.fatal()` |For logging fatal errors that prevent your app from continuing normally. |
+| `logger.setLevel(minLevel)` | Sets the minimum level for the logger. The `minLevel` value must be one of `'silly'`, `'debug'`, `'info'`, `'warning'`, `'error'`, `'fatal'` or `'none'`. To suppress all log messages, use the value `'none'` (default). |
 
 You can use this family of log methods to log information to the developer console. Log messages with a level below the `minLevel` will not show up.
 
@@ -547,14 +547,14 @@ Here is how it is typically used:
 File: [src/examples/github-2/state.js](src/examples/github-2/state.js)
 
 ```js
-import log from '../../lib/logger.js';
+import logger from '../../lib/logger.js';
 import createObservableState from '../../lib/observableState.js';
 
 const state$ = createObservableState();
 
 // Subscribe to log state changes to the console
 state$.subscribe((state) => {
-  log.debug('state', state);
+  logger.debug('state', state);
 });
 
 export default state$;
@@ -562,7 +562,7 @@ export default state$;
 
 Here, an observable state object is created that can be imported by other modules. The state object is then used to update the state of the application. Note the use of the use of a `$` sign to indicate (by convention) that the variable is an observable state.
 
-During development, it is helpful to be able see state changes in the console as the application is running. This is done here by subscribing to the observable state and logging the state changes using the `log.debug()` method.
+During development, it is helpful to be able see state changes in the console as the application is running. This is done here by subscribing to the observable state and logging the state changes using the `logger.debug()` method.
 
 Here is an example of how the observable state is used in a Page function:
 

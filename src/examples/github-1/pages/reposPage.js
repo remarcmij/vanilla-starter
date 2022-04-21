@@ -1,5 +1,5 @@
 import loadPage from '../../../lib/pageLoader.js';
-import log from '../../../lib/logger.js';
+import logger from '../../../lib/logger.js';
 import fetchRepos from '../fetchers/reposFetcher.js';
 import createErrorPage from '../views/errorView.js';
 import createReposView from '../views/reposView.js';
@@ -7,7 +7,7 @@ import createRepoDetailPage from './repoDetailPage.js';
 
 function createReposPage(state) {
   const updateState = (updates) => {
-    log.debug('state', state);
+    logger.debug('state', state);
     state = { ...state, ...updates };
     reposView.update(state);
   };

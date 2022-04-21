@@ -1,4 +1,4 @@
-import log from '../../../lib/logger.js';
+import logger from '../../../lib/logger.js';
 import createStopwatchView from '../views/stopwatchView.js';
 
 function createStopwatchPage() {
@@ -30,7 +30,7 @@ function createStopwatchPage() {
     if (intervalId) {
       clearInterval(intervalId);
       intervalId = null;
-      log.debug('stopwatch', 'cleared timer');
+      logger.debug('stopwatch', 'cleared timer');
     }
   };
 

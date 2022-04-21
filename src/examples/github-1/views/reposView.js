@@ -1,7 +1,7 @@
 import createLoadingIndicator from './loadingIndicator.js';
 import createRepoListItemView from './repoListItemView.js';
 import createToolbarView from './toolbarView.js';
-import log from '../../../lib/logger.js';
+import logger from '../../../lib/logger.js';
 
 function createReposView(props) {
   const root = document.createElement('div');
@@ -48,7 +48,7 @@ function createReposView(props) {
   };
 
   const update = (state) => {
-    log.debug('state', state);
+    logger.debug('state', state);
     toolbarView.update(state);
 
     if (state.loading) {

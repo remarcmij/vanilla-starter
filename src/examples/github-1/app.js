@@ -1,11 +1,11 @@
 import createIntroPage from './pages/introPage.js';
 import state from './pages/state.js';
 import loadPage from '../../lib/pageLoader.js';
-import log from '../../lib/logger.js';
+import logger from '../../lib/logger.js';
 
 function loadApp() {
   // Set the desired log level
-  log.setLevel('debug');
+  logger.setLevel('debug');
 
   const appRoot = document.getElementById('app-root');
 

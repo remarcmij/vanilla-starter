@@ -1,5 +1,5 @@
 import findElementsWithIds from '../../../lib/findElementsWithIds.js';
-import log from '../../../lib/logger.js';
+import logger from '../../../lib/logger.js';
 
 const SECS_PER_HOUR = 3600;
 const SECS_PER_MIN = 60;
@@ -71,7 +71,7 @@ function createStopwatchView(props) {
   };
 
   const update = (state) => {
-    log.debug('state', state);
+    logger.debug('state', state);
     updateTime(state);
     updateButtons(state);
   };

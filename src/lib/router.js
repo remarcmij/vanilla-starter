@@ -3,12 +3,12 @@
  * There should be no reason to make any changes to this file.
  */
 
-import log from './logger.js';
+import logger from './logger.js';
 
 function navigateTo(path, ...params) {
   // Example:
   // navigateTo('repos', 'HackYourFuture', 'my-repo') => '#repos/HackYourFuture/my-repo'
-  log.silly('navigateTo', 'path:', path, 'params:', [...params]);
+  logger.silly('navigateTo', 'path:', path, 'params:', [...params]);
   const encodedHash = encodeURI('#' + [path, ...params].join('/'));
   window.location.assign(encodedHash);
 }
@@ -49,11 +49,11 @@ async function onHashChange(routerState) {
 
   // Call optional willUnmount lifecycle method.
   if (currentPage.pageWillUnload) {
-    log.silly('router', 'calling pageWillUnload()');
+    logger.silly('router', 'calling pageWillUnload()');
     currentPage.pageWillUnload();
   }
 
-  log.debug('router', `loading page: ${pathname}, params: ${[...params]}`);
+  logger.debug('router', `loading page: ${pathname}, params: ${[...params]}`);
 
   // Create the page corresponding to the route.
   let newPage = route.page(...params);
@@ -61,9 +61,9 @@ async function onHashChange(routerState) {
     throw new Error(`Page ${pathname} did not return an object`);
   }
 
-  // If the page is a promise (i.e. and object with a `.then` property),
+  // If the page is a promise then await it (dynamic import)
   // await it (dynamic import).
-  if (newPage.then) {
+  if (newPage instanceof Promise) {
     const module = await newPage;
     const pageFn = module.default;
     newPage = pageFn(...params);
@@ -83,7 +83,7 @@ async function onHashChange(routerState) {
 
   // Call optional didMount lifecycle method.
   if (newPage.pageDidLoad) {
-    log.silly('router', 'calling pageDidLoad()');
+    logger.silly('router', 'calling pageDidLoad()');
     newPage.pageDidLoad();
   }
 
@@ -91,7 +91,7 @@ async function onHashChange(routerState) {
 }
 
 function logRoutesTable(routes) {
-  if (log.isMinLevel('debug')) {
+  if (logger.isMinLevel('debug')) {
     // Log the routes table to the console
     console.log('Routes Table:');
     const displayRoutes = routes.map((route) => ({
