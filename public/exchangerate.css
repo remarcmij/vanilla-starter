@@ -60,3 +60,13 @@ a {
 .ex__spanner {
   flex: 1;
 }
+
+.ex__button {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 2px;
+  padding: 8px 16px;
+  margin: 8px;
+  cursor: pointer;
+}
