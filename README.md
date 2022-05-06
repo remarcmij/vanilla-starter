@@ -69,15 +69,17 @@ In the sections that follow we will outline architectural patterns and technique
 >
 > Source: RedHat, [What is an application architecture?](https://www.redhat.com/en/topics/cloud-native-apps/what-is-an-application-architecture)
 
-We will outline patterns for standard Page and View functions, standard techniques for handling events and for fetching data. We also introduce the concept of a client-side **router**, which allows the SPA to programmatically load different pages, by applying, and responding to, changes to the browser's `location` url.
+An application architecture also serves as a common vocabulary to communicate with other developers and teams. Those developers and teams will expect to find the rules and patterns back in your application. To meet these expectations it is important for you to apply them as closely as possible.
+
+For architecture at hand, we will outline patterns for standard Page and View functions, standard techniques for handling events and for fetching data. We also introduce the concept of a client-side **router**, which allows the SPA to programmatically load different pages, by applying, and responding to, changes to the browser's `location` url.
 
 Let's start with Page functions.
 
 ### Page functions: `createXXXPage()`
 
-A Page function represents an application page. When using a router, it is called by the router to create the page when the user navigates to it. After the page is created, the router loads its DOM subtree into the DOM.
+A Page function creates an application page. In an application that consist of a single page only there will be just one Page function. It will typically be called in the main `app.js` file where its returned DOM subtree will be added to the existing root `<div>` element in the `index.html` file.
 
-When used without a router the Page function can be called manually to create the page and use its root DOM element for manual loading into the DOM.
+In an application with multiple client-side pages a **router** manage the calling of a Page function whenever the user navigates to the corresponding page. After the page is created, the router loads its DOM subtree into the DOM, replacing the DOM subtree of any previous page.
 
 A Page function is responsible for handling all user interactions for the page and for initiating and handling the fetching of data from Web APIs where required. Unless the page is very simple, the creation and updating of DOM elements is normally delegated to a companion View function, which is then called by the Page function.
 
@@ -90,7 +92,6 @@ The function signature for a Page function is as follows:
 ```js
 createXXXPage(...params: any) => {
   root: HTMLElement,
-  update?: Function,
   pageDidLoad?: Function,
   pageWillUnload?: Function
 }
@@ -101,15 +102,14 @@ createXXXPage(...params: any) => {
 |-----------|-------------|
 | `...params` | When using a router, any parameters encoded in the browser's location url will be passed to the Page function. |
 
-A Page function should return an object with, with the following properties:
+A Page function should return a JavaScript object with, with the following properties:
 
 <!-- prettier-ignore -->
 | Property | Required? | Description |
 |----------|:---------:|----------|
-| **`root`** | Yes | Holds a reference to the `root` element of the DOM subtree created by the Page function (or created for the Page function by a corresponding View function). |
-| **`update`** | No | If provided, it should be a function that updates the DOM subtree with the latest application state information. This function is normally implemented in a View function and passed back to the corresponding Page function.  |
+| **`root`** | Yes | Holds a reference to the `root` element of the DOM subtree created by the Page function (or created by a subordinate View function called by the Page function). |
 | **`pageDidLoad`** | No | If provided, it will be called by the router just after the page is loaded. |
-| **`pageWillUnload`** | No | If provided, it will be called by the router just before the page is unloaded. |
+| **`pageWillUnload`** | No | If provided, it will be called by the router just prior unloading the page, i.e. when it is about to be replaced by a new page. |
 
 Code example: [`src/examples/github-2/pages/repoDetailPage.js`](src/examples/github-2/pages/repoDetailPage.js)
 
