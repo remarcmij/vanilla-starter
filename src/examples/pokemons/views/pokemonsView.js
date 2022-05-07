@@ -5,9 +5,6 @@ function createPokemonsView(props) {
   root.innerHTML = String.raw`
     <header class="header">
       <div class="header-content">
-        <a href="#home" class="toolbar-button">
-          <i class="fa-solid fa-house"></i>
-        </a>
         <h3>Pokemons</h3>
         <button type="button" id="getButton">Get Pokemons</button>
         <select id="pokemonsSelect" class="hide">
@@ -20,6 +17,7 @@ function createPokemonsView(props) {
       <div id="imgContainer" class="po__image-container"></div>
     </div>`;
 
+  // The spinner child view is shown while the pokemons are being fetched.
   const spinnerView = createSpinnerView();
   root.appendChild(spinnerView.root);
 

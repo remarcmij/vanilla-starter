@@ -1,4 +1,4 @@
-import loadApp from './examples/all/app.js';
+import loadApp from './examples/menu/app.js';
 // import loadApp from './examples/currency-converter/app.js';
 // import loadApp from './examples/github-1/app.js';
 // import loadApp from './examples/github-2/app.js';

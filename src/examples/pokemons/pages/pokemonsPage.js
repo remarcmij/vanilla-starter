@@ -13,29 +13,34 @@ async function fetchData(url) {
 function createPokemonsPage() {
   let state = {};
 
+  // Internal helper function to update the state.
   const updateState = (updates) => {
     const prevState = state;
     state = { ...prevState, ...updates };
-    pokemonsView.update(state, prevState);
+    console.log('state', state);
+    view.update(state, prevState);
   };
 
   const getPokemons = async () => {
+    // Set the loading state and reset the error state.
     updateState({ loading: true, error: null });
 
     try {
       const data = await fetchData(`${BASE_URL}?limit=151`);
       data.results.sort((a, b) => a.name.localeCompare(b.name));
+      // Loading was successful, update the state accordingly.
       updateState({ pokemons: data.results, loading: false });
     } catch (error) {
+      // Loading failed, update the state with the caught error.
       updateState({ error, loading: false });
     }
   };
 
   const fetchImage = async (e) => {
     const url = e.target.value;
-    if (!url) {
-      return;
-    }
+    // if (!url) {
+    //   return;
+    // }
 
     updateState({ loading: true, error: null });
 
@@ -47,13 +52,14 @@ function createPokemonsPage() {
     }
   };
 
+  // Event handlers passed as props to the view.
   const onGetClick = () => getPokemons();
   const onChange = (e) => fetchImage(e);
-
   const viewProps = { onGetClick, onChange };
-  const pokemonsView = createPokemonsView(viewProps);
 
-  return pokemonsView;
+  const view = createPokemonsView(viewProps);
+
+  return { root: view.root };
 }
 
 export default createPokemonsPage;

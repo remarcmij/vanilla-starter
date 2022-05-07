@@ -15,7 +15,9 @@ export const categories = {
   med: 'Medical',
 };
 
-function createPrizesPage(category = 'all', year = 'all', page = '1') {
+function createPrizesPage(props) {
+  // eslint-disable-next-line prefer-const
+  let [category = 'all', year = 'all', page = '1'] = props.params;
   page = parseInt(page, 10);
   state$.update({ category, year, page });
 
@@ -88,18 +90,18 @@ function createPrizesPage(category = 'all', year = 'all', page = '1') {
     category,
     year,
   };
-  const prizesView = createPrizesView(viewProps);
+  const view = createPrizesView(viewProps);
 
   const pageDidLoad = () => {
-    state$.subscribe(prizesView.update);
+    state$.subscribe(view.update);
     getData();
   };
 
   const pageWillUnload = () => {
-    state$.unsubscribe(prizesView.update);
+    state$.unsubscribe(view.update);
   };
 
-  return { ...prizesView, pageDidLoad, pageWillUnload };
+  return { root: view.root, pageDidLoad, pageWillUnload };
 }
 
 export default createPrizesPage;

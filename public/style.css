@@ -95,6 +95,10 @@ select {
   margin: 0 8px;
 }
 
+.spanner {
+  flex: 1;
+}
+
 .repo-container,
 .contributors-container {
   background-color: white;
@@ -292,4 +296,11 @@ From: https://code-boxx.com/rotate-spin-image-html-css/#sec-animate
 .content-container {
   margin: 4px 0;
   padding: 16px;
+}
+
+.floating-button {
+  position: fixed;
+  bottom: 16px;
+  right: 16px;
+  z-index: 1000;
 }

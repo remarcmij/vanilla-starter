@@ -7,9 +7,6 @@ function createPrizesView(props) {
   root.innerHTML = String.raw`
     <header class="header">
       <div class="header-content">
-        <a href="#home" class="toolbar-button">
-          <i class="fa-solid fa-house"></i>
-        </a>
         <h3>Nobel Prizes</h3>
         <select id="categorySelect">
           <option value="all">All Categories</option>

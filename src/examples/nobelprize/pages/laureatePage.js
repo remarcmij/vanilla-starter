@@ -3,7 +3,8 @@ import fetchLaureate from '../fetchers/laureateFetcher.js';
 import state$ from '../state.js';
 import createLaureateView from '../views/laureateView.js';
 
-function createLaureatePage(id, awardYear) {
+function createLaureatePage(props) {
+  const [id, awardYear] = props.params;
   const getData = async () => {
     state$.update({
       error: null,
@@ -26,17 +27,17 @@ function createLaureatePage(id, awardYear) {
 
   const { category, year, page } = state$.get();
   const viewProps = { category, year, page, awardYear };
-  const laureateView = createLaureateView(viewProps);
+  const view = createLaureateView(viewProps);
 
   const pageDidLoad = () => {
-    state$.subscribe(laureateView.update);
+    state$.subscribe(view.update);
   };
 
   const pageWillUnload = () => {
-    state$.unsubscribe(laureateView.update);
+    state$.unsubscribe(view.update);
   };
 
-  return { ...laureateView, pageDidLoad, pageWillUnload };
+  return { root: view.root, pageDidLoad, pageWillUnload };
 }
 
 export default createLaureatePage;

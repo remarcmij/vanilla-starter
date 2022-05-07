@@ -1,3 +1,6 @@
+/**
+ * Inspired by: https://dev.to/gspteck/create-a-stopwatch-in-javascript-2mak
+ */
 import logger from '../../../lib/logger.js';
 import createStopwatchView from '../views/stopwatchView.js';
 
@@ -30,7 +33,7 @@ function createStopwatchPage() {
     if (intervalId) {
       clearInterval(intervalId);
       intervalId = null;
-      logger.debug('stopwatch', 'cleared timer');
+      logger.debug('stopwatch', 'timer cleared');
     }
   };
 

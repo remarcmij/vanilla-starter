@@ -56,7 +56,7 @@ async function onHashChange(routerState) {
   logger.debug('router', `loading page: ${pathname}, params: ${[...params]}`);
 
   // Create the page corresponding to the route.
-  let newPage = route.page(...params);
+  let newPage = route.page({ params });
   if (typeof newPage !== 'object') {
     throw new Error(`Page ${pathname} did not return an object`);
   }
@@ -66,7 +66,7 @@ async function onHashChange(routerState) {
   if (newPage instanceof Promise) {
     const module = await newPage;
     const pageFn = module.default;
-    newPage = pageFn(...params);
+    newPage = pageFn({ params });
   }
 
   if (typeof newPage !== 'object' || !newPage.root) {
