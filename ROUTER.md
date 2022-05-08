@@ -2,9 +2,11 @@
 
 File: [src/lib/router.js](src/lib/router.js)
 
-The purpose of a (client-side) router in a Single Page Application is to let the client programmatically load different application 'pages' into the DOM by manipulating the browser's location url. In a hash-based router, as used in this repo, the specific page to load is determined by the `hash` fragment of the url. In a url, a hash fragment is the part that starts with a `#` mark. Everything following the `#` mark is considered part of the hash.
+## 1. Introduction
 
-We can use the hash to specify the name of the page to load and can optionally embed parameters to pass to the Page function. It can be said that the url when used in such a way becomes part of the application state.
+The purpose of a (client-side) router in a Single Page Application is to let the client programmatically load different application 'pages' into the DOM by manipulating the browser's location url. In a hash-based router, as used in this repo, the specific page to load is determined by the `hash` fragment of the `url`. In a `url`, a hash fragment is the part that starts with a `#` mark. Everything following the `#` mark is considered part of the hash.
+
+We can use the hash to specify the name of the page to load and can optionally embed parameters to pass to the Page function. It can be said that the `url` when used in such a way becomes part of the application state.
 
 A hash-based router uses an event listener to listen for hash changes and responds to those changes by loading a matching page (see **Implementation** below).
 
@@ -17,21 +19,21 @@ Example of a hash with a page name and two parameters.
 This hash identifies a page named `repo` and two string parameters to be passed to the Page function: `"HackYourFuture"` and `"UsingAPIs"`. The router will call the corresponding Page function effectively like this:
 
 ```js
-createRepoDetailPage(state, 'HackYourFuture', 'UsingAPIs');
+createRepoDetailPage({ props: ['HackYourFuture', 'UsingAPIs'] });
 ```
 
-## Pros and cons of a hash-based router
+### 1.1 Pros and Cons of a Hash-Based Router
 
 The hash fragment in a url is not considered part of the web address. The browser only uses the url parts preceding the hash when making an HTTP request to load an HTML page. In a Single Page Application that uses a hash-based router you can therefore do the following without the need for backend support:
 
-- You can use the browsers back and forward buttons to navigate through your application pages,
+- You can use the browsers back and forward buttons to navigate through the application's navigation history.
 - You can reload the browser and return to the same application page as specified by the hash. If the parameters required to fetch data are taken from the hash then that data is re-fetched automatically too.
 - You can bookmark an application url and return to the same page in the future.
 - You can send the url to a friend who then lands on the expected application page.
 
 The downside of a hash-based router is that the url looks 'funny' because of presence of a hash. It also possible to use a client-side router with regular urls (no hash), however that requires backend support to ensure that always the same `index.html` file loaded, regardless of the presence of additional parameter fragments in the url in addition to the base url.
 
-## Using the Router
+## 2. Using the Router
 
 The router resided in the `lib` folder and requires a table (actually, an array) with route definitions. This table is normally located in the `pages` folder.
 
@@ -45,6 +47,8 @@ function loadApp() {
   router.start(routes, pageRoot);
 }
 ```
+
+### 2.1 Routs table
 
 Here is an example of a basic routes table:
 
@@ -64,10 +68,10 @@ export default routes;
 | Property | Description |
 |----------|-------------|
 | `path` | The name of the page to load. |
-| `page` | The Page that should be called to create that page. |
+| `page` | The Page function that should be called to create that page. |
 | `default` | If `true`, this route will be used if there is no hash present in the browser's url or if the hash does not represent a known path. The router will use the first route it find marked as default. |
 
-## Router Methods
+### 2.2 Router Methods
 
 The router is created in `src/lib/router.js` and is exported as an object with the following methods:
 
@@ -78,7 +82,7 @@ The router is created in `src/lib/router.js` and is exported as an object with t
 }
 ```
 
-### Method: `router.start()`
+#### 2.2.1 Method: `router.start()`
 
 This method starts the router.
 
@@ -92,7 +96,7 @@ router.start(routes: Route[], pageRoot: HTMLElement, state?: object) => void
 | `routes` | An array of route definitions.|
 | `pageRoot` | The DOM element into which pages should be loaded. |
 
-### Method: `router.navigateTo()`
+#### 2.2.2 Method: `router.navigateTo()`
 
 To navigate dynamically to a specific page, we can use the `navigateTo()` method.
 
@@ -118,7 +122,57 @@ The `navigateTo()` method encodes the path and optional arguments into a string 
 >
 > If you are no longer interested in these messages (e.g. when deploying your app) change the minimum log level in `./src/constants.js` to `'fatal'`.
 
-### Dynamic Imports (Advanced Feature)
+### 2.3 Router Interactions
+
+The UML sequence diagram of Figure 1 below illustrates how the router responds to hash changes in the browser location object.
+
+![router-page-view](./readme-assets/router-page-view.png)<br>
+Figure 1: Router / Page / View Interactions
+
+Here's what happens:
+
+1. A `"hashchange"` event is fired, either because of a programmatic call to `router.navigateTo()` or because the user clicked on a link.
+
+2. The router looks up the hash fragment in the routes table and finds a matching route.
+
+3. From this point on, the process is exactly the same as what was described in the main README where the page was created directly from `apps.js`.
+
+### 2.4 Lifecycle Methods
+
+Lifecycle methods are optional methods of a Page object that, when present, will be called the router at the appropriate points in the lifecycle of a Page object. The two possible lifecycle methods are described in the table below.
+
+<!-- prettier-ignore -->
+| Lifecycle Method  | Description |
+| ------- | ----------- |
+| `pageDidLoad` | Called just after the page has been created and inserted into the DOM. |
+| `pageWillUnload` | Called just prior to replacing the current page with the new one. |
+
+The UML sequence diagram of Figure 2 below illustrates how the router interacts with a Page object through the lifecycle methods.
+
+![lifecycle-methods](./readme-assets/lifecycle-methods.png)<br>
+Figure 2: Lifecycle Methods
+
+Here are the steps:
+
+1. A `"hashchange"` event trigger the router to find a matching route.
+
+2. The router call the Page creation function, in this example for the Foo page.
+
+3. The Page function returns an object that includes a `pageDidLoad` and a `pageWillUnload` property next to the required `root` property. These additional properties should be references to functions inside the Page object.
+
+4. The router insert the DOM subtree from the Page into document's DOM, replacing any previous page.
+
+5. The router then calls the `pageDidLoad()` lifecycle method of the Page object. Inside this method (called without any arguments), the Page can do whatever it wants. For example, it can initiate a network request to fetch data or start a timer.
+
+6. When navigating away from a page, a new `"hashchange"` event is fired.
+
+7. Before creating the new page, the router calls the `pageWillUnload()` lifecycle method of the Page object. Inside this method (called without any arguments), the Page can perform clean up task prior to being unloading. For example, it can stop a timer or cancel a network request.
+
+8. The router now calls the Page creation function for the new page.
+
+The remaining steps are the same as steps 3-5 above.
+
+### 2.5 Dynamic Imports (Advanced Feature)
 
 The router support the dynamic loading of pages at runtime. This means that the files containing the Page functions and all its dependencies is loaded when navigating to a page for the first time. If a page is never visited its files are never loaded by the browser. For larger applications this can considerably improve the load time of the application.
 

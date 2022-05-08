@@ -131,3 +131,7 @@ dist
 
 # Ignore secrets such as API keys
 .creadentials.js
+
+# Drawio temp files
+*.drawio.dtmp
+*.drawio.bkp

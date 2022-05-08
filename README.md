@@ -311,7 +311,31 @@ Let's now go through the various numbered steps in the diagram.
 
 10. The View's `update()` function can then use the new application state to update, as needed, its DOM subtree.
 
-### 3.4 Fetching data in a Page function
+### 3.4 Separation of Responsibilities between the Page and View
+
+The Page function is responsible for handling all user interactions with the page. It is also responsible for updating the application state when the user interacts with the page.
+
+The View function is responsible for creating the page's DOM subtree and updating it as needed when the application state changes.
+
+- DOM event handlers should reside in the Page function and be passed as props to the View function.
+- Network requests should be made by the Page function, either when the page is initially created or as a response to user interaction triggering a DOM event.
+- All communication from the Page to View should be done by the Page function calling the `update()` function of the View, passings an updated state object as an argument.
+- All communication from the View to Page should be done by means of event handlers that are passed as props to the View function.
+
+These principles form the core of the application architecture described here.
+
+Here is a list of examples of things that this architecture forbids:
+
+- Access DOM elements outside of the View function itself, e.g. by using `document.getElementById()` or `document.querySelector()`.
+- Handling events inside a View function itself.
+- Mutating or updating the state object inside a View function. Inside a View function it should be considered readonly.
+- Exporting anything other the `createXXXPage()` function from a Page module.
+- Exporting anything other than the `createXXXView()` function from a View module.
+- Adding more parameters than those documented here to the `createXXXPage()`, `createXXXView()` or `update()` functions.
+
+All the example applications in this repo strictly follow these principles.
+
+### 3.5 Fetching data in a Page function
 
 Here is an example (simplified) of the recommended practice for fetching data from a Web API inside a Page function.
 
@@ -369,15 +393,17 @@ For a fully worked-out example inspect the [Pokemons example](src/examples/pokem
 
 In this example, before calling `fetchData()` we update the local state object using ES7 [spread syntax](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax).
 
-> **Demystifying the Spread Syntax and Object Shorthand Notation**
->
-> `state = { ...state, loading: true, error: null };`
->
-> This statement assigns a new object to `state` variable by first spreading out its current properties and then adding the `loading` and `error` properties or overwriting them if they already existed in the `state` object: properties that are listed later in the object overwrite earlier ones.
->
-> `state = { ...state, error, loading: false };`
->
-> Here, ES6 object shorthand notation is used for the `error` property. It is equivalent to `error: error`.
+```js
+state = { ...state, loading: true, error: null };
+```
+
+This statement assigns a new object to `state` variable by first spreading out its current properties and then adding the `loading` and `error` properties or overwriting them if they already existed in the `state` object: properties that are listed later in the object literal overwrite earlier ones.
+
+```js
+state = { ...state, error, loading: false };
+```
+
+Here, ES6 object shorthand notation is used for the `error` property. It is equivalent to `error: error`.
 
 As you can see, the state object is not mutated directly. Instead, a new object is created and assigned to the `state` variable. This is a good practice which you will encounter again when you work with React.
 
