@@ -1,3 +1,7 @@
+:root {
+  --primary: #3f51b5;
+}
+
 body {
   margin: 0 auto;
   background-color: #f0f0f0;
@@ -72,7 +76,7 @@ select {
 
 .header {
   color: white;
-  background-color: #3f51b5;
+  background-color: var(--primary);
   padding: 8px 16px;
 }
 
@@ -300,7 +304,18 @@ From: https://code-boxx.com/rotate-spin-image-html-css/#sec-animate
 
 .floating-button {
   position: fixed;
-  bottom: 16px;
-  right: 16px;
+  width: 60px;
+  height: 60px;
+  bottom: 40px;
+  right: 40px;
+  background-color: var(--primary);
+  color: #fff;
+  border-radius: 50px;
+  text-align: center;
+  box-shadow: 2px 2px 3px #999;
   z-index: 1000;
+}
+
+.my-float {
+  margin-top: 22px;
 }

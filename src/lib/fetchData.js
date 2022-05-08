@@ -6,7 +6,7 @@
 import logger from './logger.js';
 
 const HTTP_STATUS_NO_CONTENT = 204;
-const cache = new Map();
+const cache = {};
 
 /**
  * Fetch data using an HTTP GET request and optionally cache the response.
@@ -16,7 +16,7 @@ async function fetchData(url, options = {}) {
   let data;
 
   if (options.cache) {
-    data = cache.get(url);
+    data = cache[url];
     if (data) {
       logger.silly('fetchData', 'cache hit:', url);
       return data;
@@ -36,7 +36,7 @@ async function fetchData(url, options = {}) {
   }
 
   if (options.cache) {
-    cache.set(url, data);
+    cache[url] = data;
   }
 
   return data;

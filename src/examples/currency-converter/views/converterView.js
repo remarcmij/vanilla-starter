@@ -20,14 +20,20 @@ function createConverterView(props) {
     <div class="ex__result-container ex__white-frame" id="resultContainer"></div>
   `;
 
+  // The handy `findElementsWithIds` function from the `lib` folder let us
+  // quickly find all child elements with `id` attributes. It saves us the
+  // trouble of repeatedly calling `root.querySelector()` ourselves.
   const { fromSelect, toSelect, amountInput, convertButton, resultContainer } =
     findElementsWithId(root);
 
+  // Attach the event listeners passed as props to the relevant elements.
   amountInput.addEventListener('input', props.onAmountInput);
   convertButton.addEventListener('click', props.onConvertClick);
   fromSelect.addEventListener('change', props.onFromSelectChange);
   toSelect.addEventListener('change', props.onToSelectChange);
 
+  // Internal function to populate the `fromSelect` and `toSelect` elements with
+  // the currency symbols.
   const populateSymbols = (symbols) => {
     symbols.forEach((symbol) => {
       const fromOption = document.createElement('option');
@@ -42,14 +48,22 @@ function createConverterView(props) {
     });
   };
 
+  // Internal function to add separator lines between the main and the other
+  // currency symbols.
   const addSeparator = (select) => {
     const separator = document.createElement('option');
-    separator.textContent = '---';
+    separator.textContent = '───';
     separator.disabled = true;
     select.appendChild(separator);
   };
 
-  const update = (state, prevState) => {
+  // We only need to populate the `fromSelect` and `toSelect` elements once.
+  // Because the `update()` function will be called many times, we will use this
+  // boolean variable to flag whether the select elements have already been
+  // populated.
+  let selectsPopulated = false;
+
+  const update = (state) => {
     if (state.loading) {
       resultContainer.innerHTML = 'Loading...';
       return;
@@ -57,27 +71,35 @@ function createConverterView(props) {
 
     resultContainer.innerHTML = '';
 
+    // In case of an error, render it and return early.
     if (state.error) {
       resultContainer.innerHTML = 'Oops, something went wrong!';
       console.error(state.error);
       return;
     }
 
+    // Update the amount input with the current amount value from the state
+    // object.
     amountInput.value = state.amount;
 
+    // Enable the Convert button only if we have selected `from` and `to`
+    // currencies and an amount value in the state object.
     if (state.from && state.to && state.amount) {
       convertButton.disabled = false;
     } else {
       convertButton.disabled = true;
     }
 
-    if (state.response && state.response !== prevState.response) {
+    // Render the conversion response if present in the state object.
+    if (state.response) {
       const resultView = createResultView(state.response);
       resultContainer.innerHTML = '';
       resultContainer.appendChild(resultView.root);
     }
 
-    if (state.symbols && state.symbols !== prevState.symbols) {
+    // Populate the `fromSelect` and `toSelect` elements with the currency
+    // symbols if not done so already.
+    if (state.symbols && !selectsPopulated) {
       const symbols = Object.keys(state.symbols);
       const mainSymbols = ['USD', 'EUR', 'GBP', 'JPY', 'CAD', 'AUD'];
       const otherSymbols = symbols.filter(
@@ -88,6 +110,7 @@ function createConverterView(props) {
       addSeparator(toSelect);
       populateSymbols(otherSymbols);
     }
+    selectsPopulated = true;
   };
 
   return { root, update };

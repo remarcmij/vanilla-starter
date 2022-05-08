@@ -6,12 +6,12 @@ function createConverterPage() {
   // Initialize local state object.
   let state = { amount: 1 };
 
-  // Internal helper function to update the state.
+  // Internal helper function to update the state and call the `update()` method
+  // of the view.
   const updateState = (updates) => {
-    const prevState = state;
-    state = { ...prevState, ...updates };
+    state = { ...state, ...updates };
     console.log('state', state);
-    view.update(state, prevState);
+    view.update(state);
   };
 
   // Set up some event handlers.
@@ -21,15 +21,15 @@ function createConverterPage() {
   };
 
   const onAmountInput = (event) => {
-    updateState({ amount: event.target.value });
+    updateState({ amount: event.target.value, response: null });
   };
 
   const onFromSelectChange = (event) => {
-    updateState({ from: event.target.value });
+    updateState({ from: event.target.value, response: null });
   };
 
   const onToSelectChange = (event) => {
-    updateState({ to: event.target.value });
+    updateState({ to: event.target.value, response: null });
   };
 
   // Pass the event handler as view props.
@@ -40,11 +40,12 @@ function createConverterPage() {
     onAmountInput,
   };
 
-  // Create the view.
+  // Create the view, passing the view props as argument.
   const view = createConverterView(viewProps);
 
-  // Called to make an API call to convert the specified amount
-  // from the 'from' currency to the 'to' currency.
+  // Internal function to make an API call for converting the specified amount
+  // from the 'from' currency to the 'to' currency. Called by the onConvertClick
+  // event handler.
   const convert = async (from, to, amount) => {
     updateState({ loading: true, error: null });
     try {
@@ -55,7 +56,9 @@ function createConverterPage() {
     }
   };
 
-  // Fetch the available currency symbols asynchronously.
+  // Fetch the available currency symbols asynchronously at page creation time.
+  // When the data comes back, we will update the state and let the view know
+  // to update itself.
   (async () => {
     updateState({ loading: true, error: null });
     try {

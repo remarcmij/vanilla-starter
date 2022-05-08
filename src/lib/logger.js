@@ -1,3 +1,8 @@
+/**
+ * This file is provided ready-made for use in your application by HackYourFuture.
+ * There should be no reason to make any changes to this file.
+ */
+
 // Log levels in increasing severity
 const LEVELS = ['silly', 'debug', 'info', 'warn', 'error', 'fatal', 'none'];
 

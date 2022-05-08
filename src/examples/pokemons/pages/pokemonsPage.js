@@ -13,12 +13,12 @@ async function fetchData(url) {
 function createPokemonsPage() {
   let state = {};
 
-  // Internal helper function to update the state.
+  // Internal helper function to update the state and call the `update()` method
+  // of the view.
   const updateState = (updates) => {
-    const prevState = state;
-    state = { ...prevState, ...updates };
+    state = { ...state, ...updates };
     console.log('state', state);
-    view.update(state, prevState);
+    view.update(state);
   };
 
   const getPokemons = async () => {
@@ -38,9 +38,6 @@ function createPokemonsPage() {
 
   const fetchImage = async (e) => {
     const url = e.target.value;
-    // if (!url) {
-    //   return;
-    // }
 
     updateState({ loading: true, error: null });
 
