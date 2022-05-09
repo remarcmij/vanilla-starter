@@ -37,7 +37,7 @@ function createLaureatePage(props) {
     state$.unsubscribe(view.update);
   };
 
-  return { root: view.root, pageDidLoad, pageWillUnload };
+  return { ...view, pageDidLoad, pageWillUnload };
 }
 
 export default createLaureatePage;

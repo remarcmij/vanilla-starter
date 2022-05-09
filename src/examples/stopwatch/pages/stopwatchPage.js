@@ -44,7 +44,7 @@ function createStopwatchPage() {
     onResetClick();
   };
 
-  return { root: view.root, pageWillUnload };
+  return { ...view, pageWillUnload };
 }
 
 export default createStopwatchPage;

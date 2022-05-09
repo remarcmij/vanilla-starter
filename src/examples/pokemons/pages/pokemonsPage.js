@@ -56,7 +56,7 @@ function createPokemonsPage() {
 
   const view = createPokemonsView(viewProps);
 
-  return { root: view.root };
+  return view;
 }
 
 export default createPokemonsPage;

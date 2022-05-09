@@ -69,7 +69,7 @@ function createConverterPage() {
     }
   })();
 
-  return { root: view.root };
+  return view;
 }
 
 export default createConverterPage;

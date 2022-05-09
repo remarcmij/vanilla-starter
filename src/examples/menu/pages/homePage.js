@@ -1,8 +1,7 @@
 import createHomeView from '../views/homeView.js';
 
 function createHomePage() {
-  const view = createHomeView();
-  return { root: view.root };
+  return createHomeView();
 }
 
 export default createHomePage;
