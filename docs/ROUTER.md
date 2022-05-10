@@ -1,6 +1,6 @@
 # Router
 
-File: [src/lib/router.js](src/lib/router.js)
+Code: [src/lib/router.js](../src/lib/router.js)
 
 ## 1. Introduction
 
@@ -48,7 +48,7 @@ function loadApp() {
 }
 ```
 
-### 2.1 Routs table
+### 2.1 Routes table
 
 Here is an example of a basic routes table:
 
@@ -114,19 +114,23 @@ router.navigateTo(path: string, ...params: any) => void
 | Parameter | Description |
 |-----------|-------------|
 | `path` | The path (i.e. name) of the page to load. |
-| `...args`  | Zero or more arguments to be passed to the target Page function. |
+| `...args`  | Zero or more arguments to be passed added to the location hash. |
 
 The `navigateTo()` method encodes the path and optional arguments into a string and assigns it to the browser's location hash. This will trigger hash change event that the router will pick up.
 
 > Tip: You can follow what happens in the application when you navigate through the app by opening the developer console and examining the debug messages. (_Always open the developer console when you are developing!_)
 >
-> If you are no longer interested in these messages (e.g. when deploying your app) change the minimum log level in `./src/constants.js` to `'fatal'`.
+> If you are no longer interested in these messages (e.g. when deploying your app) change the minimum log level in `./src/constants.js` to `'none'`.
 
 ### 2.3 Router Interactions
 
-The UML sequence diagram of Figure 1 below illustrates how the router responds to hash changes in the browser location object.
+The sequence diagram of Figure 1 below illustrates how the router responds to hash changes in the browser location object.
 
-![router-page-view](./readme-assets/router-page-view.png)<br>
+> From [Wikipedia](https://en.wikipedia.org/wiki/Sequence_diagram): _"A sequence diagram or system sequence diagram (SSD) shows object interactions arranged in time sequence in the field of software engineering. It depicts the objects involved in the scenario and the sequence of messages exchanged between the objects needed to carry out the functionality of scenario."_
+>
+> Note: The _"messages"_ referred to in this quotation are in our case function calls and function returns.
+
+![router-page-view](./assets/router-page-view.png)<br>
 Figure 1: Router / Page / View Interactions
 
 Here's what happens:
@@ -149,7 +153,7 @@ Lifecycle methods are optional methods of a Page object that, when present, will
 
 The UML sequence diagram of Figure 2 below illustrates how the router interacts with a Page object through the lifecycle methods.
 
-![lifecycle-methods](./readme-assets/lifecycle-methods.png)<br>
+![lifecycle-methods](./assets/lifecycle-methods.png)<br>
 Figure 2: Lifecycle Methods
 
 Here are the steps:
@@ -176,178 +180,4 @@ The remaining steps are the same as steps 3-5 above.
 
 The router support the dynamic loading of pages at runtime. This means that the files containing the Page functions and all its dependencies is loaded when navigating to a page for the first time. If a page is never visited its files are never loaded by the browser. For larger applications this can considerably improve the load time of the application.
 
-For an example where is this used see the file: [src/examples/nobelprize/pages/routes.js](src/examples/nobelprize/pages/routes.js).
-
-## Other Utility Functions
-
-A couple of other ready-made utility functions are provided in the `src/lib` folder that you may want to consider to use in your own application.
-
-### Function: `fetchData()`
-
-File: [src/lib/fetchData.js](src/lib/fetchData.js)
-
-```js
-fetchData(url: string, options?: object) => Promise<any>
-```
-
-Fetches JSON data from the Web API specified by the `url` parameter, optionally caching the response.
-
-<!-- prettier-ignore -->
-| Parameter | Description |
-|-----------|-------------|
-| `url` | The URL to fetch JSON data from. |
-| `options` | Optional. If provided it should be an object with a boolean `cache` property that indicates whether the responses should be cached, e.g. `{ cache: true }`. |
-
-If caching is enabled, subsequent requests to the same `url` are served from the cache. This is particularly useful when using Web APIs that use request rate limiting.
-
-Example usage: [./src/examples/github-2/fetchers/reposFetcher.js](src/examples/github-2/fetchers/reposFetcher.js)
-
-### Function: `findElementsWithIds()`
-
-File: [src/lib/findElementsWithIds.js](src/lib/findElementsWithIds.js)
-
-```ts
-findElementsWithIds(root: HTMLElement) => object
-```
-
-This function can be used in View functions to quickly find all DOM elements in the View's subtree that have an `id` attribute. It takes a singe parameter, the root of the subtree to search (normally `root`). It returns an object of DOM elements with the `id` as the key and the DOM element as the value. To enable dot notation to access properties of the object it is recommended to use _camelCase_ for the `id` attributes of the DOM elements instead of the usual _kebab-case_.
-
-Example usage: [src/examples/github-2/views/toolbarView.js](src/examples/github-2/views/toolbarView.js)
-
-### Function: `logger.XXX()`
-
-File: [src/lib/logger.js](src/lib/logger.js)
-
-```ts
-logger.XXX(label: any, ...args: any) => void
-```
-
-<!-- prettier-ignore -->
-| Parameter | Description |
-|-----------|-------------|
-| `label` | A string that identifies the originator of the log message. |
-| `...args` | Zero or more arguments that the logger directly passes on to `console.log()`. |
-
-You can use the following actual log methods (in order of increasing severity):
-
-<!-- prettier-ignore -->
-| Method | Description |
-|--------|-------------|
-| `logger.silly()` | The lowest level. For messages that you only want to show up when drilling deep down into your code. |
-| `logger.debug()` | For logging debug type messages. |
-| `logger.info()` | For logging informational messages. |
-| `logger.warning()` | For logging application warnings. |
-| `logger.error()` | For logging application errors. |
-| `logger.fatal()` |For logging fatal errors that prevent your app from continuing normally. |
-| `logger.setLevel(minLevel)` | Sets the minimum level for the logger. The `minLevel` value must be one of `'silly'`, `'debug'`, `'info'`, `'warning'`, `'error'`, `'fatal'` or `'none'`. To suppress all log messages, use the value `'none'` (default). |
-
-You can use this family of log methods to log information to the developer console. Log messages with a level below the `minLevel` will not show up.
-
-Example usage: [src/examples/stopwatch/pages/stopwatchPage.js](src/examples/stopwatch/pages/stopwatchPage.js)
-
-### Function: `createObservableState()` (Advanced Feature)
-
-File: [src/lib/observableState.js](src/lib/observableState.js)
-
-```ts
-createObservableState() => {
-  subscribe: (subscriber: Function) => void,
-  unsubscribe: (subscriber: Function) => void,
-  update: (updates: object) => object,
-  get: () => object
-}
-```
-
-This function creates an "observable state" and returns an object containing four methods to use that state. It is best used in combination with the router to simplify sending state updates to View functions.
-
-Here is how it is typically used:
-
-File: [src/examples/github-2/state.js](src/examples/github-2/state.js)
-
-```js
-import logger from '../../lib/logger.js';
-import createObservableState from '../../lib/observableState.js';
-
-const state$ = createObservableState();
-
-// Subscribe to log state changes to the console
-state$.subscribe((state) => {
-  logger.debug('state', state);
-});
-
-export default state$;
-```
-
-Here, an observable state object is created that can be imported by other modules. The state object is then used to update the state of the application. Note the use of the use of a `$` sign to indicate (by convention) that the variable is an observable state.
-
-During development, it is helpful to be able see state changes in the console as the application is running. This is done here by subscribing to the observable state and logging the state changes using the `logger.debug()` method.
-
-Here is an example of how the observable state is used in a Page function:
-
-```js
-import router from '../../../lib/router.js';
-import fetchRepos from '../fetchers/reposFetcher.js';
-import state$ from '../state.js';
-import createReposView from '../views/reposView.js';
-
-function createReposPage(props) {
-  const [organization = 'HackYourFuture'] = props.params;
-  state$.update({ organization });
-
-  // code omitted for brevity
-
-  const reposView = createReposView(viewProps);
-
-  const getData = async () => {
-    state$.update({ error: null, loading: true, repos: null });
-
-    try {
-      const repos = await fetchRepos(organization);
-      state$.update({ repos, loading: false });
-    } catch (error) {
-      state$.update({ error, loading: false });
-      router.navigateTo('gh-error');
-      return;
-    }
-  };
-
-  getData();
-
-  const pageDidLoad = () => {
-    state$.subscribe(reposView.update);
-  };
-
-  const pageWillUnload = () => {
-    state$.unsubscribe(reposView.update);
-  };
-
-  return { ...reposView, pageDidLoad, pageWillUnload };
-}
-```
-
-As you can see, the Page subscribes to the observable state when the page is loaded and unsubscribes just before the page is unloaded. The `pageDidLoad` and `pageWillUnload` "lifecycle" functions are called by the router at the appropriate times.
-
-To make these functions available to the router they must be added to the object that is returned by the Page function. Here, ES7 object spread syntax is used for that.
-
-### Function: `loadPage()`
-
-This function can be used as an alternative to the router to dynamically load different Page. It takes a two parameters, the name of the Page function to call and a state object that is passed to that function.
-
-The advantage of the function is that its implementation is very simply, in fact simple enough to fully list here:
-
-```js
-function loadPage(createPageFn, state) {
-  const page = createPageFn(state);
-
-  const appRoot = document.getElementById('app-root');
-  appRoot.innerHTML = '';
-  appRoot.appendChild(page.root);
-
-  // Reset scroll position to top of page
-  window.scrollTo(0, 0);
-}
-```
-
-The `github-1` example uses this `loadPage` utility function.
-
-The router however provides many benefits over this sample page loader and is therefore preferred.
+For an example where is this used see the file: [src/examples/nobelprize/pages/routes.js](../src/examples/nobelprize/pages/routes.js).

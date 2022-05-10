@@ -138,7 +138,14 @@ Finally, the `root` property of the Page object is used in `app.js` to insert th
 
 ## 4. Further Reading
 
-TODO
+<!-- prettier-ignore -->
+| Topic | Link |
+| ----------- | ---- |
+| Creating a multi-page SPA with a client-side router. | [Router](docs/ROUTER.md) |
+| Managing global application state in a multi-page SPA using Observable State. | [State](docs/STATE.md) |
+| Miscellaneous utility functions from the `lib` folder that you might find handy for use in your application. | [Utilities](docs/UTILITIES.md) |
+| An overview of the example applications from the `examples` folder that follow the described Application Architecture. | [Examples](docs/EXAMPLES.md) |
+| Recipes for common task in the Application Architecture. | [Recipes](docs/RECIPES.md) |
 
 ## 5. Using this Starter for Your Own Project
 
@@ -155,7 +162,7 @@ TODO
    import loadApp from './app.js';
    ```
 
-5. Load the application in your browser. You should now see the message from the Home Page: **It works!**.
+5. Load the application in your browser. You should now see the message from the Home Page as shown in Figure 1 of [3.2 Code Example](#32-code-example).
 
 6. Change the Page and View functions in the `src/pages` and `src/views` folders as required for your app.
 
