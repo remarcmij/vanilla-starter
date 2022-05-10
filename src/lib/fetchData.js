@@ -6,40 +6,35 @@
 import logger from './logger.js';
 
 const HTTP_STATUS_NO_CONTENT = 204;
-const cache = {};
 
-/**
- * Fetch data using an HTTP GET request and optionally cache the response.
- * @param {string} url The url to fetch from.
- */
-async function fetchData(url, options = {}) {
-  let data;
-
-  if (options.cache) {
-    data = cache[url];
-    if (data) {
-      logger.silly('fetchData', 'cache hit:', url);
-      return data;
-    }
-    logger.silly('fetchData', 'cache miss:', url);
-  }
-
+export async function fetchData(url) {
   const res = await fetch(url);
   if (!res.ok) {
     throw new Error(`HTTP ${res.status}  ${res.statusText}`);
   }
 
-  if (res.status === HTTP_STATUS_NO_CONTENT) {
-    data = null;
-  } else {
+  let data = null;
+  if (res.status !== HTTP_STATUS_NO_CONTENT) {
     data = await res.json();
-  }
-
-  if (options.cache) {
-    cache[url] = data;
   }
 
   return data;
 }
 
-export default fetchData;
+const cache = {};
+
+export async function fetchCached(url) {
+  let data;
+
+  data = cache[url];
+  if (data) {
+    logger.silly('fetchData', 'cache hit:', url);
+    return data;
+  }
+  logger.silly('fetchData', 'cache miss:', url);
+
+  data = fetchData(url);
+  cache[url] = data;
+
+  return data;
+}

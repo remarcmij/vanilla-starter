@@ -1,4 +1,4 @@
-import fetchData from '../../../lib/fetchData.js';
+import { fetchCached } from '../../../lib/fetchData.js';
 import { BASE_URL } from '../constants.js';
 
 function fetchPrizes(query = {}) {
@@ -8,7 +8,7 @@ function fetchPrizes(query = {}) {
       return `${key}=${value}`;
     })
     .join('&');
-  return fetchData(`${BASE_URL}/nobelPrizes?${queryString}`, { cache: true });
+  return fetchCached(`${BASE_URL}/nobelPrizes?${queryString}`);
 }
 
 export default fetchPrizes;

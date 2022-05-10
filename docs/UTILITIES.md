@@ -4,6 +4,8 @@ A couple of other ready-made utility functions are provided in the `src/lib` fol
 
 ## 1. Function: `fetchData()`
 
+TODO: separate fetchCached() function
+
 File: [src/lib/fetchData.js](src/lib/fetchData.js)
 
 ```js
@@ -64,4 +66,3 @@ You can use the following actual log methods (in order of increasing severity):
 You can use this family of log methods to log information to the developer console. Log messages with a level below the `minLevel` will not show up.
 
 Example usage: [src/examples/stopwatch/pages/stopwatchPage.js](src/examples/stopwatch/pages/stopwatchPage.js)
-

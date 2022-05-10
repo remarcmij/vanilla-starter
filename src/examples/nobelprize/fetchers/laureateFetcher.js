@@ -1,8 +1,8 @@
-import fetchData from '../../../lib/fetchData.js';
+import { fetchCached } from '../../../lib/fetchData.js';
 import { BASE_URL } from '../constants.js';
 
 function fetchLaureate(id) {
-  return fetchData(`${BASE_URL}/laureate/${id}`, { cache: true });
+  return fetchCached(`${BASE_URL}/laureate/${id}`);
 }
 
 export default fetchLaureate;

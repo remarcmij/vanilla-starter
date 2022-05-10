@@ -42,7 +42,7 @@ function createPokemonsPage() {
     updateState({ loading: true, error: null });
 
     try {
-      const pokemon = await fetchData(url, { cache: true });
+      const pokemon = await fetchData(url);
       updateState({ pokemon, loading: false });
     } catch (error) {
       updateState({ error, loading: false });
