@@ -1,4 +1,4 @@
-function createHomeView() {
+function createHomeView(props) {
   const root = document.createElement('div');
   root.innerHTML = String.raw`
     <header class="header">
@@ -7,10 +7,25 @@ function createHomeView() {
       </div>
     </header>
     <div class="content-container whiteframe">
-      <h1>It works!</h1>
+      <h1>Counter: <span id="counter">0</span></h1>
+      <button id="decrementBtn">Decrement</button>
+      <button id="incrementBtn">Increment</button>
     </div>`;
 
-  return { root };
+  const counter = root.querySelector('#counter');
+
+  const decrementBtn = root.querySelector('#decrementBtn');
+  decrementBtn.addEventListener('click', props.onDecrement);
+
+  const incrementBtn = root.querySelector('#incrementBtn');
+  incrementBtn.addEventListener('click', props.onIncrement);
+
+  const update = (state) => {
+    counter.textContent = state.count;
+    decrementBtn.disabled = state.count <= 0;
+  };
+
+  return { root, update };
 }
 
 export default createHomeView;

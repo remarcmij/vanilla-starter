@@ -1,6 +1,8 @@
-## 3. Advanced Application Architecture
+# Starter Application Architecture
 
-In the sections that follow we will outline architectural patterns and techniques that will help you to build a robust, maintainable Single Page Application, using concepts inspired by libraries/frameworks such as React and Angular.
+## 1. Introduction
+
+In the sections that follow we will outline architectural patterns and techniques that will help you to build a robust, maintainable Single Page Application with vanilla JavaScript, using concepts inspired by libraries/frameworks such as React and Angular.
 
 > **Application Architecture Definition**
 >
@@ -12,30 +14,84 @@ In the sections that follow we will outline architectural patterns and technique
 
 An application architecture also serves as a common vocabulary to communicate with other developers and teams. Those developers and teams will expect to find these rules and patterns being applied in in your application. To meet these expectations it is important for you to follow them as closely as possible.
 
-For architecture at hand, we will outline patterns for standard Page and View functions, standard techniques for handling events and for fetching data.
+For architecture at hand, we will outline patterns for standard Page and View functions, how to manage application state and standard techniques for handling events and for fetching data.
 
-Let's start with Page functions.
+## 2. The Page/View/State Model
 
-### 3.1 Page functions: `createXXXPage()`
+Figure 1 below gives a high-level overview of the core application architecture used throughout this starter repo. We will refer to it as the **Page/View/State Model**. It is simplest form, an application following this architecture is made up of a Page object, a View objects, and a state object. All three object are regular JavaScript objects.
 
-A Page function creates an application page and is responsible for handling user interactions for that page. In an application that consist of a single page only there will be just one Page function. It will typically be called in the main `app.js` file where its returned DOM subtree will be added to the existing root `<div>` element in the `index.html` file.
+![page-view-state-model](./assets/page-view-state-model.png)<br>
+Figure 1: **The Page / View / State Model**
 
-In an application with multiple client-side pages a **router** manage the calling of a Page function whenever the user navigates to the corresponding page. After the page is created, the router loads its DOM subtree into the DOM, replacing the DOM subtree of any previous page. This somewhat advanced subject will be described in a separate README. For simple applications that consist of a single page only, not router is required.
+### 2.1 Code Example
 
-A Page function is responsible for handling all user interactions for the page and for initiating and handling the fetching of data from Web APIs where required.The creation and updating of DOM elements is normally delegated to a companion View function, which is then called by the Page function.
+Perhaps the quickest way to understand the Page/View/State Model is to look at a code example for a mini application that uses this model. In this mini application, the **Increment** button increments the counter by 1 and the **Decrement** button decrements it by 1. The application prevents the counter to go below 0 by disabling the **Decrement** button when the counter is 0.
 
-The name of a Page function is prescribed by this architecture as should follow the naming convention **create**_XXX_**Page**, where _XXX_ is the name of the Page. Example: `createAboutPage`. Each Page function should be in a separate file, named `xxxPage.js`, e.g., `aboutPage.js`.
+![mini-app-ui](./assets/mini-app-ui.png)<br>
+Figure 2: **Mini Application UI**
+
+Figure 3 below gives an overview of the complete JavaScript code for this mini application. We will look in detail at the `homePage.js` and `homeView.js` files later in the next section. The other two files should speak for themselves.
+
+![mini-app](./assets/mini-app-code.png)<br>
+Figure 3: **Mini Application JavaScript Files**
+
+### 2.1.1 homeView.js
+
+Code: [homeView.js](../src/views/homeView.js)
+
+It is perhaps best to start our discussion with the View object of our Page/View/State model. In our mini application example this object is created in the `homeView.js` file. This file exports a single function named `createHomeView()` which takes a single argument `props` (short for _properties_) and returns a View object: `{ root, update }`.
+
+The names `homeView.js` and `createHomeView` are chosen to conform to a naming standards prescribed by the Application Architecture used throughout this starter repo. The generic forms for a View are **xxxView.js** for the filename and **createXXXView** for the function, where **XXX** is the name of the Page/View.
+
+The **createXXXView()** function, which we will simply refer to as "View function" from this point forward, does the following:
+
+1. It creates a subtree of DOM elements which will be used to render the page.
+2. It attaches event handler functions passed to it through the `props` argument to the relevant DOM element.
+3. It defines an internal `update()` function which can be called by the Page object to update the DOM elements of the view.
+4. It returns an object that holds references to both the root element of DOM subtree and to the internal `update()` function. This object is called a View object.
+
+Note that the View function creates a closure: the internal `update()` function has access to all the variables in the scope of the View function.
+
+### 2.1.1 homePage.js
+
+Code: [homePage.js](../src/pages/homePage.js)
+
+This file exports a function that returns a Page object, which represents an application page. A Page function should again, by convention, conform to the naming standard **createXXXPage** for the function name and **xxxPage.js** for its filename.
+
+In the simplest scenario (as is the case here), a Page object is identical to a View object. That's why the `createHomePage()` function in our example simply return the View object returned by `createHomeView()`.
+
+Let's walk through the code a little bit more closely.
+
+<!-- prettier-ignore -->
+| Line(s) | Description |
+| :-----: | ----------- |
+| 1 | The Page function is the one and only importer of the View function. It can be regarded as its owner. |
+| 4 | The `state` object represents the State part of our Page/View/State model. In this example, our entire application state consists of just simple counter, which is initialized to 0. |
+| 6-13 | The `onIncrement()` and `onDecrement()` functions are event handler functions that will be passed to the View through its `props` argument (here called `viewProps`. The update the state object and call the View's `update()` method to let the View update its DOM subtree. |
+| 7, 12 | A special note with respect to how the state is updated. This is done by creating a new `state` object rather than mutating the existing one (e.g. by using `state.counter++`). While this may seem overly complex here, it becomes essential when using libraries such as React. That's why it is useful to get used to this practice from the start. |
+| 16-17 | The event handler functions are passed to the View function through the `viewProps` argument. |
+| 19 | After the View is created, the View's `update()` method is called. Since the counter starts at 0 we want to View to disable its **Decrement** button. This call to `update()` achieves that. |
+| 21 | We return a Page object which in this case is identical to the View object returned by the View function. |
+
+
+The `createHomePage()` function first creates a `state` object (line 4), which forms the State part of our Page/View/State model. In this example, our entire application state is formed by just simple counter, which is initialized to 0.
 
 The function signature for a Page function is as follows:
 
-> _Note: Throughout this README we will use the TypeScript syntax for presenting function definitions. This syntax is similar to the Intellisense that you can see when you hover the mouse pointer over a function header in VSCode._
-
 ```js
-createXXXPage(props: object) => {
+function createXXXPage(): {
   root: HTMLElement,
   update?: () => void,
 }
 ```
+
+A Page object is responsible for handling user interactions for that page and for managing the fetching of data from Web APIs, when required. In an application that consist of a single page only there will be just one Page function.
+
+A Page function is not responsible for creating and updating the DOM elements for a page. This is the responsibility of its companion View object.
+
+A Page function is responsible for handling all user interactions for the page and for initiating and handling the fetching of data from Web APIs where required.The creation and updating of DOM elements is normally delegated to a companion View function, which is then called by the Page function.
+
+The name of a Page function is prescribed by this architecture as should follow the naming convention **create**_XXX_**Page**, where _XXX_ is the name of the Page. Example: `createAboutPage`. Each Page function should be in a separate file, named `xxxPage.js`, e.g., `aboutPage.js`.
 
 <!-- prettier-ignore -->
 | Parameter | Description |
@@ -83,7 +139,7 @@ function createFooPage() {
 }
 ```
 
-### 3.2 View functions: `createXXXView()`
+## 3. View Functions: `createXXXView()`
 
 The name of a View function should follow the naming convention **create**_XXX_**View**, where _XXX_ is the name of the View. Example: `createAboutView`. Each View function should be in a separate file, named `xxxView.js`, e.g., `aboutView.js`.
 
@@ -137,7 +193,7 @@ A View function may call other View functions and incorporate their root element
 
 > _What you should **not** do is access DOM element (e.g. by using `document.getElementById()` or `document.querySelector()`) outside of the View function where the DOM elements are created. This would be a violation of the architectural principles outlined here and because of it breaking the rules, introduce a potential maintenance issue. If you find yourself needing to violate this rule you probably need to rethink the way you have organized your pages and views._
 
-#### 3.2.1 The `update()` callback
+### 3.1 The `update()` callback
 
 A View function can return an optional `update()` callback function that can be called to update the view after changes have been made to the application state. The application state is held in a JavaScript object that is passed as argument to the `update()` callback.
 
@@ -165,7 +221,7 @@ In this example the `update()` function is used to update the value of the `<inp
 
 Here, the `input` element is completely controlled through code (in React this is called a _controlled component_). For instance, the `onInput()` event handler could ignore any leading and/or trailing spaces and convert any uppercase letters to lowercase. Then, the `input` element's value attribute is updated accordingly.
 
-### 3.3 Page/View Interactions
+## 4. Page/View Interactions
 
 Figure 1 below represents a [UML Sequence Diagram](https://en.wikipedia.org/wiki/Sequence_diagram), illustrating the interactions between the Page and View objects. In this example the application consists of a single client-side page. (Multi-page applications require the use of a client-side router and will be discussed as an advanced topic in a separate README.)
 
@@ -186,7 +242,7 @@ The vertical dotted lines extending downwards from the boxes represent times lin
 
 The horizontal arrows depict function calls and returns between the interacting modules (called _"messages"_ in UML nomenclature).
 
-![page-view-interactions](./readme-assets/app-page-view.png)<br>
+![page-view-interactions](./assets/app-page-view.png)<br>
 Figure 1: **Page/View Interactions**
 
 Let's now go through the various numbered steps in the diagram.
@@ -241,7 +297,11 @@ Let's now go through the various numbered steps in the diagram.
 
 10. The View's `update()` function can then use the new application state to update, as needed, its DOM subtree.
 
-### 3.4 Division of Responsibilities between the Page and View
+### 5. Managing State
+
+...
+
+### 6. Division of Responsibilities between the Page and View
 
 The Page function is responsible for handling all user interactions with the page and for updating the application state with any changes resulting from these interactions. If provided, it should call the `update()` method of its subordinate View, passing the updated state object as argument.
 
@@ -268,7 +328,7 @@ Here is a list of examples of things that this architecture forbids:
 
 All the example applications in this repo strictly follow these principles.
 
-### 3.5 Fetching data in a Page function
+### 6. Fetching Data in a Page Function
 
 Here is an example (simplified) of the recommended practice for fetching data from a Web API inside a Page function.
 
@@ -301,7 +361,7 @@ function createFooPage() {
 
 Figure 2 below illustrates the recommended interactions between the Page and View objects when fetching data from a Web API.
 
-![fetch-data](./readme-assets/fetch-data.png)<br>
+![fetch-data](./assets/fetch-data.png)<br>
 Figure 2: **Fetching data in a Page function**
 
 These are the steps involved:
@@ -373,3 +433,15 @@ const update = (state) => {
 
 Full implementation: [src/examples/pokemons/views/pokemonsView.js](src/examples/pokemons/views/pokemonsView.js)
 
+---
+
+<!-- prettier-ignore -->
+| Object | Description |
+| --- | --- |
+| Page | The Page object represents an application page and is the top-level UI object of the application. In a single-page<sup>1</sup> application it is created during application startup, i.e. in `app.js`. It is responsible for creating and updating its subordinate View object, handling DOM events passed up from its View, and for communicating with external APIs. |
+| View | The View object is the UI object that is responsible for creating and updating the DOM elements that represent the UI for the page. |
+| state | The state object is a data object that holds the current state of the application. It is updated by the Page in response to user interactions and sent to the View after the each update. The View can then inspect the state object and use its information to update its DOM elements. |
+
+Notes:
+
+1. The term "Single Page Application" (SPA) normally refers to a web application that loads a single HTML file, which, once loaded, is manipulated by means of JavaScript throughout the application's lifetime. An SPA can still appear to have multiple _client-side_ pages, but those pages are the result of JavaScript manipulation rather than being loaded as separate HTML files from a server. The creation of a multi-page SPA requires the use of client-side router, which is discussed in a [separate document](ROUTER.md) as an advanced topic. In the current document we will assume an SPA with a single client-side page.

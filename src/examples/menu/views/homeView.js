@@ -17,6 +17,11 @@ function createHomeView() {
         </thead>
         <tbody>
           <tr>
+            <td>Counter App</td>
+            <td>single page, local state</td>
+            <td><a href="#counter">Start Counter App</a></td>
+          </tr>
+          <tr>
             <td>Pokemon App</td>
             <td>single page, local state</td>
             <td><a href="#pokemon">Start Pokemon App</a></td>
