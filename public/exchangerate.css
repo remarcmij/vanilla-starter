@@ -53,10 +53,6 @@ select {
   margin: 0 8px;
 }
 
-a {
-  text-decoration: none;
-}
-
 .ex__spanner {
   flex: 1;
 }

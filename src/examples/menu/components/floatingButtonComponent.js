@@ -1,9 +1,12 @@
 import router from '../../../lib/router.js';
 import createFloatingButtonView from '../views/floatingButtonView.js';
 
-function createFloatingButtonComponent() {
+function createFloatingButtonComponent(props) {
   const onClick = () => router.navigateTo('menu');
-  const { root } = createFloatingButtonView({ onClick });
+  const { root } = createFloatingButtonView({
+    onClick,
+    faClass: props.faClass,
+  });
 
   const onHashChange = () => {
     if (window.location.hash === '#menu') {

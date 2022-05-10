@@ -15,7 +15,9 @@ function loadApp() {
   pageRoot.id = 'page-root';
   appRoot.appendChild(pageRoot);
 
-  const floatingButtonComponent = createFloatingButtonComponent();
+  const floatingButtonComponent = createFloatingButtonComponent({
+    faClass: 'fa fa-house',
+  });
   appRoot.appendChild(floatingButtonComponent.root);
 
   // Start the router

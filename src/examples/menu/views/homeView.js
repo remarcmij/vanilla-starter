@@ -10,41 +10,48 @@ function createHomeView() {
       <table style="width:100%">
         <thead>
           <tr>
-            <th>Example</th>
+            <th>Example Name</th>
             <th>Features</th>
-            <th>Link</th>
+            <th>Start Example</th>
+            <th>Example Code</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td>Counter App</td>
+            <td>Counter</td>
             <td>single page, local state</td>
-            <td><a href="#counter">Start Counter App</a></td>
+            <td><a href="#counter">Counter</a></td>
+            <td><a href="https://github.com/remarcmij/vanilla-starter/tree/main/src" target="_blank">src</a></td>
           </tr>
           <tr>
-            <td>Pokemon App</td>
+            <td>Pokemons</td>
             <td>single page, local state</td>
-            <td><a href="#pokemon">Start Pokemon App</a></td>
+            <td><a href="#pokemon">Pokemons</a></td>
+            <td><a href="https://github.com/remarcmij/vanilla-starter/tree/main/src/examples/pokemons"        target="_blank">pokemons</a></td>
           </tr>
           <tr>
-            <td>Currency Converter App</td>
+            <td>Currency Converter</td>
             <td>single page, local state</td>
-            <td><a href="#currency">Start Currency Converter App</a></td>
+            <td><a href="#currency">Currency Converter</a></td>
+            <td><a href="https://github.com/remarcmij/vanilla-starter/tree/main/src/examples/currency-converter" target="_blank">currency-convertor</a></td>
           </tr>
           <tr>
-            <td>Stopwatch App</td>
+            <td>Stopwatch</td>
             <td>multi-page, local state</td>
-            <td><a href="#stopwatch">Start Stopwatch App</a></td>
+            <td><a href="#stopwatch">Stopwatch</a></td>
+            <td><a href="https://github.com/remarcmij/vanilla-starter/tree/main/src/examples/stopwatch" target="_blank">stopwatch</a></td>
           </tr>
           <tr>
             <td>GitHub App</td>
             <td>multi-page, global state</td>
-            <td><a href="#gh-repos">Start GitHub App</a></td>
+            <td><a href="#gh-repos">GitHub</a></td>
+            <td><a href="https://github.com/remarcmij/vanilla-starter/tree/main/src/examples/github" target="_blank">github</a></td>
           </tr>
           <tr>
-            <td>Nobel Prize App</td>
+            <td>Nobel Prize</td>
             <td>multi-page, global state, dynamic imports</td>
-            <td><a href="#nb-prizes">Start Nobel Prize App</a></td>
+            <td><a href="#nb-prizes">Nobel Prize</a></td>
+            <td><a href="https://github.com/remarcmij/vanilla-starter/tree/main/src/examples/nobelprize" target="_blank">nobelprize</a></td>
           </tr>
         </tbody>
       </table>
