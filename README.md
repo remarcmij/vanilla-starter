@@ -51,10 +51,10 @@ index.html
 | `src/lib` | This folder provides some ready-made utility functions for advanced features that may consider as your application grows. See [Further Reading](#4-further-reading) below for more information. |
 | `src/pages` | This folder contains functions that create pages to be loaded in the UI, for instance a Home page, an About page etc. Page functions return a subtree of DOM elements and contain logic to handle user interactions and, optionally, logic for fetching data from Web APIs.<br>In a multi-page application<sup>1</sup> a Page function is called by the router when the user navigates to the corresponding page. In a single-page application the one and only Page function is called from within `app.js`. |
 | `src/views` | This folder contains functions called upon by Page functions to create a subtree of DOM elements and update the subtree as the application state changes. |
-| src/`app.js` |  This file contains the start-up code for the app. When using the router, this is where it is created and attached to the DOM. |
-| `constants.js` | This file contains constants for use throughout your application. |
-| src/`index.js` | This file contains the main entry point for your application. |
-| src/`.credentials.js` | This file can be used to define constants for secret API keys, etc. It is listed in `.gitignore` and will therefore not be added to your repo, which is particularly important if you publish your repo on GitHub. This file is not included in the repo (exactly because it is git-ignored), but an example is provided as `.credentials.example.js` |
+| `src/app.js` |  This file contains the start-up code for the app. When using the router, this is where it is created and attached to the DOM. |
+| `src/constants.js` | This file contains constants for use throughout your application. |
+| `src/index.js` | This file contains the main entry point for your application. |
+| `src/.credentials.js` | This file can be used to define constants for secret API keys, etc. It is listed in `.gitignore` and will therefore not be added to your repo, which is particularly important if you publish your repo on GitHub. This file is not included in the repo (exactly because it is git-ignored), but an example is provided as `.credentials.example.js` |
 | `index.html` | The one and only HTML file for the application. It includes a `<div>` element that serves as the root element for our application. It also loads the `app.js` file using a `<script>` tag with a `type="module"` attribute so that you can use ES6 `import` and `export` keywords to load additional modules.
 
 Notes:
