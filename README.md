@@ -136,6 +136,42 @@ Let's walk through the code a little bit more closely.
 
 Finally, the `root` property of the Page object is used in `app.js` to insert the DOM subtree of the Page into the document's DOM.
 
+### 3.3 Division of Responsibilities: Page vs View
+
+> All the example applications in this repo strictly follow the principles outlined in this section. There should be no reason to deviate from these principles in your own application.
+
+#### 3.3.1 Page
+
+- The Page function is responsible for handling all user interactions with the page and for updating the state object with any changes caused by these interactions. If appropriate, it should call the `update()` method of its subordinate View, passing the updated state object as argument.
+
+- DOM event handlers should be defined as internal functions of the Page function and be passed as props to the View function.
+
+- Network requests should be handled by the Page function, either when the page is initially created and/or as a response to user interactions with the page.
+
+#### 3.3.2 View
+
+- The View function is responsible for creating the page's DOM subtree and, if appropriate, for updating the DOM subtree depending on the state passed to its `update()` method.
+
+#### 3.3.3 Interactions
+
+- All communication from the Page to View should be done from within the Page function by calling the `update()` function of the View, passing an updated state object as an argument.
+
+- All communication from the View to Page should be done by means of event handlers, passed as props to the View function. For example, in Figure 4 below, a `"click"` event handler inside the Page function, passed as props to the View, is called when a `"click"` event is triggered by an element of the View's DOM subtree.
+
+![page-view-interaction](docs/assets/page-view-interaction.png)<br>
+Figure 4: **Page/View Interaction**
+
+#### 3.3.4 Architectural Violations
+
+Here is a list of examples of things that would considered architectural violations:
+
+- Access DOM elements outside of the View function, e.g. by using `document.getElementById()` or `document.querySelector()`. The View function should have exclusive access to its DOM subtree.
+- Handling events inside a View function. Events should be handled inside the Page function.
+- Mutating or updating the state object inside a View function. Inside a View function it should be considered readonly.
+- Exporting anything other the `createXXXPage()` function from a Page module.
+- Exporting anything other than the `createXXXView()` function from a View module.
+- Adding more parameters than those documented here to the `createXXXPage()`, `createXXXView()` or `update()` functions.
+
 ## 4. Further Reading
 
 <!-- prettier-ignore -->
@@ -159,6 +195,7 @@ Finally, the `root` property of the Page object is used in `app.js` to insert th
 
    ```js
    // import loadApp from './examples/menu/app.js';
+   // ...
    import loadApp from './app.js';
    ```
 
@@ -168,4 +205,4 @@ Finally, the `root` property of the Page object is used in `app.js` to insert th
 
 7. In `src/index.html`, modify the contents of the `<head>` as you see fit, taking out no longer needed style sheets and adding in your own.
 
-8. If in doubt how to achieve some specific functionality, examine the `examples` folder for possible approaches.
+That's it! You should now be able to build your own SPA using the Application Architecture described in this document.

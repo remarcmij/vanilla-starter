@@ -1,22 +1,30 @@
 # Router
 
-Code: [src/lib/router.js](../src/lib/router.js)
+Implementation: [src/lib/router.js](../src/lib/router.js)
 
 ## 1. Introduction
 
-The purpose of a (client-side) router in a Single Page Application is to let the client programmatically load different application 'pages' into the DOM by manipulating the browser's location url. In a hash-based router, as used in this repo, the specific page to load is determined by the `hash` fragment of the `url`. In a `url`, a hash fragment is the part that starts with a `#` mark. Everything following the `#` mark is considered part of the hash.
+This document describes a client-side router that can be used to navigate between pages in an SPA with multiple client-side pages.
+
+The purpose of a client-side router is to let the client programmatically load different application 'pages' into the DOM by manipulating the browser's location url. In a hash-based router, as provided in this repo, the specific page to load is determined by the `hash` fragment of the `url`. In a `url`, a hash fragment is the part that starts with a `#` mark. Everything following the `#` mark is considered part of the hash.
 
 We can use the hash to specify the name of the page to load and can optionally embed parameters to pass to the Page function. It can be said that the `url` when used in such a way becomes part of the application state.
 
-A hash-based router uses an event listener to listen for hash changes and responds to those changes by loading a matching page (see **Implementation** below).
+A hash-based router uses an event listener to listen for hash changes and responds to those changes by loading a matching page.
 
-Example of a hash with a page name and two parameters.
+Here is an example of how we can use a hash to specify a page name and two parameters.
 
-```text
+```console
 #repo/HackYourFuture/UsingAPIs
 ```
 
-This hash identifies a page named `repo` and two string parameters to be passed to the Page function: `"HackYourFuture"` and `"UsingAPIs"`. The router will call the corresponding Page function effectively like this:
+The complete url could look like this:
+
+```console
+https://remarcmij.github.io/vanilla-starter/#repo/HackYourFuture/UsingAPIs
+```
+
+The hash identifies a page named `repo` and two string parameters to be passed to the Page function: `"HackYourFuture"` and `"UsingAPIs"`. The router will respond to the `"hashchange"` event by calling the corresponding Page function, effectively like this:
 
 ```js
 createRepoDetailPage({ props: ['HackYourFuture', 'UsingAPIs'] });
@@ -24,9 +32,9 @@ createRepoDetailPage({ props: ['HackYourFuture', 'UsingAPIs'] });
 
 ### 1.1 Pros and Cons of a Hash-Based Router
 
-The hash fragment in a url is not considered part of the web address. The browser only uses the url parts preceding the hash when making an HTTP request to load an HTML page. In a Single Page Application that uses a hash-based router you can therefore do the following without the need for backend support:
+The hash fragment in a url is not considered part of the web address. The browser only uses the url parts preceding the hash when making an HTTP request to load an HTML page. Changing just the hash part of the url will not cause the browser to load a new HTML file. In a Single Page Application that uses a hash-based router you can therefore do the following without the need for backend support:
 
-- You can use the browsers back and forward buttons to navigate through the application's navigation history.
+- You can use the browsers back and forward buttons to navigate through the application's navigation history without triggering page reloads.
 - You can reload the browser and return to the same application page as specified by the hash. If the parameters required to fetch data are taken from the hash then that data is re-fetched automatically too.
 - You can bookmark an application url and return to the same page in the future.
 - You can send the url to a friend who then lands on the expected application page.
@@ -36,6 +44,8 @@ The downside of a hash-based router is that the url looks 'funny' because of pre
 ## 2. Using the Router
 
 The router resided in the `lib` folder and requires a table (actually, an array) with route definitions. This table is normally located in the `pages` folder.
+
+The routes table is passed to the router in `app.js` by calling its `start` method. The second parameter to `router.start()` is the DOM element where pages should be "mounted".
 
 ```js
 import router from './lib/router.js';
@@ -131,7 +141,7 @@ The sequence diagram of Figure 1 below illustrates how the router responds to ha
 > Note: The _"messages"_ referred to in this quotation are in our case function calls and function returns.
 
 ![router-page-view](./assets/router-page-view.png)<br>
-Figure 1: Router / Page / View Interactions
+Figure 1: **Router / Page / View Interactions**
 
 Here's what happens:
 
@@ -139,11 +149,53 @@ Here's what happens:
 
 2. The router looks up the hash fragment in the routes table and finds a matching route.
 
-3. From this point on, the process is exactly the same as what was described in the main README where the page was created directly from `apps.js`.
+3. The router call the corresponding Page function to create a new page.
+
+4. The `createFooPage()` function first sets up any view props (a JavaScript object) as needed for the View, such as event handlers for the View's DOM elements. In the diagram two event handler are shown: `onClick()` which will handle a `"click"` event and `onInput()` which will handle an `"input"` event.
+
+   The `createFooPage()` then calls the `createFooView()` function imported from `fooView.js` to create the View, passing the event handlers as view props as illustrated in this code snippet.
+
+   ```js
+   const onClick = () => { ... };
+   const onInput = () => { ... };
+   const viewProps = { onClick, onInput };
+   const view = createFooView(viewProps);
+   ```
+
+5. The `createFooView()` function creates the View's DOM subtree, attaches any event listener and, if needed, sets up an `update()` callback function that can be called to update the View DOM subtree whenever the application state changes.
+
+   ```js
+   function createFooView(props) {
+     const root = ...
+     ...
+     myButton.addEventListener('click', props.onClick);
+     myInput.addEventListener('input', props.onInput);
+
+     const update = (state) => {
+       ...
+     };
+
+     return { root, update }
+   }
+   ```
+
+6. The `createFooView()` function returns an object with the following properties:
+
+   <!-- prettier-ignore -->
+   | Property | Description |
+   |----------|-------------|
+   | `root` | The `root` element of the DOM subtree created by the View function.|
+   | `update` | The callback function as described above. |
+
+7. The `createFooPage()` function, in its turn, returns a Page object that includes the `root` property from the View.
+
+8. The router inserts the `root` element of the View's subtree into the document's DOM, replacing the DOM subtree of the previous page.
+
+From that point on the Page and the View interact as described previously.
 
 ### 2.4 Lifecycle Methods
 
-Lifecycle methods are optional methods of a Page object that, when present, will be called the router at the appropriate points in the lifecycle of a Page object. The two possible lifecycle methods are described in the table below.
+Lifecycle methods are optional methods provided in a Page object that, when present, will be called the router at the appropriate points in the lifecycle of a Page. The two possible lifecycle methods are:
 
 <!-- prettier-ignore -->
 | Lifecycle Method  | Description |
@@ -154,7 +206,7 @@ Lifecycle methods are optional methods of a Page object that, when present, will
 The UML sequence diagram of Figure 2 below illustrates how the router interacts with a Page object through the lifecycle methods.
 
 ![lifecycle-methods](./assets/lifecycle-methods.png)<br>
-Figure 2: Lifecycle Methods
+Figure 2: **Lifecycle Methods**
 
 Here are the steps:
 
@@ -162,7 +214,7 @@ Here are the steps:
 
 2. The router call the Page creation function, in this example for the Foo page.
 
-3. The Page function returns an object that includes a `pageDidLoad` and a `pageWillUnload` property next to the required `root` property. These additional properties should be references to functions inside the Page object.
+3. The Page function returns an object that includes a `pageDidLoad` and a `pageWillUnload` property next to the required `root` property. These additional properties should be references to functions inside the Page function.
 
 4. The router insert the DOM subtree from the Page into document's DOM, replacing any previous page.
 
@@ -170,9 +222,9 @@ Here are the steps:
 
 6. When navigating away from a page, a new `"hashchange"` event is fired.
 
-7. Before creating the new page, the router calls the `pageWillUnload()` lifecycle method of the Page object. Inside this method (called without any arguments), the Page can perform clean up task prior to being unloading. For example, it can stop a timer or cancel a network request.
+7. Before creating the new page, the router calls the `pageWillUnload()` lifecycle method of the current Page. Inside this method (called without any arguments), the Page can perform clean up task prior to being unloading. For example, it could stop a timer or cancel a network request.
 
-8. The router now calls the Page creation function for the new page.
+8. The router now calls the Page function for the new page.
 
 The remaining steps are the same as steps 3-5 above.
 
