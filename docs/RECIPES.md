@@ -1,18 +1,20 @@
 # Recipes
 
-## 1. Page Functions
+## 1. General
 
-### 1.1 Updating the state object and calling update()
+### 1.1 Function declarations
 
-In the [`homePage.js`](../src/pages/homePage.js) starter code (see Original code below) we repeatedly update the state object and call the `update()` function from the View to update to let it update it DOM elements.
+Throughout the example applications in this repo all functions at the file/module level have been defined using regular function declarations while arrow function syntax has been used for internal functions. This is a personal preference of the author. Whether you do the same or not is up to you. However, whatever approach you take, it is important that you do it consistently throughout your code.
 
-To eliminate this repetition we can introduce a small helper function (see Improved code). This `updateState()` helper function takes as an argument an object that just contains the updates that we want to make to the state. Now that we have a single point where these updates are made to the state, we can also slip in a `console.log` that will print the state object to the console each time it is updated. Because the state object plays such a central role in the app, logging it each time it is updated makes easier for us to see what is going on during development.
+## 2. Page Functions
 
-**Original code:**
+### 2.1 Updating the state object and calling update()
+
+In the [`homePage.js`](../src/pages/homePage.js) starter code (see [Original code](#211-original-code) below) we are updating the state object and calling the `view.update()` function in several places in our code to let the View update it's DOM subtree.
+
+#### 2.1.1 Original code
 
 ```js
-import createHomeView from '../views/homeView.js';
-
 function createHomePage() {
   let state = { count: 0 };
 
@@ -33,15 +35,13 @@ function createHomePage() {
 
   return view;
 }
-
-export default createHomePage;
 ```
 
-**Improved code:**
+To eliminate this duplication we can introduce a small helper function (see [Improved code](#212-improved-code)). This `updateState()` helper function takes as an argument an object that contains only the updates that we want to make to the state. With this function being the single place where these states updates are made, we can now also slip in a `console.log` to print the state object to the console each time it is updated. Because the state object plays such a central role in the app, logging it each time it is updated makes easier for us during development to see what is going on.
+
+#### 2.1.2 Improved code
 
 ```js
-import createHomeView from '../views/homeView.js';
-
 function createHomePage() {
   let state = { count: 0 };
 
@@ -66,21 +66,21 @@ function createHomePage() {
 
   return view;
 }
-
-export default createHomePage;
 ```
 
-### 1.2 Accessing the value property of an \<input> element inside a Page function
+### 2.2 Accessing the value property of an \<input> element inside a Page function
 
-A Page function does not (should not) have access to the DOM elements of its View. This in an application of the _Separation of Concerns_ design principle that this Application Architecture adheres to. Given this restriction, how do we access the value of an `<input>` element?
+A Page function does not (and should not) have access to the DOM elements of its View. This _Separation of Concerns_ design principle is applied throughout the current Application Architecture. Given this restriction, how do we access the value of an \<input> element?
 
-The answer is for the Page function to passing an event handler to View that is called when an `"input"` event is fired on the element. The event handler can update the state. Whenever we need the value of the input field inside Page function, we can now access it from the state object.
+The answer is to let the Page function pass an event handler to the View for the `"input"` event of the element. The event handler can then update the state from `event.target.value`. Whenever we need the value of the input field inside the Page function, we can now access it from the state object. (See [Controlled Component](#221-controlled-component) below.)
 
-As the same time, the value of the input element can also be updated inside the View from the state object, through the View's `update()` method. This allow the event handler in the Page function to control the value of the input element.
+At the same time, the value of the input element can also be updated inside the View from the state object, through the View's `update()` method. This allows the event handler in the Page function to control the value of the input element.
 
 In the example below the `onFilterInput()` event handler trims the string value obtained from the event object and converts it to lowercase before updating the state. The net effect of this is that the value of the input element is always in lowercase, without leading or trailing whitespace. In React, this would be called a "controlled component".
 
-Note that the same technique can be applied for similar input elements, such as the `<select>` element.
+Note that the same technique can be applied for similar input elements, such as the \<select> element.
+
+#### 2.2.1 Controlled Component
 
 Full code: [reposPage.js](../src/examples/github/pages/reposPage.js)
 
@@ -138,7 +138,7 @@ function createToolbarView(props) {
 }
 ```
 
-### 1.3 Fetching data and showing a loading indicator
+### 2.3 Fetching data and showing a loading indicator
 
 Here is an example (simplified) of the recommended practice for fetching data from a Web API inside a Page function.
 
@@ -169,7 +169,7 @@ function createFooPage() {
 }
 ```
 
-Figure 1 below illustrates the recommended interactions between the Page and View objects when fetching data from a Web API.
+The sequence diagraM of Figure 1 below illustrates the necessary interactions between the Page and View objects when fetching data from a Web API.
 
 ![fetch-data](./assets/fetch-data.png)<br>
 Figure 1: **Fetching data in a Page function**
@@ -192,8 +192,8 @@ These are the steps involved:
 
 For a fully worked-out example inspect the [Pokemons example](../src/examples/pokemons/pages/pokemonsPage.js) in this repository.
 
-## 2. View functions
+## 3. View functions
 
-### 2.1 Finding DOM elements with `id` attributes
+### 3.1 How to avoid unnecessary DOM updates
 
-### 2.2 Avoid unnecessary DOM updates
+In some cases the `update()` method of a View may be called many times, for instance when using controlled components where each `"input"` event causes a state update.
