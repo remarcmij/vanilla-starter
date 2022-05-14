@@ -9,9 +9,10 @@ function createConverterPage() {
   // Internal helper function to update the state and call the `update()` method
   // of the view.
   const updateState = (updates) => {
+    const prevState = { ...state };
     state = { ...state, ...updates };
     console.log('state', state);
-    view.update(state);
+    view.update(state, prevState);
   };
 
   // Set up some event handlers.

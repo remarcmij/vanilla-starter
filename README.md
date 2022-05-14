@@ -177,11 +177,11 @@ Here is a list of examples of things that would considered architectural violati
 <!-- prettier-ignore -->
 | Topic | Link |
 | ----------- | ---- |
+| An overview of the example applications from the `examples` folder that follow the described Application Architecture. | [Examples](docs/EXAMPLES.md) |
+| Recipes for common tasks in the Application Architecture. | [Recipes](docs/RECIPES.md) |
+| Miscellaneous utility functions from the `lib` folder that you might find handy for use in your application. | [Utilities](docs/UTILITIES.md) |
 | Creating a multi-page SPA with a client-side router. | [Router](docs/ROUTER.md) |
 | Managing global application state in a multi-page SPA using Observable State. | [State](docs/STATE.md) |
-| Miscellaneous utility functions from the `lib` folder that you might find handy for use in your application. | [Utilities](docs/UTILITIES.md) |
-| An overview of the example applications from the `examples` folder that follow the described Application Architecture. | [Examples](docs/EXAMPLES.md) |
-| Recipes for common task in the Application Architecture. | [Recipes](docs/RECIPES.md) |
 
 ## 5. Using this Starter for Your Own Project
 

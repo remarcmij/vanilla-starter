@@ -4,7 +4,7 @@
 
 ### 1.1 Function declarations
 
-Throughout the example applications in this repo all functions at the file/module level have been defined using regular function declarations while arrow function syntax has been used for internal functions. This is a personal preference of the author. Whether you do the same or not is up to you. However, whatever approach you take, it is important that you do it consistently throughout your code.
+In the example applications of this repo all functions at the file/module level have been defined using regular function declarations while arrow function syntax has been used for internal functions. This is a personal preference of the author. Whether you do the same or not is up to you. However, whatever approach you take, it is important that you do this consistently throughout your code.
 
 ## 2. Page Functions
 
@@ -194,6 +194,34 @@ For a fully worked-out example inspect the [Pokemons example](../src/examples/po
 
 ## 3. View functions
 
-### 3.1 How to avoid unnecessary DOM updates
+### 3.1 Detecting state changes in `view.update()`
 
-In some cases the `update()` method of a View may be called many times, for instance when using controlled components where each `"input"` event causes a state update.
+Sometimes you only want to (re)render parts of a View if there is a change in the state object. For example, in the Currency Converter example, the \<select> elements need to be populated only once with symbols for the available currencies. This can only be done inside the `update()` method of the View, since these symbols need to fetched first and are thus not available when the View is initially created. But once the symbols are fetched and the \<select> are populated you don't want to do it again on subsequent calls to `update()`. One technique that allows you to prevent this is to check the current state against the previous state and only (re)render if there is a change if the relevant state property. For the Currency Converter example, this is the `state.symbols` property.
+
+First, we need to make sure that we make the previous state available to the `update()` method by passing it as a second parameter. In [converterPage.js](../src/examples/currency-converter/pages/converterPage.js) this is done as follows:
+
+```js
+function createConverterPage() {
+  // Initialize local state object.
+  let state = { amount: 1 };
+
+  // Internal helper function to update the state and call the `update()` method
+  // of the view.
+  const updateState = (updates) => {
+    const prevState = { ...state };
+    state = { ...state, ...updates };
+    console.log('state', state);
+    view.update(state, prevState); // pass previous state as second argument
+  };
+
+  //...
+}
+```
+
+Inside the `update()` method of the View ([converterView.js](../src/examples/currency-converter/views/converterView.js)), we check the current and previous values of the `symbols` property and only populate the \<select> elements if they are different.
+
+```js
+if (state.symbols && state.symbols !== prevState.symbols) {
+  // populate the <select> elements
+}
+```

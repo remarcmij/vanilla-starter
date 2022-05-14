@@ -57,13 +57,7 @@ function createConverterView(props) {
     select.appendChild(separator);
   };
 
-  // We only need to populate the `fromSelect` and `toSelect` elements once.
-  // Because the `update()` function will be called many times, we will use this
-  // boolean variable to flag whether the select elements have already been
-  // populated.
-  let selectsPopulated = false;
-
-  const update = (state) => {
+  const update = (state, prevState) => {
     if (state.loading) {
       resultContainer.innerHTML = 'Loading...';
       return;
@@ -99,7 +93,7 @@ function createConverterView(props) {
 
     // Populate the `fromSelect` and `toSelect` elements with the currency
     // symbols if not done so already.
-    if (state.symbols && !selectsPopulated) {
+    if (state.symbols && state.symbols !== prevState.symbols) {
       const symbols = Object.keys(state.symbols);
       const mainSymbols = ['USD', 'EUR', 'GBP', 'JPY', 'CAD', 'AUD'];
       const otherSymbols = symbols.filter(
@@ -110,7 +104,6 @@ function createConverterView(props) {
       addSeparator(toSelect);
       populateSymbols(otherSymbols);
     }
-    selectsPopulated = true;
   };
 
   return { root, update };
