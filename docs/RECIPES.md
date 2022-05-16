@@ -37,7 +37,7 @@ function createHomePage() {
 }
 ```
 
-To eliminate this duplication we can introduce a small helper function (see [Improved code](#212-improved-code)). This `updateState()` helper function takes as an argument an object that contains only the updates that we want to apply to the state. With this function being the single place where these states updates are made, we can now also slip in a `console.log` to print the state object to the console each time it is updated. Because the state object plays such a central role in the app, logging it each time it is updated makes easier for us during development to see what is going on.
+To eliminate this duplication we can introduce a small helper function (see [Improved code](#212-improved-code)). This `updateState()` helper function takes as an argument an object that contains only the updates that we want to apply to the state. With this function being the single place where these states updates are made, we can now also slip in a `console.log` to print the state object to the console each time it is updated. Because the state object plays such a central role in the app, logging it each time it is updated makes it easier for us during development to see what is going on.
 
 #### 2.1.2 Improved code
 
@@ -76,9 +76,9 @@ The answer is to let the Page function pass an event handler to the View for the
 
 At the same time, the value of the input element can also be updated inside the View from the state object, through the View's `update()` method. This allows the event handler in the Page function to control the value of the input element.
 
-In the example below the `onFilterInput()` event handler trims the string value obtained from the event object and converts it to lowercase before updating the state. The net effect of this is that the value of the input element is always in lowercase, without leading or trailing whitespace. In React, this would be called a "controlled component".
+In the example below the `onFilterInput()` event handler trims the string value obtained from the event object and converts it to lowercase before updating the state. The net effect of this is that the value of the input element will always be in lowercase, without leading or trailing whitespace. In React, this would be called a "controlled component".
 
-Note that the same technique can be applied for similar input elements, such as the \<select> element.
+Note that the same technique can also be applied for similar input elements, such as the \<select> element.
 
 #### 2.2.1 Controlled Component
 
@@ -169,26 +169,26 @@ function createFooPage() {
 }
 ```
 
-The sequence diagraM of Figure 1 below illustrates the necessary interactions between the Page and View objects when fetching data from a Web API.
+The sequence diagram below (Figure 1) illustrates the necessary interactions between the Page and View objects when fetching data from a Web API.
 
 ![fetch-data](./assets/fetch-data.png)<br>
 Figure 1: **Fetching data in a Page function**
 
 These are the steps involved:
 
-1. The user click on a button to to retrieve data from a Web API. The `"click"` event is handled by the `onClick` event handler inside the Page function.
+1. The user clicks on a button to retrieve data from a Web API. The `"click"` event is handled by the `onClick` event handler inside the Page function.
 
-2. The event handler updates the state object: it set the `loading` property to `true`, the `error` property to `null` (e.g. no error yet), and the `data` property to `null` (e.g. no data yet). The Page object will then call the `update()` method of the View object with the updated state object as an argument.
+2. The event handler updates the state object: it sets the `loading` property to `true`, the `error` property to `null` (i.e., no error yet), and the `data` property to `null` (i.e., no data yet). The event handler will then call the `update()` method of the View object with the updated state object as an argument.
 
-3. Inside `update()` method of the View, the `loading` property is checked. If it is `true`, the View will show a loading indicator. Otherwise, it will hide it.
+3. Inside the `update()` method of the View, the `loading` property of the state object is checked. If it is `true`, the View will show a loading indicator. If `false`, it will hide it.
 
-4. The Page object will now make a network request to try and fetch data from the Web API.
+4. The event handler will now make an asynchronous network request to try and fetch data from the Web API.
 
-5. Some time later, the network request completes, hopefully with a successful response.
+5. Some time later the network request completes, hopefully with a successful response.
 
-6. The Page object will then update the state object with the new data and the `loading` property set to `false`. It will call the `update()` method of the View object again with the updated state object as an argument.
+6. Next, the state object will be updated with the fetched data and the `loading` property set to `false`. Then, the `update()` method of the View object will be called again with the updated state object as an argument.
 
-7. The View will then update its DOM subtree with the new data: it will hide the loading indicator (`loading: false`) and show the data.
+7. Finally, the View will update its DOM subtree with the new data: it will hide the loading indicator (`loading: false`) and render the data.
 
 For a fully worked-out example inspect the [Pokemons example](../src/examples/pokemons/pages/pokemonsPage.js) in this repository.
 
@@ -196,9 +196,9 @@ For a fully worked-out example inspect the [Pokemons example](../src/examples/po
 
 ### 3.1 Detecting state changes in `view.update()`
 
-Sometimes you want to (re)render parts of a View only if there is a change in the state object. In the Currency Converter example, the \<select> elements should be populated with symbols for the available currencies only once. This can only be done inside the `update()` method of the View, since these symbols need to be fetched first and are therefore not available when the View is initially created. But once the symbols are fetched and the \<select> are populated you don't want to do it again on subsequent calls to `update()`. One technique that allows you to prevent this is to check the current state against the previous state and only (re)render if there is a change in the relevant state property. For the Currency Converter example, this is the `state.symbols` property.
+Sometimes you want to (re)render parts of a View only if there is a relevant change in the state object. In the Currency Converter example, the \<select> elements should be populated with symbols for the available currencies only once. This can only be done inside the `update()` method of the View, since these symbols need to be fetched first and are therefore not available when the View is initially created. But once the symbols are fetched and the \<select> are populated you don't want to do it again on subsequent calls to `update()`. One technique that allows you to prevent this is to check the current state against the previous state and only (re)render if there is a change in the relevant state property. For the Currency Converter example, this relevant property is the `state.symbols` property.
 
-First, we need to make sure that we make the previous state available to the `update()` method by passing it as a second parameter. In [converterPage.js](../src/examples/currency-converter/pages/converterPage.js) this is done as follows:
+First, we must pass the previous state as a second argument to the `update()` method. In [converterPage.js](../src/examples/currency-converter/pages/converterPage.js) this is done as follows:
 
 ```js
 function createConverterPage() {

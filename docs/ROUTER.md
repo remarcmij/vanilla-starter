@@ -6,9 +6,9 @@ Implementation: [src/lib/router.js](../src/lib/router.js)
 
 This document describes a client-side router that can be used to navigate between pages in an SPA with multiple client-side pages.
 
-The purpose of a client-side router is to let the client programmatically load different application 'pages' into the DOM by manipulating the browser's location url. In a hash-based router, as provided in this repo, the specific page to load is determined by the `hash` fragment of the `url`. In a `url`, a hash fragment is the part that starts with a `#` mark. Everything following the `#` mark is considered part of the hash.
+The purpose of a client-side router is to let the client programmatically load different application 'pages' into the DOM by manipulating the browser's location URL. In a hash-based router, as provided in this repo, the specific page to load is determined by the `hash` fragment of the `url`. In a `url`, a hash fragment is the part that starts with a `#` symbol. Everything following the `#` symbol is considered part of the hash.
 
-We can use the hash to specify the name of the page to load and can optionally embed parameters to pass to the Page function. It can be said that the `url` when used in such a way becomes part of the application state.
+We can use the hash to specify the name of the page to load and can optionally embed parameters to pass to the Page function. In a sense, the `url` when used in such a way becomes part of the application state.
 
 A hash-based router uses an event listener to listen for hash changes and responds to those changes by loading a matching page.
 
@@ -18,13 +18,11 @@ Here is an example of how we can use a hash to specify a page name and two param
 #repo/HackYourFuture/UsingAPIs
 ```
 
-The complete url could look like this:
+The complete url could look like this (click it!):
 
-```console
-https://remarcmij.github.io/vanilla-starter/#repo/HackYourFuture/UsingAPIs
-```
+- <https://remarcmij.github.io/vanilla-starter/#gh-repo/HackYourFuture/UsingAPIs>
 
-The hash identifies a page named `repo` and two string parameters to be passed to the Page function: `"HackYourFuture"` and `"UsingAPIs"`. The router will respond to the `"hashchange"` event by calling the corresponding Page function, effectively like this:
+The hash identifies a page named `gh-repos` and two string parameters to be passed to the Page function: `"HackYourFuture"` and `"UsingAPIs"`. The router will respond to the `"hashchange"` event by calling the corresponding Page function, effectively like this:
 
 ```js
 createRepoDetailPage({ props: ['HackYourFuture', 'UsingAPIs'] });
@@ -32,14 +30,14 @@ createRepoDetailPage({ props: ['HackYourFuture', 'UsingAPIs'] });
 
 ### 1.1 Pros and Cons of a Hash-Based Router
 
-The hash fragment in a url is not considered part of the web address. The browser only uses the url parts preceding the hash when making an HTTP request to load an HTML page. Changing just the hash part of the url will not cause the browser to load a new HTML file. In a Single Page Application that uses a hash-based router you can therefore do the following without the need for backend support:
+The hash fragment in a URL is not considered part of the web address. The browser only uses the URL parts preceding the hash when making an HTTP request to load an HTML page. Changing just the hash part of the URL will not cause the browser to load a new HTML file. In a Single Page Application that uses a hash-based router you can therefore do the following without the need for backend support:
 
 - You can use the browsers back and forward buttons to navigate through the application's navigation history without triggering page reloads.
 - You can reload the browser and return to the same application page as specified by the hash. If the parameters required to fetch data are taken from the hash then that data is re-fetched automatically too.
-- You can bookmark an application url and return to the same page in the future.
-- You can send the url to a friend who then lands on the expected application page.
+- You can bookmark an application URL and return to the same page in the future.
+- You can send the URL to a friend who then lands on the expected application page.
 
-The downside of a hash-based router is that the url looks 'funny' because of presence of a hash. It also possible to use a client-side router with regular urls (no hash), however that requires backend support to ensure that always the same `index.html` file loaded, regardless of the presence of additional parameter fragments in the url in addition to the base url.
+The downside of a hash-based router is that the URL looks 'funny' because of the presence of the hash. It is also possible to use a client-side router that uses regular URLs (no hash), however that requires backend support to ensure that always the same `index.html` file is loaded, regardless of the presence of additional path fragments in the URL following the domain name. Without this backend support you would get a 404 error.
 
 ## 2. Using the Router
 

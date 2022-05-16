@@ -1,44 +1,46 @@
 # 1. Miscellaneous Utility Functions
 
-A couple of other ready-made utility functions are provided in the `src/lib` folder that you may want to consider to use in your own application.
+A couple of ready-made utility functions are provided in the `src/lib` folder for use in your own application.
 
-## 1. Function: `fetchData()`
+Note: the modules [`router.js`](ROUTER.md) and [`observableState.js`](STATE.md) are described in elsewhere in this repository.
 
-TODO: separate fetchCached() function
+## 1. `loadPage()`
 
-File: [src/lib/fetchData.js](src/lib/fetchData.js)
+File: [src/lib/pageLoader.js](../src/lib/pageLoader.js)
+
+A simple alternative to the Router for loading pages into the DOM. It takes a Page function as an argument. It calls that function to create the page and mounts the returned DOM subtree from the page's root element at the pre-existing `<div id="page-root">` from `index.html`, replacing any previous page.
 
 ```js
-fetchData(url: string, options?: object) => Promise<any>
+function loadPage(createPageFn: () => void): void
 ```
 
-Fetches JSON data from the Web API specified by the `url` parameter, optionally caching the response.
+## 2. `fetchData()`
 
-<!-- prettier-ignore -->
-| Parameter | Description |
-|-----------|-------------|
-| `url` | The URL to fetch JSON data from. |
-| `options` | Optional. If provided it should be an object with a boolean `cache` property that indicates whether the responses should be cached, e.g. `{ cache: true }`. |
+Fetches JSON data from the specified URL. It checks `res.ok` and throws an error if it is `false`. In case of a `204 No Content` response, it returns `null`.
 
-If caching is enabled, subsequent requests to the same `url` are served from the cache. This is particularly useful when using Web APIs that use request rate limiting.
+File: [src/lib/fetchData.js](../src/lib/fetchData.js)
 
-Example usage: [./src/examples/github-2/fetchers/reposFetcher.js](src/examples/github-2/fetchers/reposFetcher.js)
-
-## 2. Function: `findElementsWithIds()`
-
-File: [src/lib/findElementsWithIds.js](src/lib/findElementsWithIds.js)
-
-```ts
-findElementsWithIds(root: HTMLElement) => object
+```js
+function fetchData(url: string): Promise<any>
 ```
 
-This function can be used in View functions to quickly find all DOM elements in the View's subtree that have an `id` attribute. It takes a singe parameter, the root of the subtree to search (normally `root`). It returns an object of DOM elements with the `id` as the key and the DOM element as the value. To enable dot notation to access properties of the object it is recommended to use _camelCase_ for the `id` attributes of the DOM elements instead of the usual _kebab-case_.
+## 3. `fetchCached()`
 
-Example usage: [src/examples/github-2/views/toolbarView.js](src/examples/github-2/views/toolbarView.js)
+File: [src/lib/fetchData.js](../src/lib/fetchCached.js)
 
-## 3. Function: `logger.XXX()`
+Builds upon `fetchData()` as described above, but now caches the data in a local cache, using the url as the key. Periodically prunes the cache to remove older entries.
 
-File: [src/lib/logger.js](src/lib/logger.js)
+Use this function in preference over `fetchData()` when you expect to do repeated fetches of the same data and you know this data to remain unchanged for the duration of the application session.
+
+```js
+function fetchCached(url: string): Promise<any>
+```
+
+## 4. `logger.XXX()`
+
+File: [src/lib/logger.js](../src/lib/logger.js)
+
+You can use this family of log methods to log information to the developer console.
 
 ```ts
 logger.XXX(label: any, ...args: any) => void
@@ -63,6 +65,20 @@ You can use the following actual log methods (in order of increasing severity):
 | `logger.fatal()` |For logging fatal errors that prevent your app from continuing normally. |
 | `logger.setLevel(minLevel)` | Sets the minimum level for the logger. The `minLevel` value must be one of `'silly'`, `'debug'`, `'info'`, `'warning'`, `'error'`, `'fatal'` or `'none'`. To suppress all log messages, use the value `'none'` (default). |
 
-You can use this family of log methods to log information to the developer console. Log messages with a level below the `minLevel` will not show up.
+Log messages with a level below the `minLevel` will not show up.
 
 Example usage: [src/examples/stopwatch/pages/stopwatchPage.js](src/examples/stopwatch/pages/stopwatchPage.js)
+
+## 5. `findElementsWithIds()`
+
+File: [src/lib/findElementsWithIds.js](../src/lib/findElementsWithIds.js)
+
+This function can be used in View functions to quickly find all DOM elements in the View's subtree that have an `id` attribute.
+
+```ts
+findElementsWithIds(root: HTMLElement) => object
+```
+
+It takes a single parameter, the root of the subtree to search (normally `root`). It returns an object of DOM elements with their `id` attributes as keys. To enable the convenient dot notation for property access it is recommended to use `camelCase` for the `id` attributes instead of the usual `kebab-case`.
+
+Example usage: [src/examples/github-2/views/toolbarView.js](src/examples/github-2/views/toolbarView.js)

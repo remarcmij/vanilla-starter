@@ -26,7 +26,7 @@ This is a first multi-page example that uses the Router. It demonstrates how the
 
 Folder: `src/examples/github`
 
-This is a multi-page Router example that uses Observable State and url parameters.
+This is a multi-page Router example that uses Observable State and URL parameters.
 
 ## 6. Nobel Prize
 
