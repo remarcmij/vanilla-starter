@@ -109,7 +109,7 @@ The **createXXXView()** function, which we will simply refer to as "View functio
 3. It defines an internal `update()` function which can be called by the Page object to update the DOM elements of the view.
 4. It returns an object that holds references to both the root element of the DOM subtree and to the internal `update()` function. This object is called a View object.
 
-Note that the View function creates a closure: the internal `update()` function has access to all the variables from the View function's scope.
+Note that the View function creates a closure: the internal `update()` function maintains access to all the variables from the View function's scope when that function itself has exited.
 
 ### 3.2.2 homePage.js
 
@@ -134,7 +134,7 @@ Let's walk through the code a little bit more closely.
 
 Finally, the `root` property of the Page object is used in `app.js` to insert the DOM subtree of the Page into the document's DOM.
 
-Note that the Page function creates a closure: the internal event handler functions have access to all the variables from the Page function's scope, which includes the state object.
+Note that the Page function creates a closure: its internal functions maintain access to all the variables from the Page function's scope, including the state object, after the Page function itself has exited.
 
 ### 3.3 Division of Responsibilities: Page vs View
 
