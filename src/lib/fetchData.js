@@ -26,8 +26,8 @@ export async function fetchData(url) {
 }
 
 const cache = {};
-const CACHE_INTERVAL_MS = 5000;
-const CACHE_MAX_AGE_MS = 1000 * 60 * 60; // 1 hour
+const CACHE_INTERVAL_MSECS = 5000;
+const CACHE_MAX_AGE_MSECS = 1000 * 60 * 60; // 1 hour
 
 /**
  * Fetch JSON data from the given URL, caching the result.
@@ -52,12 +52,12 @@ setInterval(function () {
   if (Object.keys(cache).length > 0) {
     const now = Date.now();
     Object.keys(cache).forEach((key) => {
-      const millis = now - cache[key].time;
+      const msecs = now - cache[key].time;
 
-      if (millis > CACHE_MAX_AGE_MS) {
+      if (msecs > CACHE_MAX_AGE_MSECS) {
         delete cache[key];
         logger.silly('fetchData', `${key}'s cache deleted`);
       }
     });
   }
-}, CACHE_INTERVAL_MS);
+}, CACHE_INTERVAL_MSECS);
