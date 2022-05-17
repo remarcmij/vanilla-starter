@@ -184,7 +184,7 @@ Here is a list of examples of things that would be considered architectural viol
 | Topic | Link |
 | ----------- | ---- |
 | An overview of the example applications from the `examples` folder that adhere to the described Application Architecture. | [Examples](docs/EXAMPLES.md) |
-| More about the Page and View functions/objects. | [Page and View details](docs/PAGE_VIEW.md) | 
+| More about the Page and View functions/objects. | [Page and View details](docs/PAGE_VIEW.md) |
 | Recipes for common tasks that are in accordance with the Application Architecture. | [Recipes](docs/RECIPES.md) |
 | Miscellaneous utility functions from the `lib` folder that you might find handy for use in your application. | [Utilities](docs/UTILITIES.md) |
 | How to create an SPA with multiple client-side pages using a client-side router. | [Router](docs/ROUTER.md) |

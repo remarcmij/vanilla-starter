@@ -73,7 +73,7 @@ function createFooPage() {
 }
 ```
 
-## 3. View Functions
+## 2. View Functions
 
 The name of a View function should follow the naming convention **createXXXView**, where XXX is the name of the View. Example: `createAboutView`. Each View function should be in a separate file, named `xxxView.js`, e.g., `aboutView.js`.
 
@@ -128,7 +128,7 @@ Inside the View function you can access child elements the `root` element by cal
 
 A View function may call other View functions and incorporate their root elements as child elements of its own DOM subtree.
 
-### 3.1 The `update()` callback
+### 2.1 The `update()` callback
 
 A View function can return an optional `update()` callback function that can be called to update the view after changes have been made to the application state. The application state is held in a JavaScript object that is passed as argument to the `update()` callback.
 
