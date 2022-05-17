@@ -50,11 +50,11 @@ export async function fetchCached(url) {
 // Adapted from: https://dev.to/rajeshroyal/cache-api-in-javascript-with-just-20-lines-of-code-49kg
 setInterval(function () {
   if (Object.keys(cache).length > 0) {
-    const currentTime = new Date();
+    const now = Date.now();
     Object.keys(cache).forEach((key) => {
-      const age = currentTime - cache[key].time;
+      const millis = now - cache[key].time;
 
-      if (age > CACHE_MAX_AGE_MS) {
+      if (millis > CACHE_MAX_AGE_MS) {
         delete cache[key];
         logger.silly('fetchData', `${key}'s cache deleted`);
       }
