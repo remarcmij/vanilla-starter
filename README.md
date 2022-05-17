@@ -1,10 +1,12 @@
 # Vanilla Starter Project
 
-This repository provides some examples of Single Page Applications (SPAs), all written in vanilla JavaScript (no libraries used). This same repository also serves as a GitHub template for creating a starter repo to build your own application based on the architectural principles outlined in this README.
+This repository introduces an Application Architecture for building Single Page Applications (SPAs) using vanilla JavaScript. It provides examples of SPAs that were built this way.
+
+This repository can also be used as a GitHub template for creating your own starter repo, to build an application based on the same architectural principles.
 
 Live demo: <https://remarcmij.github.io/vanilla-starter/>
 
-**TL;DR** To find out how use this repo for your own project, go **[here](#5-using-this-starter-for-your-own-project)**.
+**TL;DR** To find out how use this repo for your own project, look **[here](#5-using-this-starter-for-your-own-project)**.
 
 ## 1. Installation
 
@@ -57,7 +59,7 @@ index.html
 
 Notes:
 
-1. We are referring here to multiple _client-side_ pages. The application itself is still a Single Page Application, in the sense that there is only a single HTML file, which is loaded only once. It's DOM tree is subsequently modified by means of JavaScript to make it appear as if there are multiple pages.
+1. We are referring here to multiple _client-side_ pages. The application itself is still a Single Page Application, in the sense that there is only a single HTML file, which is loaded only once. Once loaded, it's DOM tree is subsequently manipulated by means of JavaScript to make it appear as if there are multiple pages.
 
 ## 3. Starter Application Architecture
 
@@ -84,17 +86,17 @@ Figure 1: **The Page / View / State Model**
 
 ### 3.2 Code Example
 
-Perhaps the quickest way to understand the Page/View/State model is to look at a code example for a mini application that uses this model. In this mini application, the **Increment** button increments the counter by 1 and the **Decrement** button decrements it by 1. The application prevents the counter to go below 0 by disabling the **Decrement** button when the counter is 0.
+Perhaps the quickest way to understand the Page/View/State model is to look at a code example for a mini application that uses this model. In this mini application, the **Increment** button increments a counter by 1 and the **Decrement** button decrements it by 1. The application prevents the counter to go below 0 by disabling the **Decrement** button when the counter is 0.
 
 ![mini-app-ui](./docs/assets/mini-app-ui.png)<br>
 Figure 2: **Mini Application UI**
 
-Figure 3 below gives an overview of the complete JavaScript code for this mini application. We will look in detail at the `homePage.js` and `homeView.js` files in the next sections. The other two files should speak for themselves.
+Figure 3 below gives an overview of the complete JavaScript code for this mini application.
 
 ![mini-app](./docs/assets/mini-app-code.png)<br>
 Figure 3: **Mini Application JavaScript Code**
 
-### 3.2.1 homeView.js
+#### 3.2.1 homeView.js
 
 Code: [homeView.js](./src/views/homeView.js)
 
@@ -106,12 +108,12 @@ The **createXXXView()** function, which we will simply refer to as "View functio
 
 1. It creates a subtree of DOM elements which will be used to render the page.
 2. It attaches event handler functions, passed to it through the `props` argument, to the relevant DOM elements.
-3. It defines an internal `update()` function which can be called by the Page object to update the DOM elements of the view.
-4. It returns an object that holds references to both the root element of the DOM subtree and to the internal `update()` function. This object is called a View object.
+3. It can optionally define an internal `update()` function which can be called by the Page object to update the DOM elements of the view. Views that do not require updates after initial creation can omit this function.
+4. It returns an object that holds references to both the root element of the DOM subtree and to the internal `update()` function, if provided. This object is called a View object.
 
 Note that the View function creates a closure: the internal `update()` function maintains access to all the variables from the View function's scope when that function itself has exited.
 
-### 3.2.2 homePage.js
+#### 3.2.2 homePage.js
 
 Code: [homePage.js](./src/pages/homePage.js)
 
@@ -132,9 +134,13 @@ Let's walk through the code a little bit more closely.
 | 19 | After the View is created, the View's `update()` method is called. Since the counter starts at 0 we want to View to disable its **Decrement** button. This call to `update()` gives the View the opportunity to take care of that. |
 | 21 | We return a Page object which in this case is identical to the View object returned by the View function. |
 
-Finally, the `root` property of the Page object is used in `app.js` to insert the DOM subtree of the Page into the document's DOM.
-
 Note that the Page function creates a closure: its internal functions maintain access to all the variables from the Page function's scope, including the state object, after the Page function itself has exited.
+
+#### 3.2.3 app.js and index.js
+
+The `root` property of the Page object is used in `app.js` to insert the DOM subtree of the Page into the document's DOM.
+
+The `index.js` file is loaded in `index.html` using a `<script>` tag. It simply calls the `loadApp()` function when the browser has finished loading the page.
 
 ### 3.3 Division of Responsibilities: Page vs View
 
@@ -178,6 +184,7 @@ Here is a list of examples of things that would be considered architectural viol
 | Topic | Link |
 | ----------- | ---- |
 | An overview of the example applications from the `examples` folder that adhere to the described Application Architecture. | [Examples](docs/EXAMPLES.md) |
+| More about the Page and View functions/objects. | [Page and View details](docs/PAGE_VIEW.md) | 
 | Recipes for common tasks that are in accordance with the Application Architecture. | [Recipes](docs/RECIPES.md) |
 | Miscellaneous utility functions from the `lib` folder that you might find handy for use in your application. | [Utilities](docs/UTILITIES.md) |
 | How to create an SPA with multiple client-side pages using a client-side router. | [Router](docs/ROUTER.md) |

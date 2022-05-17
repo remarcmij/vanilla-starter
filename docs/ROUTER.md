@@ -46,6 +46,7 @@ The router resided in the `lib` folder and requires a table (actually, an array)
 The routes table is passed to the router in `app.js` by calling its `start` method. The second parameter to `router.start()` is the DOM element where pages should be "mounted".
 
 ```js
+// app.js
 import router from './lib/router.js';
 import routes from './pages/routes.js';
 
@@ -61,6 +62,7 @@ function loadApp() {
 Here is an example of a basic routes table:
 
 ```js
+// pages/routes.js
 import createHomePage from './homePage.js';
 import createAboutPage from './aboutPage.js';
 

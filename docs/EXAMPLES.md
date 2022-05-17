@@ -8,19 +8,19 @@ This is the simplest example of all examples in this repository. It features a c
 
 Folder: `src/examples/pokemons`
 
-This example demonstrates how to fetch data from a Web API and showing a loading indicator while the data is being fetched. It also shows how errors can be handled.
+This example demonstrates how to fetch data from a Web API and show a loading indicator while the data is being fetched. It also shows how errors can be handled.
 
 ## 3. Currency Converter
 
 Folder: `src/examples/currency-converter`
 
-In this example we will look at how to work with HTML input elements, such as \<select> and \<input\> elements using the Page/View/State model.
+In this example we will show how to work with HTML input elements, such as \<select> and \<input> elements using the Page/View/State model.
 
 ## 4. Stopwatch
 
 Folder: `src/examples/stopwatch`
 
-This is a first multi-page example that uses the Router. It demonstrates how the `pageWillUnload()` life cycle method can be used to clear an interval timer prior to leaving the page.
+This is a multi-page example that uses the Router. It demonstrates how the `pageWillUnload()` life cycle method can be used to clear an interval timer prior to leaving the page.
 
 ## 5. GitHub App
 
