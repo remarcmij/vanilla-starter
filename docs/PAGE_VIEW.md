@@ -155,3 +155,79 @@ function createSearchView(props) {
 In this example the `update()` function is used to update the value of the `<input>` element with the value of the `searchText` property of the application state.
 
 Here, the `input` element is completely controlled through code (in React this is called a _controlled component_). For instance, the `onInput()` event handler could ignore any leading and/or trailing spaces and convert any uppercase letters to lowercase. Then, the `input` element's value attribute is updated accordingly.
+
+## 3. Page/View Interactions
+
+Figure 1 shows a [UML Sequence Diagram](https://en.wikipedia.org/wiki/Sequence_diagram) that illustrates the interactions between the Page and View objects. In this example the application there is only one client-side page.
+
+> From [Wikipedia](https://en.wikipedia.org/wiki/Sequence_diagram): _"A sequence diagram or system sequence diagram (SSD) shows object interactions arranged in time sequence in the field of software engineering. It depicts the objects involved in the scenario and the sequence of messages exchanged between the objects needed to carry out the functionality of scenario."_
+>
+> The "messages" mentioned in this quotation are in our case function calls and return values.
+
+The top three boxes represent the three interacting files / ES6 modules in this scenario.
+
+<!-- prettier-ignore -->
+| ES6 Module | Description |
+|------|-------------|
+| `app.js` | Contains the application's startup code. |
+| `fooPage.js` | Creates the application page and handles user interactions. |
+| `fooView.js` | Create the DOM subtree for the page and, if needed, updates its DOM elements with application state changes. |
+
+The vertical dotted lines extending downwards from the boxes represent times lines, with rectangular blocks indicating where code from a module is actively executing.
+
+The horizontal arrows depict function calls and returns between the modules.
+
+![page-view-interactions](./assets/app-page-view.png)<br>
+Figure 1: **Page/View interactions**
+
+Let's now go through the various numbered steps in the diagram.
+
+1. `app.js` contains the start-up code. It performs some initialization tasks and then calls the `createFooPage()` function imported from `fooPage.js` to create the one and only page in the application.
+
+2. The `createFooPage()` function first sets up any view props (a JavaScript object) as needed for the View, such as event handlers for the View's DOM elements. In the diagram two event handler are shown: `onClick()` which will handle a `"click"` event and `onInput()` which will handle an `"input"` event.
+
+   The `createFooPage()` next calls the `createFooView()` function imported from `fooView.js` to create the View, passing the event handlers as view props as illustrated in this code snippet.
+
+   ```js
+   const onClick = () => { ... };
+   const onInput = () => { ... };
+   const viewProps = { onClick, onInput };
+   const view = createFooView(viewProps);
+   ```
+
+3. The `createFooView()` function creates the View's DOM subtree, attaches any event listener and, if needed, sets up an `update()` callback function that can be called to update the View DOM subtree whenever the application state changes.
+
+   ```js
+   function createFooView(props) {
+     const root = ...
+     ...
+     myButton.addEventListener('click', props.onClick);
+     myInput.addEventListener('input', props.onInput);
+
+     const update = (state) => {
+       ...
+     };
+
+     return { root, update }
+   }
+   ```
+
+4. The `createFooView()` function returns an object with the following properties:
+
+   <!-- prettier-ignore -->
+   | Property | Description |
+   |----------|-------------|
+   | `root` | The `root` element of the DOM subtree created by the View function.|
+   | `update` | The callback function as described above. |
+
+5. The `createFooPage()` function, in its turn, returns an object with a single property: the `root` property from the View.
+
+6. In `app.js`, the returned `root` element from the View's DOM subtree is inserted into the DOM.
+
+7. DOM event emitted by elements from the View's DOM subtree are handled by event handlers that reside in the Page module. These event handlers were passed as view props to the View function which added them as event listeners to the appropriate DOM elements. Here, a `"click"` event is handled by the `onClick()` event handler. (Similarly, an `"input"` event is handled by the `onInput()` event handler.)
+
+8. The `onClick()` event handler will likely change the application state, either directly (synchronously) or perhaps by initiating a network request.
+
+9. When the application state changes, the `update()` callback function from the View must be called to communicate these state changes back to the View.
+
+10. The View's `update()` function can then use the new application state to update, as needed, any DOM elements it has created.
