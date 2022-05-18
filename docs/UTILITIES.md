@@ -10,6 +10,8 @@ File: [src/lib/pageLoader.js](../src/lib/pageLoader.js)
 
 A simple alternative to the Router for loading pages into the DOM. It takes a Page function as an argument. It calls that function to create the page and mounts the returned DOM subtree from the page's root element at the pre-existing `<div id="page-root">` from `index.html`, replacing any previous page.
 
+If provided in the Page object, it will call the `onPageDidLoad()` and `onPageWillUnload()` life cycle methods.
+
 ```js
 function loadPage(createPageFn: () => void): void
 ```
