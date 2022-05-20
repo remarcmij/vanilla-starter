@@ -49,11 +49,11 @@ function createReposPage(props) {
   getData();
 
   const pageDidLoad = () => {
-    state$.subscribe(reposView.update);
+    state$.subscribe(reposView);
   };
 
   const pageWillUnload = () => {
-    state$.unsubscribe(reposView.update);
+    state$.unsubscribe(reposView);
   };
 
   return { ...reposView, pageDidLoad, pageWillUnload };

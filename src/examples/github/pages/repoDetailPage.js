@@ -30,11 +30,11 @@ function createRepoDetailPage(props) {
   getData();
 
   const pageDidLoad = () => {
-    state$.subscribe(repoView.update);
+    state$.subscribe(repoView);
   };
 
   const pageWillUnload = () => {
-    state$.unsubscribe(repoView.update);
+    state$.unsubscribe(repoView);
   };
 
   return { ...repoView, pageDidLoad, pageWillUnload };

@@ -30,7 +30,7 @@ function createLaureatePage(props) {
   const view = createLaureateView(viewProps);
 
   const pageDidLoad = () => {
-    state$.subscribe(view.update);
+    state$.subscribe(view);
   };
 
   const pageWillUnload = () => {

@@ -8,6 +8,9 @@ function createObservableState(initialState = {}) {
   const subscribers = new Set();
 
   const subscribe = (subscriber) => {
+    if (!('update' in subscriber)) {
+      throw new Error('Subscriber must implement update(state)');
+    }
     subscribers.add(subscriber);
   };
 
@@ -18,7 +21,7 @@ function createObservableState(initialState = {}) {
   const update = (updates) => {
     const prevState = state;
     state = { ...prevState, ...updates };
-    subscribers.forEach((subscriber) => subscriber(state, prevState));
+    subscribers.forEach((subscriber) => subscriber.update(state, prevState));
     return state;
   };
 

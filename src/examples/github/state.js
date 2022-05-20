@@ -4,8 +4,10 @@ import createObservableState from '../../lib/observableState.js';
 const state$ = createObservableState();
 
 // Subscribe to log state changes to the console
-state$.subscribe((state) => {
-  logger.debug('state', state);
+state$.subscribe({
+  update(state) {
+    logger.debug('state', state);
+  },
 });
 
 export default state$;

@@ -93,12 +93,12 @@ function createPrizesPage(props) {
   const view = createPrizesView(viewProps);
 
   const pageDidLoad = () => {
-    state$.subscribe(view.update);
+    state$.subscribe(view);
     getData();
   };
 
   const pageWillUnload = () => {
-    state$.unsubscribe(view.update);
+    state$.unsubscribe(view);
   };
 
   return { ...view, pageDidLoad, pageWillUnload };

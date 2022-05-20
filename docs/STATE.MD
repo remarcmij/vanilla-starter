@@ -17,8 +17,8 @@ An Observable State object has four method properties, the first three of which 
 
 ```js
 {
-  subscribe: (subscriber: Function) => void,
-  unsubscribe: (subscriber: Function) => void,
+  subscribe: (subscriber: object) => void,
+  unsubscribe: (subscriber: object) => void,
   update: (updates: object) => object,
   get: () => object
 }
@@ -99,11 +99,11 @@ function createReposPage(props) {
   getData();
 
   const pageDidLoad = () => {
-    state$.subscribe(reposView.update);
+    state$.subscribe(reposView);
   };
 
   const pageWillUnload = () => {
-    state$.unsubscribe(reposView.update);
+    state$.unsubscribe(reposView);
   };
 
   return { ...reposView, pageDidLoad, pageWillUnload };
