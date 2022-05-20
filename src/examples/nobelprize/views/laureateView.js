@@ -1,5 +1,5 @@
 import findElementsWithIds from '../../../lib/findElementsWithIds.js';
-import spinnerView from './spinnerView.js';
+import createSpinnerView from './spinnerView.js';
 
 function createLaureateView(props) {
   const { category = 'all', year = 'all', page = '1', awardYear } = props;
@@ -18,16 +18,16 @@ function createLaureateView(props) {
 
   const laureateContainer = root.querySelector('#laureateContainer');
 
-  const loadingIndicator = spinnerView();
-  root.appendChild(loadingIndicator.root);
+  const spinnerView = createSpinnerView();
+  root.appendChild(spinnerView.root);
 
   const update = (state) => {
     if (state.loading) {
-      loadingIndicator.root.classList.remove('hide');
+      spinnerView.root.classList.remove('hide');
       return;
     }
 
-    loadingIndicator.root.classList.add('hide');
+    spinnerView.root.classList.add('hide');
 
     if (state.error) {
       return;
