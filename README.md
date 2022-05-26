@@ -164,6 +164,8 @@ The `index.js` file is loaded in `index.html` using a `<script>` tag. It simply 
 
 - All communication from the View to the Page should be done by means of event handlers, passed as props to the View function. For example, in Figure 4 below, a `"click"` event handler inside the Page function, passed as props to the View, is called when a `"click"` event is triggered by an element of the View's DOM subtree.
 
+- Network requests should be handled by the Page. The Page should update the state with any response data and pass the updated state to the View through its `update()` method.
+
 ![page-view-interaction](docs/assets/page-view-interaction.png)<br>
 Figure 4: **Page/View Interaction**
 

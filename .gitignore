@@ -135,3 +135,6 @@ dist
 # Drawio temp files
 *.drawio.dtmp
 *.drawio.bkp
+
+# Mac
+.DS_Store
