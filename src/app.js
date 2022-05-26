@@ -1,8 +1,10 @@
-import loadPage from './lib/pageLoader.js';
 import createHomePage from './pages/homePage.js';
 
 function loadApp() {
-  loadPage(createHomePage);
+  const appRoot = document.getElementById('app-root');
+
+  const { root } = createHomePage();
+  appRoot.appendChild(root);
 }
 
 export default loadApp;
