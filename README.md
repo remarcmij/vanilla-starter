@@ -148,7 +148,7 @@ The `index.js` file is loaded in `index.html` using a `<script>` tag. It simply 
 
 #### 3.3.1 Page
 
-- The Page function is responsible for handling all user interactions with the page and for updating the state object with any changes caused by these interactions. If appropriate, it should call the `update()` method of its subordinate View, passing the updated state object as an argument.
+- The Page function is responsible for handling all user interactions with the page and for handling network requests. It should update the state object with any changes caused by these interactions. If appropriate, it should call the `update()` method of its subordinate View, passing the updated state object as an argument.
 
 - DOM event handlers should be defined as internal functions of the Page function and passed as props to the View function.
 
