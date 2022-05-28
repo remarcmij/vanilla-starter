@@ -10,15 +10,15 @@ Live demo: <https://remarcmij.github.io/vanilla-starter/>
 
 ## 1. Installation
 
-### 1.1. Install dependencies
+1. In GitHub, click on the **Use this template** button to generate a repository on your own GitHub account using the files of this repo.
 
-To install the recommended ESLint and Prettier dependencies for use during development, please issue the command:
+2. Clone the generated repo from your own GitHub account to your local computer.
 
-```bash
-npm install
-```
+3. To install the recommended ESLint and Prettier dependencies for use during development, please issue the command from the project folder.
 
-### 1.2 Recommended VSCode Extensions
+   ```bash
+   npm install
+   ```
 
 When you load the repo folder in VSCode, you may notice that there are some recommendations for VSCode extensions for use with this repo. Please consider installing these extensions.
 
